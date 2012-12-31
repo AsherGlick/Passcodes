@@ -1,0 +1,19 @@
+Hashlock is a program designed to allow for the user to memorize one single password and have all of their other passwords generated for them. The system also tries to be as extensible as possible trying to add support for.
+
+Firefox Extention
+Chrome Extention
+Safari Extention
+Android App
+iPhone App
+iPad App
+Terminal Program
+Windows Standalone GUI
+Linux Standalone GUI
+Mac Standalone GUI
+
+The core system it written in C++ so that it is easy to maintain. Inside the core system there is
+
+A c++ library function for generating the hashed passwords
+a JSON object for the different modes the function can use
+
+hashlock(string masterPassword, string accountName, int type)
