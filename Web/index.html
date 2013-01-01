@@ -17,14 +17,39 @@
 		<!-- Scripts -->
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/sha256.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+	    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+	    <script>
+    $(function() {
+        var availableTags = [
+            "Newegg",
+            "Reddit",
+            "Google",
+            "Facebook",
+            "Twitter",
+            "Amazon",
+            "ThinkGeek",
+            "Github",
+            "Imgur"
+        ];
+        $( "#website" ).autocomplete({
+            source: availableTags,
+            position: { my : "left top", at: "right top" },
+            autoFocus: true,
+            delay: 0
+        });
+    });
+    </script>
 		<script src="core.js"></script> <!-- contains the function to hash stuff -->
 	</head>
 	<body>
 		<div class="content">
-			Site <input type="textbox" id="website" /> <br />
-			Master password <input type="password" id="masterPassword" /> <br />
+			<input class="textbox" type="textbox" id="website" value="website" /> <br />
+			<input class="textbox" type="password" id="masterPassword" value="password" /> <br />
 			<div onclick="showHash()" class="button">Generate</div>
-			<div id="outbox">  </div>
+			<div id="outbox" class="outputbox">  </div>
 		</div>
 	</body>
 </html>

@@ -38,4 +38,5 @@ function hexToBase64(hexString) {
 }
 function showHash() {
 	document.getElementById("outbox").innerHTML = hexToBase64(generate()).substring(0,16);
+	document.getElementById("outbox").style.display="block";
 }
