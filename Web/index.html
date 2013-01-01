@@ -19,29 +19,40 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-	    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
-	    <script>
-    $(function() {
-        var availableTags = [
-            "Newegg",
-            "Reddit",
-            "Google",
-            "Facebook",
-            "Twitter",
-            "Amazon",
-            "ThinkGeek",
-            "Github",
-            "Imgur"
-        ];
-        $( "#website" ).autocomplete({
-            source: availableTags,
-            position: { my : "left top", at: "right top" },
-            autoFocus: true,
-            delay: 500 
-        });
-    });
-    </script>
+		<script>
+			$(function() {
+				var availableTags = [
+					"Newegg",
+					"Reddit",
+					"Google",
+					"Facebook",
+					"Twitter",
+					"Amazon",
+					"ThinkGeek",
+					"Github",
+					"Imgur"
+				];
+				$( "#website" ).autocomplete({
+					source: availableTags,
+					position: { my : "left top", at: "right top" },
+					autoFocus: true,
+					delay: 500 
+				});
+
+			});
+
+			var isMobile = {
+				Android: function() { return navigator.userAgent.match(/Android/i); },
+				BlackBerry: function() { return navigator.userAgent.match(/BlackBerry/i); },
+				iOS: function() { return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
+				Opera: function() { return navigator.userAgent.match(/Opera Mini/i); },
+				Windows: function() { return navigator.userAgent.match(/IEMobile/i); },
+				any: function() { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());}
+			};
+			if (isMobile.any) { window.location = "http://passcod.es/mobile"; }
+		</script>
 		<script src="core.js"></script> <!-- contains the function to hash stuff -->
 	</head>
 	<body>
