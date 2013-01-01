@@ -1,6 +1,8 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="core.css">
+		<link rel="stylesheet" type="text/css" href="mobile.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="core.css" media="only screen and (min-width: 480px)">
+		
 
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
@@ -51,7 +53,10 @@
 				Windows: function() { return navigator.userAgent.match(/IEMobile/i); },
 				any: function() { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());}
 			};
-			if (isMobile.any) { window.location = "http://passcod.es/mobile"; }
+			if (isMobile.any()) { 
+				alert(isMobile.Android());
+				window.location = "http://passcod.es/mobile";
+			}
 		</script>
 		<script src="core.js"></script> <!-- contains the function to hash stuff -->
 	</head>
