@@ -38,18 +38,23 @@
             source: availableTags,
             position: { my : "left top", at: "right top" },
             autoFocus: true,
-            delay: 0
+            delay: 500 
         });
     });
     </script>
 		<script src="core.js"></script> <!-- contains the function to hash stuff -->
 	</head>
 	<body>
-		<div class="content">
-			<input class="textbox" type="textbox" id="website" value="website" /> <br />
-			<input class="textbox" type="password" id="masterPassword" value="password" /> <br />
-			<div onclick="showHash()" class="button">Generate</div>
-			<div id="outbox" class="outputbox">  </div>
+		<div id="full">
+			<div class="content">
+				<input class="textbox" type="textbox" id="website" value="website" /> <br />
+				<input class="textbox" type="password" id="masterPassword" value="password" /> <br />
+				<div onclick="showHash()" class="button">Generate</div>
+				<div id="outbox" class="outputbox">  </div>
+			</div>
+		</div>
+		<div id="mobile" style="display:none">
+			Mobile support coming soon
 		</div>
 	</body>
 </html>
