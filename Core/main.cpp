@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
   	input = "hello";
 
     // compute the sha1 of the input, and store it our  hash array
-    SHA1((unsigned char*)input.c_str(), input.size(), hash);
+    SHA256((unsigned char*)input.c_str(), input.size(), hash);
     // the above is the exact same thing as doing:
     //    SHA_CTX ctx;
     //    
