@@ -1,0 +1,9 @@
+body {
+	font-family: sans-serif;
+}
+.content {
+	width: 300px;
+	background-color: #EEE;
+	margin-left: auto;
+	margin-right: auto;
+}
