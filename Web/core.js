@@ -8,11 +8,14 @@ function generate() {
 
 function removeSubdomain (fullurl) {
 	var domainParts = fullurl.split('.');
-	var domain = domainParts[domainParts.length-2];
-	if (domain == 'co') {
-		domain = domainParts[domainParts.length-3];
+	var domain = fullurl;
+	if (domainParts.length > 1) {
+		domain = domainParts[domainParts.length-2];
+		if (domain == 'co') {
+			domain = domainParts[domainParts.length-3];
+		}
 	}
-	return domain;
+	return domain.toLowerCase();
 }
 
 function hexToBase64(hexString) {
