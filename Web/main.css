@@ -36,6 +36,8 @@ body {
 	line-height: 38px;
 	padding-left: 10px;
 	padding-right: 10px;
+	margin: 0px;
+	width: 100%;
 }
 
 .button:hover {

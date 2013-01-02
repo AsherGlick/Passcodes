@@ -105,8 +105,10 @@
 			<div class="content">
 				<input class="textbox" type="textbox" id="website" placeholder="Website" /> <br />
 				<input class="textbox" type="password" id="masterPassword" placeholder="Password" /> <br />
-				<div onclick="showHash()" class="button">Generate</div>
-				<div id="outbox" class="outputbox">  </div>
+				<input class="button" type="submit" value="Generate" onclick="showHash()" />
+				<!-- <div onclick="showHash()" class="button">Generate</div> -->
+				
+				<div id="outbox" class="outputbox" onclick="selectHash()">  </div>
 			</div>
 		</div>
 		<div id="mobile" style="display:none">
