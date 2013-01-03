@@ -31,9 +31,9 @@ body {
 	border-radius: 3px;
 	background-color: #DDD;
 	cursor:pointer;
-	/*padding: 10px;*/
+	padding: 10px;
 	border: 1px solid #CCC;
-	line-height: 38px;
+	/*line-height: 38px;*/
 	padding-left: 10px;
 	padding-right: 10px;
 	margin: 0px;
@@ -46,8 +46,8 @@ body {
 
 .textbox {
 	border-radius: 3px;
-	/*padding: 10px;*/
-	height: 40px;
+	padding: 10px;
+	/*height: 40px;*/
 	border: 0px;
 	width: 100%;
 	margin: 0px;
@@ -61,11 +61,13 @@ body {
 .outputbox {
 	margin-top: 5px;
 	border-radius: 3px;
-	line-height: 38px;
+	/*line-height: 38px;*/
+	padding: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
 	background-color: #FFF;
 	display: none;
 	border: 1px solid #CCC;
 	text-align: center;
+	font-size: 13px;
 }
