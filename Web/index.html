@@ -103,11 +103,12 @@
 	<body>
 		<div id="full">
 			<div class="content">
-				<input class="textbox" type="textbox" id="website" placeholder="Website" /> <br />
-				<input class="textbox" type="password" id="masterPassword" placeholder="Password" /> <br />
-				<input class="button" type="submit" value="Generate" onclick="showHash()" />
+				<form name="passcodesInput" action="javascript:showHash();" method="post" style="margin:0px">
+					<input class="textbox" type="textbox" id="website" placeholder="Website" autocomplete="off"/> <br />
+					<input class="textbox" type="password" id="masterPassword" placeholder="Password" autocomplete="off"/> <br />
+					<input class="button" type="submit" value="Generate" />
 				<!-- <div onclick="showHash()" class="button">Generate</div> -->
-				
+				</form>
 				<div id="outbox" class="outputbox" onclick="selectHash()">  </div>
 			</div>
 		</div>
