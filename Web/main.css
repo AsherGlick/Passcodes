@@ -5,6 +5,10 @@ body {
 }
 
 
+.infoLink {
+	
+}
+
 .content {
 		background-color: #222222;
 		padding: 3px;
@@ -65,6 +69,8 @@ body {
 	font-size: 13px;
 }
 
-.infoLink {
-	
+/* Changes the selection color of the hash */
+.outputbox::selection {
+	background: #a8d1ff;
 }
+
