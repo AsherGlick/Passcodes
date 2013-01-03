@@ -33,9 +33,6 @@ body {
 	cursor:pointer;
 	padding: 10px;
 	border: 1px solid #CCC;
-	/*line-height: 38px;*/
-	padding-left: 10px;
-	padding-right: 10px;
 	margin: 0px;
 	width: 100%;
 }
@@ -54,20 +51,20 @@ body {
 	outline: none;
 	margin-bottom: 2px;
 	border: 1px solid #CCC;
-	padding-left: 10px;
-	padding-right: 10px;
 }
 
 .outputbox {
 	margin-top: 5px;
 	border-radius: 3px;
-	/*line-height: 38px;*/
 	padding: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
+
 	background-color: #FFF;
 	display: none;
 	border: 1px solid #CCC;
 	text-align: center;
 	font-size: 13px;
+}
+
+.infoLink {
+	
 }
