@@ -7,7 +7,7 @@ Striving to get versions compatable on the following devics
 
 Firefox Extention  
 Chrome Extention  
-Safari Extention - [Safari Passcode](https://github.com/mdznr/Safari-Passcode)
+Safari Extention - [Safari Passcode](https://github.com/mdznr/Safari-Passcode)  
 Android App  
 iPhone App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
 iPad App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
@@ -15,8 +15,8 @@ Terminal Program
 Windows Standalone GUI  
 Linux Standalone GUI  
 Mac Standalone GUI  
-Web - Functional 
-Mobile Web - Functional 
+Web - Functional  
+Mobile Web - Functional  
 
 Hopefully using this program will be easy enough that many people will begin to use it
 
