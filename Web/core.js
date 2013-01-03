@@ -39,7 +39,25 @@ function hexToBase64(hexString) {
 	}
 	return base64String;
 }
+
 function showHash() {
-	document.getElementById("outbox").innerHTML = hexToBase64(generate()).substring(0,16);
-	document.getElementById("outbox").style.display="block";
+	var target = document.getElementById("outbox");
+	target.innerHTML = hexToBase64(generate()).substring(0,16);
+	target.style.display="block";
+	selectHash(target);
+}
+
+function selectHash(target) {
+	if (document.selection) {
+		document.selection.empty();
+		var range = document.body.createTextRange();
+		range.moveToElementText(target);
+		range.select();
+	}
+	else if (window.getSelection) {
+		window.getSelection().removeAllRanges();
+		var range = document.createRange();
+		range.selectNode(target);
+		window.getSelection().addRange(range);
+	}
 }
