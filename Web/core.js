@@ -1,3 +1,4 @@
+
 function generate() {
 	var password = document.getElementById('masterPassword').value;
 	var website = removeSubdomain(document.getElementById('website').value);
@@ -19,6 +20,10 @@ function removeSubdomain (fullurl) {
 }
 
 function hexToBase64(hexString) {
+
+}
+
+function hexToBase64Legacy(hexString) {
 	var hex = '0123456789abcdef';
 	// Base 64 symbols are normaly + and / but ! and # seemed better for passwords
 	var base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#';
