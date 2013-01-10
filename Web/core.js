@@ -35,8 +35,7 @@ function decimalToBase64(decimalValue) {
 }
 
 function hexToBase64(hexString) {
-	
-	alert (hexString);
+
 
 	var decimalArray = hexToDecimalArray(hexString);
 
@@ -73,7 +72,6 @@ function hexToBase64(hexString) {
 		}
 	}
 
-	alert( base64string );
 
 	return base64string;
 }
