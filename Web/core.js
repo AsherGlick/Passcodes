@@ -19,10 +19,56 @@ function removeSubdomain (fullurl) {
 	return domain.toLowerCase();
 }
 
-function hexToBase64(hexString) {
-
+// Returns an array of numbers between 0 and 15 //
+function hexToDecimalArray(hexString) {
+	var hex = '0123456789abcdef';
+	var decimalArray = []
+	for (var i = 0; i < hexString.length; i++) {
+		decimalArray.push(hex.indexOf(hexString[i]));
+	}
+	return decimalArray;
 }
 
+function decimalToBase64(decimalValue) {
+	var base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#';
+	return base64[decimalValue];
+}
+
+function hexToBase64(hexString) {
+
+	alert(Math.floor(0x5/4));
+
+	alert (hexString);
+
+	var decimalArray = hexToDecimalArray(hexString);
+
+	var base64array = [];
+	for (var i = 0; i < decimalArray.length; i+=3){
+		if (decimalArray.length == i+1) {
+			// This is the last element
+
+			// this element shifted left two (*4)
+			// one '=' get appended to the end
+			decimalArray[i] * 4
+
+		}
+		else if (decimalArray.length == i+2) {
+			// there is a second element to split
+			var leftSplit = Math.floor(element/4);
+			var rightSplit = element%4;
+
+			//gets two == 
+		}
+		else { // continue normally
+			var leftSplit = Math.floor(element/4);
+			var rightSplit = element%4;
+		}
+	}
+
+	return "BROKEN"
+}
+
+// LEGACY CODE FOR THE ORIGINAL HEXIDECIMAL TO BASE64 CONVERTER //
 function hexToBase64Legacy(hexString) {
 	var hex = '0123456789abcdef';
 	// Base 64 symbols are normaly + and / but ! and # seemed better for passwords
