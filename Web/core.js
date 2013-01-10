@@ -35,37 +35,47 @@ function decimalToBase64(decimalValue) {
 }
 
 function hexToBase64(hexString) {
-
-	alert(Math.floor(0x5/4));
-
+	
 	alert (hexString);
 
 	var decimalArray = hexToDecimalArray(hexString);
 
-	var base64array = [];
+	var base64string = "";
 	for (var i = 0; i < decimalArray.length; i+=3){
 		if (decimalArray.length == i+1) {
 			// This is the last element
 
 			// this element shifted left two (*4)
 			// one '=' get appended to the end
-			decimalArray[i] * 4
+			base64string += decimalToBase64(decimalArray[i] * 4);
+			base64string += '=';
 
 		}
 		else if (decimalArray.length == i+2) {
 			// there is a second element to split
-			var leftSplit = Math.floor(element/4);
-			var rightSplit = element%4;
+			var leftSplit = Math.floor(decimalArray[i+1]/4);
+			var rightSplit = decimalArray[i+1]%4;
 
 			//gets two == 
+
+			base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
+			base64string += decimalToBase64( rightSplit * 16);
+			base64string += "==";
 		}
 		else { // continue normally
-			var leftSplit = Math.floor(element/4);
-			var rightSplit = element%4;
+			var leftSplit = Math.floor(decimalArray[i+1]/4);
+			var rightSplit = decimalArray[i+1]%4;
+
+			//gets two == 
+
+			base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
+			base64string += decimalToBase64( rightSplit * 16 + decimalArray[i+2] );
 		}
 	}
 
-	return "BROKEN"
+	alert( base64string );
+
+	return base64string;
 }
 
 // LEGACY CODE FOR THE ORIGINAL HEXIDECIMAL TO BASE64 CONVERTER //
