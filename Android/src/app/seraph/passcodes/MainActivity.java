@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
 		//ClipData clipping = ClipData.newPlainText("simple text","PASTE ME");
 		//clipboard.setText("paste me");
 		//clipboard.setPrimaryClip(clipping);
+		copyToClipboard("HELLO EVERYONE!");
 		
 		int duration = Toast.LENGTH_SHORT;
 		Toast toast = Toast.makeText(this, "Copied To Clipboard"+android.os.Build.VERSION.SDK_INT, duration);
@@ -45,15 +46,28 @@ public class MainActivity extends Activity {
 	}
 	
 	
+	public void copyToClipboard(String clip) {
+		// If this divice does not have the new clipboard function then use the old one
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			copyToClipboardOld(clip);
+		}
+		// otherwise use the new one
+		else {
+			copyToClipboardNew (clip);
+		}
+	}
+	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void copyToClipboardHoneyComb(String clip) {
+	public void copyToClipboardNew(String clip) {
 		android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-		android.content.ClipData clipping = android.content.ClipData.newPlainText("simple text","PASTE ME");
+		android.content.ClipData clipping = android.content.ClipData.newPlainText("simple text",clip);
 		clipboard.setPrimaryClip(clipping);
 	}
+	
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
-	public void copyToClipboardEclair() {
+	@SuppressWarnings("deprecation")
+	public void copyToClipboardOld(String clip) {
 		android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-		clipboard.setText("paste me ECLAIR");
+		clipboard.setText(clip);
 	}
 }
