@@ -48,8 +48,7 @@ public class MainActivity extends Activity {
 		copyToClipboard("HELLO EVERYONE!");
 		
 		int duration = Toast.LENGTH_LONG;
-		byte[] data = getHash(domain,password);
-		String hash = String.format("%0" + (data.length*2) + "X", new BigInteger(1, data));
+		String hash = getHash(domain,password); 
 		Toast toast = Toast.makeText(this, hash, duration);
 		toast.show();
 		
@@ -99,7 +98,8 @@ public class MainActivity extends Activity {
 		clipboard.setText(clip);
 	}
 	
-	public byte[] getHash(String domain, String password) {
+	// Generates a hash of the password
+	public String getHash(String domain, String password) {
 		String concat = domain+password;
 		
 		MessageDigest digest = null; // initilize the possible digest
@@ -109,6 +109,68 @@ public class MainActivity extends Activity {
 			e1.printStackTrace();
 		}
 		digest.reset();
-		return digest.digest(concat.getBytes());
+		byte[] hash = digest.digest(concat.getBytes());
+		return String.format("%0" + (hash.length*2) + "X", new BigInteger(1, hash));
+	}
+	
+	
+	/////////
+	////Conversion functions
+	/////////
+	
+	int[] hexToDecimalArray(String hexString) {
+		String hex = "0123456789abcdef";
+		int[] decimalArray = new int[hexString.length()];
+		for (int i = 0; i < hexString.length(); i++) {
+			decimalArray[i] = hex.indexOf( hexString.substring(i, i) );
+		}
+		return decimalArray;
+	}
+
+	String decimalToBase64(int decimalValue) {
+		String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#";
+		return base64.substring(decimalValue,decimalValue);
+	}
+
+	function hexToBase64(hexString) {
+
+		alert(hexString);
+		var decimalArray = hexToDecimalArray(hexString);
+
+		var base64string = "";
+		for (var i = 0; i < decimalArray.length; i+=3){
+			if (decimalArray.length == i+1) {
+				// This is the last element
+
+				// this element shifted left two (*4)
+				// one '=' get appended to the end
+				base64string += decimalToBase64(decimalArray[i] * 4);
+				base64string += '=';
+
+			}
+			else if (decimalArray.length == i+2) {
+				// there is a second element to split
+				var leftSplit = Math.floor(decimalArray[i+1]/4);
+				var rightSplit = decimalArray[i+1]%4;
+
+				//gets two == 
+
+				base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
+				base64string += decimalToBase64( rightSplit * 16);
+				base64string += "==";
+			}
+			else { // continue normally
+				var leftSplit = Math.floor(decimalArray[i+1]/4);
+				var rightSplit = decimalArray[i+1]%4;
+
+				//gets two == 
+
+				base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
+				base64string += decimalToBase64( rightSplit * 16 + decimalArray[i+2] );
+			}
+		}
+
+
+		return base64string;
 	}
 }
