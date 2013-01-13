@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+	<EditText
+	    android:hint="@string/domain_box_help"
+	    android:id="@+id/domainBox"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:inputType="textPersonName"
+	    android:scrollHorizontally="true">
+		<requestFocus />
+		</EditText>
+		
+	<EditText 
+	    android:hint="@string/password_box_help"
+	    android:layout_below="@+id/domainBox"
+	    android:id="@+id/passwordBox"
+	    android:inputType="textPassword"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"/>
+	
+	<Button
+	    android:id="@+id/generateButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/passwordBox"
+	    android:layout_centerHorizontal="true"
+	    android:text="@string/submit_button_text" />
+</RelativeLayout>
