@@ -45,13 +45,16 @@ public class MainActivity extends Activity {
 		
 		String domain = domainBox.getText().toString();
 		String password = passwordBox.getText().toString();
-		copyToClipboard("HELLO EVERYONE!");
 		
+		domain = domain.toLowerCase();
 		
 		String hash = getHash(domain,password); 
 		
-		toast(hash);
-		toast(hexToBase64(hash));
+		//toast(hash);
+		String shortHash = hexToBase64(hash).substring(0,16);
+		
+		
+		copyToClipboard(shortHash);
 	}
 	
 	/****************************** COPY TO CLIPBOARD *****************************\
@@ -127,9 +130,7 @@ public class MainActivity extends Activity {
 
 	String hexToBase64(String hexString) {
 
-		toast("CONVERSION1:"+hexString);
 		int[] decimalArray = hexToDecimalArray(hexString);
-		toast("DECIMAL LENGTH:"+decimalArray.length);
 		String base64string = "";
 		for (int i = 0; i < decimalArray.length; i+=3){
 			if (decimalArray.length == i+1) {
