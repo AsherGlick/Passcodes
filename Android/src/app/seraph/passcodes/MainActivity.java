@@ -132,13 +132,13 @@ public class MainActivity extends Activity {
 		return base64.substring(decimalValue,decimalValue);
 	}
 
-	function hexToBase64(hexString) {
+	String hexToBase64(String hexString) {
 
-		alert(hexString);
-		var decimalArray = hexToDecimalArray(hexString);
+		//alert(hexString); // artifact from javascript
+		int[] decimalArray = hexToDecimalArray(hexString);
 
-		var base64string = "";
-		for (var i = 0; i < decimalArray.length; i+=3){
+		String base64string = "";
+		for (int i = 0; i < decimalArray.length; i+=3){
 			if (decimalArray.length == i+1) {
 				// This is the last element
 
@@ -150,8 +150,8 @@ public class MainActivity extends Activity {
 			}
 			else if (decimalArray.length == i+2) {
 				// there is a second element to split
-				var leftSplit = Math.floor(decimalArray[i+1]/4);
-				var rightSplit = decimalArray[i+1]%4;
+				int leftSplit = decimalArray[i+1]/4; //// THIS NUMBER NEEDS TO BE OUTPUT (SAME AS BELOW)
+				int rightSplit = decimalArray[i+1]%4;
 
 				//gets two == 
 
@@ -160,8 +160,8 @@ public class MainActivity extends Activity {
 				base64string += "==";
 			}
 			else { // continue normally
-				var leftSplit = Math.floor(decimalArray[i+1]/4);
-				var rightSplit = decimalArray[i+1]%4;
+				int leftSplit = decimalArray[i+1]/4; ////// THIS NUMBER NEEDS TO BE OUTPUT (SAME AS ABOVE)
+				int rightSplit = decimalArray[i+1]%4;
 
 				//gets two == 
 
