@@ -47,18 +47,11 @@ public class MainActivity extends Activity {
 		String password = passwordBox.getText().toString();
 		copyToClipboard("HELLO EVERYONE!");
 		
-		int duration = Toast.LENGTH_LONG;
+		
 		String hash = getHash(domain,password); 
-		Toast toast = Toast.makeText(this, hash, duration);
-		toast.show();
 		
-		String numbers = "";
-		for (byte b : data) {
-			numbers += (int)b + ",";
-		}
-		
-		Toast toast2 = Toast.makeText(this, numbers, duration);
-		toast2.show();
+		toast(hash);
+		toast(hexToBase64(hash));
 	}
 	
 	/****************************** COPY TO CLIPBOARD *****************************\
@@ -119,24 +112,24 @@ public class MainActivity extends Activity {
 	/////////
 	
 	int[] hexToDecimalArray(String hexString) {
-		String hex = "0123456789abcdef";
+		String hex = "0123456789ABCDEF";
 		int[] decimalArray = new int[hexString.length()];
 		for (int i = 0; i < hexString.length(); i++) {
-			decimalArray[i] = hex.indexOf( hexString.substring(i, i) );
+			decimalArray[i] = hex.indexOf( hexString.substring(i, i+1) );
 		}
 		return decimalArray;
 	}
 
 	String decimalToBase64(int decimalValue) {
 		String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#";
-		return base64.substring(decimalValue,decimalValue);
+		return base64.substring(decimalValue,decimalValue+1);
 	}
 
 	String hexToBase64(String hexString) {
 
-		//alert(hexString); // artifact from javascript
+		toast("CONVERSION1:"+hexString);
 		int[] decimalArray = hexToDecimalArray(hexString);
-
+		toast("DECIMAL LENGTH:"+decimalArray.length);
 		String base64string = "";
 		for (int i = 0; i < decimalArray.length; i+=3){
 			if (decimalArray.length == i+1) {
@@ -172,5 +165,11 @@ public class MainActivity extends Activity {
 
 
 		return base64string;
+	}
+	
+	public void toast(String message) {
+		int duration = Toast.LENGTH_SHORT;		
+		Toast toast = Toast.makeText(this, message, duration);
+		toast.show();
 	}
 }
