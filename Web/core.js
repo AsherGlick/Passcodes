@@ -8,14 +8,14 @@ function generate() {
 }
 
 function removeSubdomain (fullurl) {
-	var domainParts = fullurl.split('.');
 	var domain = fullurl;
+	/*var domainParts = fullurl.split('.');
 	if (domainParts.length > 1) {
 		domain = domainParts[domainParts.length-2];
 		if (domain == 'co') {
 			domain = domainParts[domainParts.length-3];
 		}
-	}
+	}*/
 	return domain.toLowerCase();
 }
 
@@ -36,7 +36,7 @@ function decimalToBase64(decimalValue) {
 
 function hexToBase64(hexString) {
 
-
+	alert(hexString);
 	var decimalArray = hexToDecimalArray(hexString);
 
 	var base64string = "";
