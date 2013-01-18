@@ -1,0 +1,44 @@
+<!---
+	This is my attempt to generate a logo looking thing in html using css without javascript
+	-->
+
+	<style>
+		body {
+			background: #CCC;
+		}
+		.outer-body {
+			position:relative;
+			width: 900px;
+			height: 900px;
+			border-radius: 10%;
+			background: #AAA;
+			margin: 0px;
+		}
+		.keyhole-circle {
+			position: absolute;
+			width: 40%;
+			height: 40%;
+			border-radius: 50%;
+			left: 30%;
+			top: 15%;
+			background: #555;
+		}
+		.keyhole-square {
+			position: absolute;
+			width: 20%;
+			height: 40%;
+			background:#555;
+			left: 40%;
+			top: 40%;
+		}
+	</style>
+
+	<div class="outer-body" id="frame">
+		<div class="keyhole-circle"> </div>
+		<div class="keyhole-square"> </div>
+	</div>
+
+	<script>
+		var frame = document.getElementById("frame");
+		frame.width = frame.height;
+	</script>
