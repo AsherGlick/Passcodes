@@ -1,0 +1,9 @@
+{
+	"manifest_version":2,
+
+	"name":"Passcodes",
+	"description": "Securely create passwords for different accounts",
+	"version": "1.0",
+
+	"browser_action": {     "default_icon": "icon.png"   }
+}
