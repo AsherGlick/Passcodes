@@ -32,16 +32,27 @@ chrome.extension.onRequest.addListener(
 			dimmer.style.height="100%";
 			dimmer.style.background="rgba(204,204,204,.5)";
 			dimmer.style.zIndex=""+(findHighestZIndex("div")+1);
-			dimmer.style.position="absolute";
+			dimmer.style.position="fixed";
 			dimmer.style.top="0px";
 			dimmer.style.left="0px";
-			
 
-			var documentValues = "";
-			for (var i in document) {
-				documentValues+=i+":"+document[i]+"\n";
-			}
-			console.log(documentValues);
+
+			
+			var html = ""
+			html += "<style>";
+			html += ".content{background-color: #999;border-radius: 5px;padding: 5px;width: 200px;margin-left: auto;margin-right: auto;margin-top: 100px; font-family: sans-serif;}";
+			html += ".button{border-radius: 3px;background-color: #DDD;cursor:pointer;padding: 10px;border: 1px solid #CCC;margin: 0px;width: 100%;-webkit-appearance: none;}";
+			html += ".button:hover{background-color: #CCC;}";
+			html += ".textbox {border-radius: 3px;padding: 10px;border: 0px;width: 178px;margin: 0px;outline: none;margin-bottom: 2px;border: 1px solid #CCC;}";
+			html += "</style>";
+			html += '<div class="content"> <form name="passcodesInput" action="javascript:showHash();" method="post" style="margin:0px">';
+			html += '<input class="textbox" type="textbox" id="website" placeholder="Website" autocomplete="off"/> <br />';
+			html += '<input class="textbox" type="password" id="masterPassword" placeholder="Password" autocomplete="off"/> <br />';
+			html += '<input class="button" type="submit" value="Generate" />';
+			html += '</form> </div>';
+
+			dimmer.innerHTML = html;
+
 
 			document.body.appendChild(dimmer);
 
