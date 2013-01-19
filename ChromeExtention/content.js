@@ -6,10 +6,48 @@ document.addEventListener("mousedown", function(event){
         __passcodes__target = event.target;
     }
 }, true);
-
-
+ 
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
+
+			// find the highest z value to make the menu apear one higher
+
+			function findHighestZIndex(elem)
+			{
+			  var elems = document.getElementsByTagName(elem);
+			  var highest = 0;
+			  for (var i = 0; i < elems.length; i++)
+			  {
+			    var zindex=document.defaultView.getComputedStyle(elems[i],null).getPropertyValue("z-index");
+			    if ((zindex > highest) && (zindex != 'auto'))
+			    {
+			      highest = zindex;
+			    }
+			  }
+			  return highest;
+			}
+
+			var dimmer = document.createElement("div");
+			dimmer.style.width="100%";
+			dimmer.style.height="100%";
+			dimmer.style.background="rgba(204,204,204,.5)";
+			dimmer.style.zIndex=""+(findHighestZIndex("div")+1);
+			dimmer.style.position="absolute";
+			dimmer.style.top="0px";
+			dimmer.style.left="0px";
+			
+
+			var documentValues = "";
+			for (var i in document) {
+				documentValues+=i+":"+document[i]+"\n";
+			}
+			console.log(documentValues);
+
+			document.body.appendChild(dimmer);
+
+			alert("hello");
+		
+		/*
 		if(request == "__passcod.es__getTarget") {
 			sendResponse({});
 
@@ -19,55 +57,18 @@ chrome.extension.onRequest.addListener(
 			var txtarea = __passcodes__target;
 		    var scrollPos = txtarea.scrollTop;
 		    var strPos = 0;
-		    /*var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-		        "ff" : (document.selection ? "ie" : false ) );
-		    if (br == "ie") {
-		    	alert("IE");
-		        txtarea.focus();
-		        var range = document.selection.createRange();
-		        range.moveStart ('character', -txtarea.value.length);
-		        strPos = range.text.length;
-		    }
-		    else if (br == "ff") {
-		    	alert("FF");*/
-		    	strPos = txtarea.selectionStart;
-		    //}
-
-		    //alert(scrollPos + ":" + strPos);
-
+	    	strPos = txtarea.selectionStart;
+	
 		    var front = (txtarea.value).substring(0,strPos);  
-
-		    
-
 		    var back = (txtarea.value).substring(strPos,txtarea.value.length); 
-
-
-		    //alert("HELLO");
 
 		    txtarea.value=front+text+back;
 		    strPos = strPos + text.length;
-		    /*if (br == "ie") { 
-		        txtarea.focus();
-		        var range = document.selection.createRange();
-		        range.moveStart ('character', -txtarea.value.length);
-		        range.moveStart ('character', strPos);
-		        range.moveEnd ('character', 0);
-		        range.select();
-		    }
-		    else if (br == "ff") {*/
-		        txtarea.selectionStart = strPos;
-		        txtarea.selectionEnd = strPos;
-		        txtarea.focus();
-		    //}
+
+	        txtarea.selectionStart = strPos;
+	        txtarea.selectionEnd = strPos;
+	        txtarea.focus();
 		    txtarea.scrollTop = scrollPos;
-		}
+		}*/
 	}
 );
-
-
-function insertAtCaret(text) {
-    //var txtarea = document.getElementById(areaId);
-
-    var textarea = document.activeElement;
-    
-}
