@@ -1,19 +1,25 @@
 {
 	"manifest_version":2,
 
-	"name":"Passcodes",
-	"description": "Securely create passwords for different accounts",
-	"version": "1.0",
+	"name":"Passcod.es",
+	"description": "Securely create passwords for different using a single master password",
+	"version": "0.1",
 
-	"permissions": ["contextMenus"],
- "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ],
-  "background": {
+	"permissions": ["contextMenus","tabs"],
+	"content_scripts": [
+	    {
+	      "matches": ["<all_urls>"],
+	      "js": ["content.js"]
+	    }
+	  ],
+
+  	"background": {
 		"scripts": ["script.js"]
+	},
+	"page_action":{
+		"default_icon": "icon-16.png",
+		"default_title": "Passcodes",     
+		"default_popup": "popup.html"
 	},
 	"icons": {
 		"16": "icon-16.png",
