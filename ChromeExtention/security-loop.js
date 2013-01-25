@@ -1,0 +1,1 @@
+document.getElementById('form').onsubmit = function() { console.log("hello") };

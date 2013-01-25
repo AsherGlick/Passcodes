@@ -16,11 +16,6 @@
   	"background": {
 		"scripts": ["script.js"]
 	},
-	"page_action":{
-		"default_icon": "icon-16.png",
-		"default_title": "Passcodes",     
-		"default_popup": "popup.html"
-	},
 	"icons": {
 		"16": "icon-16.png",
 		"48": "icon-48.png",
