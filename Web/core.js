@@ -1,4 +1,5 @@
-
+// The generate function obtains the doman and password text boxes from the HTML document, concatinates them and
+// then retuns a string of hex characters representing the hash
 function generate() {
 	var password = document.getElementById('masterPassword').value;
 	var website = removeSubdomain(document.getElementById('website').value);
@@ -7,6 +8,9 @@ function generate() {
 	return hash;
 }
 
+// This function is badly named and will probably be removed / inlined becasue all it does in the web interface
+// is convert the domain to lowercase, in the chrome plugin it will also give a suggested domain name using the
+// commented out schema within this function
 function removeSubdomain (fullurl) {
 	var domain = fullurl;
 	/*var domainParts = fullurl.split('.');
@@ -29,54 +33,48 @@ function hexToDecimalArray(hexString) {
 	return decimalArray;
 }
 
+
+// This function takes an integer and converts it into a base64 character, no input sanitization is done to make sure the integer is within bounds
 function decimalToBase64(decimalValue) {
 	var base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#';
 	return base64[decimalValue];
 }
 
+// this function converts a string of hex characters to a string of base 64 characters
 function hexToBase64(hexString) {
 
 	alert(hexString);
 	var decimalArray = hexToDecimalArray(hexString);
 
 	var base64string = "";
-	for (var i = 0; i < decimalArray.length; i+=3){
+	for (var i = 0; i < decimalArray.length; i+=3){ // If this is the only element in this group of three
 		if (decimalArray.length == i+1) {
-			// This is the last element
-
-			// this element shifted left two (*4)
 			// one '=' get appended to the end
 			base64string += decimalToBase64(decimalArray[i] * 4);
-			base64string += '=';
+			base64string += '='; // append = to the end of the string to represent the missing bits
 
 		}
-		else if (decimalArray.length == i+2) {
-			// there is a second element to split
+		else if (decimalArray.length == i+2) { // If there are only two elements in this group of three
 			var leftSplit = Math.floor(decimalArray[i+1]/4);
 			var rightSplit = decimalArray[i+1]%4;
-
 			//gets two == 
-
 			base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
 			base64string += decimalToBase64( rightSplit * 16);
-			base64string += "==";
+			base64string += "=="; // append == to the end of the string to represent the missing bits
 		}
-		else { // continue normally
+		else { // If there are all three elementsin this group of three
 			var leftSplit = Math.floor(decimalArray[i+1]/4);
 			var rightSplit = decimalArray[i+1]%4;
-
-			//gets two == 
-
 			base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
 			base64string += decimalToBase64( rightSplit * 16 + decimalArray[i+2] );
 		}
 	}
-
-
 	return base64string;
 }
 
 // LEGACY CODE FOR THE ORIGINAL HEXIDECIMAL TO BASE64 CONVERTER //
+// This outdated conversion function should no longer be used and is only here until it gets moved to the
+// legacy folder 
 function hexToBase64Legacy(hexString) {
 	var hex = '0123456789abcdef';
 	// Base 64 symbols are normaly + and / but ! and # seemed better for passwords
@@ -99,6 +97,7 @@ function hexToBase64Legacy(hexString) {
 	return base64String;
 }
 
+// Unique to the web interface, this function displays the div for the hash to be displayed in and displays it
 function showHash() {
 	var target = document.getElementById("outbox");
 	target.innerHTML = hexToBase64(generate()).substring(0,16);
@@ -106,6 +105,7 @@ function showHash() {
 	selectHash(target);
 }
 
+// Unique to the web interface, this function selects the hash text for the user to copy
 function selectHash(target) {
 	if (document.selection) {
 		document.selection.empty();
