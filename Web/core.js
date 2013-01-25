@@ -40,7 +40,12 @@ function decimalToBase64(decimalValue) {
 	return base64[decimalValue];
 }
 
-// this function converts a string of hex characters to a string of base 64 characters
+/******************************** HEX TO BASE64 *******************************\
+| This function takes in a string of hex characters and converts it to a       |
+| string of base64 characters. It is able to take in any number of hex         |
+| characters even if they are not an even number of characters (or dont        |
+| create a full byte)                                                          |
+\******************************************************************************/
 function hexToBase64(hexString) {
 
 	alert(hexString);
@@ -66,7 +71,7 @@ function hexToBase64(hexString) {
 			var leftSplit = Math.floor(decimalArray[i+1]/4);
 			var rightSplit = decimalArray[i+1]%4;
 			base64string += decimalToBase64(decimalArray[i] * 4 + leftSplit);
-			base64string += decimalToBase64( rightSplit * 16 + decimalArray[i+2] );
+			base64string += decimalToBase64(rightSplit * 16 + decimalArray[i+2]);
 		}
 	}
 	return base64string;
@@ -98,7 +103,7 @@ function hexToBase64Legacy(hexString) {
 }
 
 // Unique to the web interface, this function displays the div for the hash to be displayed in and displays it
-function showHash() {
+function showPassword() {
 	var target = document.getElementById("outbox");
 	target.innerHTML = hexToBase64(generate()).substring(0,16);
 	target.style.display="block";
