@@ -2,7 +2,7 @@
 // then retuns a string of hex characters representing the hash
 function generatePassword() {
 	var password = document.getElementById('masterPassword').value;
-	var website = removeSubdomain(document.getElementById('website').value);
+	var website = document.getElementById('website').value.toLowerCase();
 	var prehash = website+password;
 	var hash = CryptoJS.SHA256(prehash) + "";
 	return hexToBase64(hash).substring(0,16);
@@ -11,6 +11,7 @@ function generatePassword() {
 // This function is badly named and will probably be removed / inlined becasue all it does in the web interface
 // is convert the domain to lowercase, in the chrome plugin it will also give a suggested domain name using the
 // commented out schema within this function
+// Soon to be Chrome plugin only
 function removeSubdomain (fullurl) {
 	var domain = fullurl;
 	/*var domainParts = fullurl.split('.');
