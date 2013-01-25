@@ -1,11 +1,11 @@
 // The generate function obtains the doman and password text boxes from the HTML document, concatinates them and
 // then retuns a string of hex characters representing the hash
-function generate() {
+function generatePassword() {
 	var password = document.getElementById('masterPassword').value;
 	var website = removeSubdomain(document.getElementById('website').value);
 	var prehash = website+password;
 	var hash = CryptoJS.SHA256(prehash) + "";
-	return hash;
+	return hexToBase64(hash).substring(0,16);
 }
 
 // This function is badly named and will probably be removed / inlined becasue all it does in the web interface
@@ -105,7 +105,7 @@ function hexToBase64Legacy(hexString) {
 // Unique to the web interface, this function displays the div for the hash to be displayed in and displays it
 function showPassword() {
 	var target = document.getElementById("outbox");
-	target.innerHTML = hexToBase64(generate()).substring(0,16);
+	target.innerHTML = generatePassword();
 	target.style.display="block";
 	selectHash(target);
 }
