@@ -37,7 +37,7 @@ chrome.extension.onRequest.addListener(
 			
 		}
 		if (request.request == "__passcod.es__setTarget") {
-			var text = "Test text";
+			var text = request.password;
 
 			// run all code here
 			var txtarea = __passcodes__target;
