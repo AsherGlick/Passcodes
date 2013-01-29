@@ -6,7 +6,7 @@ Passcodes web interface can be found at [passcod.es](http://passcod.es)
 Striving to get versions compatable on the following devics
 
 Firefox Extention  
-Chrome Extention  
+Chrome Extention - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/ChromeExtention)  
 Safari Extention - [Safari Passcode](https://github.com/mdznr/Safari-Passcode)  
 Android App - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Android)  
 iPhone App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
