@@ -4,4 +4,4 @@ You can install the chrome plugin
 Screenshot
 ----------
 
-![Screenshot](https://raw.github.com/AsherGlick/Passcodes/master/ChromeExtention/content.js)
+![Screenshot](https://raw.github.com/AsherGlick/Passcodes/master/ChromeExtention/screenshot.png)
