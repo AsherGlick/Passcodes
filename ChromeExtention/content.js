@@ -11,13 +11,13 @@ document.addEventListener("mousedown", function(event){
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
 		// calculate the hash functions
-		function generate() {
+		/*function generate() {
 			var password = document.getElementById('__passcodes__masterPassword').value;
 			var website = document.getElementById('__passcodes__website').value.toLowerCase();
 			var prehash = website+password;
 			var hash = CryptoJS.SHA256(prehash) + "";
 			return hexToBase64(hash).substring(0,16);
-		}
+		}*/
 
 		function removeSubdomain () {
 			var url = document.URL;
@@ -35,7 +35,7 @@ chrome.extension.onRequest.addListener(
 			return domain.toLowerCase();
 		}
 		
-
+		/*
 		// Returns an array of numbers between 0 and 15 //
 		function hexToDecimalArray(hexString) {
 			var hex = '0123456789abcdef';
@@ -44,15 +44,15 @@ chrome.extension.onRequest.addListener(
 				decimalArray.push(hex.indexOf(hexString[i]));
 			}
 			return decimalArray;
-		}
-
+		}*/
+		/*
 		function decimalToBase64(decimalValue) {
 			var base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#';
 			return base64[decimalValue];
 		}
-
+		*/
 		
-
+		/*
 		function hexToBase64(hexString) {
 
 			alert(hexString);
@@ -94,8 +94,8 @@ chrome.extension.onRequest.addListener(
 
 			return base64string;
 		}
-
-
+		*/
+		/*
 		// find the highest z value to make the menu apear one higher
 		function findHighestZIndex(elem)
 		{
@@ -111,8 +111,8 @@ chrome.extension.onRequest.addListener(
 		  }
 		  return highest;
 		}
-
-
+		*/
+		/*
 		function createPasswordBox() {
 			var dimmer = document.createElement("div");
 			dimmer.style.width="100%";
@@ -152,6 +152,7 @@ chrome.extension.onRequest.addListener(
 			document.getElementById('__passcodes__website').value = removeSubdomain();
 			document.getElementById('__passcodes__masterPassword').focus();
 		}
+		*/
 		
 		if(request == "__passcod.es__getTarget") {
 			sendResponse({});

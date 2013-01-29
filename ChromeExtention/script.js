@@ -33,7 +33,7 @@ function startPasscodes(info, tab) {
 
 // Listen for a connection from the popup asking for informaion
 chrome.extension.onConnect.addListener(function(port) {
-  console.assert(port.name == "knockknock");
+  console.assert(port.name == "popupConnection");
   port.onMessage.addListener(function(msg) {
     if (msg.joke == "Knock knock")
       port.postMessage({question: "Who's there?"});
