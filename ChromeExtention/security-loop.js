@@ -4,12 +4,17 @@ var port = chrome.extension.connect({name: "popupConnection"});
 port.postMessage({query:"domain"}); // request the domain from the tab
 
 port.onMessage.addListener(function(msg) {
-  if (msg.query == "domain")
-    // set domain to msg.responce
-  else if (msg.query == "done")
-  	//sucessfully recived master password
-  	// close popup
+	console.log("Got mesage Back")
+	if (msg.query == "domain"){
+		// set domain to msg.responce
+		console.log("HELLO");
+		document.getElementById("website").value = msg.responce;
+	}else if (msg.query == "done"){
+		//sucessfully recived master password
+ 		// close popup
+ 	}
  });
 
 
 document.getElementById('form').onsubmit = function() { port.postMessage({'password':generatePassword()})};
+document.getElementById("website").value = "lala";

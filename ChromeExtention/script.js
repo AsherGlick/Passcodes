@@ -33,13 +33,17 @@ function startPasscodes(info, tab) {
 
 // Listen for a connection from the popup asking for informaion
 chrome.extension.onConnect.addListener(function(port) {
-  console.assert(port.name == "popupConnection");
+  console.log(port.name == "popupConnection");
   port.onMessage.addListener(function(msg) {
-    if (msg.joke == "Knock knock")
-      port.postMessage({question: "Who's there?"});
-    else if (msg.answer == "Madame")
-      port.postMessage({question: "Madame who?"});
-    else if (msg.answer == "Madame... Bovary")
-      port.postMessage({question: "I don't get it."});
+    //{query:"domain"}
+    console.log("Got message");
+    if (msg.query == "domain") {
+        console.log("message was asking for domain");
+        port.postMessage({responce: "awesomesite", query:"domain"});
+    }
+    //else if (msg.answer == "Madame")
+    //  port.postMessage({question: "Madame who?"});
+    //else if (msg.answer == "Madame... Bovary")
+    //  port.postMessage({question: "I don't get it."});
   });
 });
