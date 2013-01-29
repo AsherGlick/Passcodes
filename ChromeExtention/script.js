@@ -1,11 +1,14 @@
 var passwordGenerator = chrome.contextMenus.create({"title":"Fill In Passcode Here", "contexts":["all"],"onclick":startPasscodes});
 
+var mostRecentActiveTab = null;
+
 function startPasscodes(info, tab) {
-		//insertAtCaret("HELLO");
-		//alert(JSON.stringify(info));
-		//alert(JSON.stringify(tab));
-		//background
-    chrome.tabs.sendRequest(tab.id, "__passcod.es__getTarget", function(target) {
+	//insertAtCaret("HELLO");
+	//alert(JSON.stringify(info));
+	//alert(JSON.stringify(tab));
+	//background
+    mostRecentActiveTab = tab.id;
+    //chrome.tabs.sendRequest(tab.id, "__passcod.es__getTarget", function(target) {
         //alert(target);
         // var tabsWindow = chrome.windows.get(tab.windowId);
         // console.log(tabsWindow); 
@@ -24,26 +27,20 @@ function startPasscodes(info, tab) {
 
         var newpopup = chrome.windows.create({'url': 'popup.html','focused':true ,'type': 'popup', 'width': w, 'height': h, 'left': left, 'top': top} , function(window) {
         });
+
         console.log(newpopup);
 
 
-    });
+    //});
 }
 
-
-// Listen for a connection from the popup asking for informaion
-chrome.extension.onConnect.addListener(function(port) {
-  console.log(port.name == "popupConnection");
-  port.onMessage.addListener(function(msg) {
-    //{query:"domain"}
-    console.log("Got message");
-    if (msg.query == "domain") {
-        console.log("message was asking for domain");
-        port.postMessage({responce: "awesomesite", query:"domain"});
+// add a listener for when the popup requests the tab id
+chrome.extension.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.request == "tabid") {
+            console.log(mostRecentActiveTab);
+            sendResponse(mostRecentActiveTab);
+            mostRecentActiveTab = null;
+        }
     }
-    //else if (msg.answer == "Madame")
-    //  port.postMessage({question: "Madame who?"});
-    //else if (msg.answer == "Madame... Bovary")
-    //  port.postMessage({question: "I don't get it."});
-  });
-});
+);
