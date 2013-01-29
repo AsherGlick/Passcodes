@@ -12,6 +12,7 @@ function connectToTab(tabid) {
 	// request the domain for the target page, and tell the page to save the currently selected textbox
 	chrome.tabs.sendRequest(targetTabId, {request:"__passcod.es__getTarget"}, function(target) {
 		document.getElementById("website").value = target.responce;
+		document.getElementById("masterPassword").focus();
 		console.log("got responce");
 	});
 
@@ -39,7 +40,8 @@ document.getElementById('form').onsubmit = function() {
 	chrome.tabs.sendRequest(targetTabId, {request:"__passcod.es__setTarget",password:generatePassword()}, function(target) {
 		console.log("Done");
 		// close popup
-		self.close();
+		//self.close();
 	});
+	self.close();
 };
-document.getElementById("website").value = "lala";
+document.getElementById("website").focus();

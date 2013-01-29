@@ -8,6 +8,7 @@ function startPasscodes(info, tab) {
 	//alert(JSON.stringify(tab));
 	//background
     mostRecentActiveTab = tab.id;
+
     //chrome.tabs.sendRequest(tab.id, "__passcod.es__getTarget", function(target) {
         //alert(target);
         // var tabsWindow = chrome.windows.get(tab.windowId);
