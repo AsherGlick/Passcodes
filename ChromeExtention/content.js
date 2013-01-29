@@ -28,14 +28,16 @@ chrome.extension.onRequest.addListener(
 			return domain.toLowerCase();
 		}
 		console.log("got message");
+
 		if(request.request == "__passcod.es__getTarget") {
 			sendResponse({responce:removeSubdomain()});
 			console.log("HELLO");
-			//chrome.browserAction.onClicked.addListener(function() {
-   				
-			//});
 
-			/*var text = "Test text";
+			//var txtarea = __passcodes__target;
+			
+		}
+		if (request.request == "__passcod.es__setTarget") {
+			var text = "Test text";
 
 			// run all code here
 			var txtarea = __passcodes__target;
@@ -52,25 +54,8 @@ chrome.extension.onRequest.addListener(
 	        txtarea.selectionStart = strPos;
 	        txtarea.selectionEnd = strPos;
 	        txtarea.focus();
-		    txtarea.scrollTop = scrollPos;*/
+		    txtarea.scrollTop = scrollPos;
 		}
 
 	}
 );
-
-// Listen for a connection from the popup asking for informaion
-chrome.extension.onConnect.addListener(function(port) {
-  console.assert(port.name == "contentConnection");
-  port.onMessage.addListener(function(msg) {
-    //{query:"domain"}
-    console.log("Got message");
-    if (msg.query == "domain") {
-        console.log("message was asking for domain");
-        port.postMessage({responce: "awesomesite", query:"domain"});
-    }
-    //else if (msg.answer == "Madame")
-    //  port.postMessage({question: "Madame who?"});
-    //else if (msg.answer == "Madame... Bovary")
-    //  port.postMessage({question: "I don't get it."});
-  });
-});
