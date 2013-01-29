@@ -90,7 +90,6 @@ function decimalToBase64(decimalValue) {
 | create a full byte)                                                          |
 \******************************************************************************/
 function hexToBase64(hexString) {
-	alert(hexString);
 	var decimalArray = hexToDecimalArray(hexString);
 	var base64string = "";
 
