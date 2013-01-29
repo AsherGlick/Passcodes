@@ -1,4 +1,4 @@
-var passwordGenerator = chrome.contextMenus.create({"title":"Fill In Passcode Here", "contexts":["all"],"onclick":startPasscodes});
+var passwordGenerator = chrome.contextMenus.create({"title":"Fill In Passcode Here", "contexts":["editable"],"onclick":startPasscodes});
 
 var mostRecentActiveTab = null;
 
