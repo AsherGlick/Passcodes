@@ -4,3 +4,4 @@ Screenshot
 ----------
 
 ![Screenshot](https://raw.github.com/AsherGlick/Passcodes/master/Android/screenshot.png)
+![Screenshot](https://raw.github.com/AsherGlick/Passcodes/master/Android/screenshot2.png)
