@@ -1,0 +1,135 @@
+<!-- ================================ LICENSE ================================+ 
+ | Copyright (c) 2013, Asher Glick                                            | 
+ | All rights reserved.                                                       | 
+ |                                                                            | 
+ | Redistribution and use in source and binary forms, with or without         | 
+ | modification, are permitted provided that the following conditions are     | 
+ | met:                                                                       | 
+ |                                                                            | 
+ | * Redistributions of source code must retain the above copyright notice,   | 
+ |   this list of conditions and the following disclaimer.                    | 
+ | * Redistributions in binary form must reproduce the above copyright        | 
+ |   notice, this list of conditions and the following disclaimer in the      | 
+ |   documentation and/or other materials provided with the distribution.     | 
+ |                                                                            | 
+ | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS    | 
+ | IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,  | 
+ | THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR     | 
+ | PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR          | 
+ | CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,      | 
+ | EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,        | 
+ | PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR         | 
+ | PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF     | 
+ | LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING       | 
+ | NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS         | 
+ | SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.               | 
+ +========================================================================== -->
+
+<html>
+	<head>
+		<title>Passcodes - Password Manager</title>
+		<meta name="description" content="A safe and secure password management program">
+		<meta name="author" content="Asher Glick">
+		<meta name="copyright" content="(c) 2013 Asher Glick">
+		<meta name="keywords" content="password manager, hash, pascodes, password generator, secure">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1, maximum-scale=1, minimum-scale=1">
+
+		<link rel="stylesheet" type="text/css" href="main.css">
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+
+
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-28401056-3']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script> -->
+		<script src="core.min.js"></script> <!-- contains the function to hash stuff -->
+	</head>
+	<body>
+		<div id="full">
+			<div class="content">
+				<!--<form name="passcodesInput" action="javascript:showPassword();" method="post" style="margin:0px">
+					<input class="textbox" type="textbox" id="website" placeholder="Website" autocomplete="off"/> <br />
+					<input class="textbox" type="password" id="masterPassword" placeholder="Password" autocomplete="off"/> <br />
+					<input class="button" type="submit" value="Generate" />
+				</form>
+				<div id="outbox" class="outputbox" onclick="selectHash(this)">  </div>
+			-->
+
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Source
+				</div>
+			</a>
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Unix Command Line
+				</div>
+			</a>
+
+			<div class="linebreak"></div>
+
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Windows Desktop GUI
+				</div>
+			</a>
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Linux Desktop GUI
+				</div>
+			</a>
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Mac Desktop GUI
+				</div>
+			</a>
+
+			<div class="linebreak"></div>
+
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Chrome Plugin
+				</div>
+			</a>
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Firefox Plugn
+				</div>
+			</a>
+			<a href="https://github.com/mdznr/Safari-Passcode/raw/master/Passcode.safariextz" class="infoLink">
+				<div class="infoLinkBox">
+					Safari Plugin
+				</div>
+			</a>
+
+			<div class="linebreak"></div>
+
+			<a href="https://itunes.apple.com/us/app/passcode-mobile/id554389206?mt=8" class="infoLink">
+				<div class="infoLinkBox">
+					iOS App
+				</div>
+			</a>
+			<a href="#source" class="infoLink">
+				<div class="infoLinkBox">
+					Android App
+				</div>
+			</a>
+
+			</div>
+		</div>
+	</body>
+</html>
