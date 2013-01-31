@@ -6,6 +6,6 @@
     <string name="menu_settings">Settings</string>
     <string name="domain_box_help">Domain</string>
     <string name="password_box_help">Password</string>
-    <string name="submit_button_text">Genearate</string>
+    <string name="submit_button_text">Genearate and Copy</string>
 
 </resources>
