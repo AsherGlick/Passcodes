@@ -99,7 +99,7 @@ function hexToBase64(hexString) {
 			base64string += decimalToBase64(decimalArray[i] * 4);
 			base64string += '='; // append = to the end of the string to represent the missing bits
 		}
-		// If there are only two elements in this group of three
+		
 		else if (decimalArray.length == i+2) {
 			var leftSplit = Math.floor(decimalArray[i+1]/4);
 			var rightSplit = decimalArray[i+1]%4;
@@ -108,7 +108,7 @@ function hexToBase64(hexString) {
 			base64string += decimalToBase64( rightSplit * 16);
 			base64string += "=="; // append == to the end of the string to represent the missing bits
 		}
-		// If there are all three elementsin this group of three
+		// If there are all three elements in this group of three
 		else {
 			var leftSplit = Math.floor(decimalArray[i+1]/4);
 			var rightSplit = decimalArray[i+1]%4;
