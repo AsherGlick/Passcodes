@@ -1,5 +1,4 @@
 var __passcodes__target = null;
-//var __passcodes__passcode = 
 
 document.addEventListener("mousedown", function(event){
     //right click
