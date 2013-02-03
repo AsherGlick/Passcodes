@@ -4,20 +4,67 @@ body {
 	background: #CCC;
 }
 
+/*Linebreak element for the about page, sepeartes the program links*/
+.linebreak {
+	height: 7px;
+	border: 1px solid #CCC;
+	background: #DDD;
+	margin-bottom: 7px;
+	margin-top: 7px;
+	border-radius: 10px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-.infoLink {
-	
+
+.infoLink{
+	text-decoration: none;
+	color: #000;
+}
+
+.infoLinkBox {
+	border-radius: 3px;
+	background-color: #FFF;
+	color: #333;
+	padding: 10px;
+	border: 1px solid #CCC;
+	margin: 0px;
+	text-align: center;
+	margin-bottom: 3px;
+}
+.infoLinkBox:hover {
+	background-color: #CCC;
+}
+
+
+/* Link to get to the aobut page */
+.aboutLink {
+	text-align: center;
+	background: #BBB;
+	border-radius: 5px;
+	color: #555;
+}
+
+.aboutLink:hover {
+	background: #999;
 }
 
 .content {
-		background-color: #999;
-		border-radius: 5px;
-		padding: 5px;
+	background-color: #999;
+	border-radius: 5px;
+	padding: 5px;
 }
 
 @media screen {
 	.content {
 		/*dosent seem to be anything special for the mobile browser*/
+	}
+	.infoLinkWrapper {
+		margin-top: 10px;
+	}
+	.aboutLink {
+		padding: 10px;
 	}
 }
 @media only screen and (min-width: 480px) {
@@ -26,6 +73,16 @@ body {
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 100px;
+	}
+	.infoLinkWrapper {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+	}
+	.aboutLink {
+		padding-top: 20px;
+		padding-bottom: 20px;
+		width: 100px;
 	}
 }
 

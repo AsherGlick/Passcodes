@@ -36,7 +36,7 @@
 		<meta name="MobileOptimized" content="320">
 		<meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1, maximum-scale=1, minimum-scale=1">
 
-		<link rel="stylesheet" type="text/css" href="main.min.css">
+		<link rel="stylesheet" type="text/css" href="main.css">
 		
 
 		<script type="text/javascript">
@@ -60,7 +60,7 @@
 		<script src="core.min.js"></script> <!-- contains the function to hash stuff -->
 	</head>
 	<body>
-		<div id="full">
+		<!--<div id="full">-->
 			<div class="content">
 				<form name="passcodesInput" action="javascript:showPassword();" method="post" style="margin:0px">
 					<input class="textbox" type="textbox" id="website" placeholder="Website" autocomplete="off"/> <br />
@@ -69,6 +69,11 @@
 				</form>
 				<div id="outbox" class="outputbox" onclick="selectHash(this)">  </div>
 			</div>
+		<!--</div> -->
+		<div class="infoLinkWrapper">
+			<a href="./about/" style="text-decoration: none;">
+				<div class="aboutLink">About</div>
+			</a>
 		</div>
 	</body>
 </html>
