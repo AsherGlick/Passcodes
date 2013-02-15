@@ -4,13 +4,18 @@
 #include <openssl/sha.h>
 
 using namespace std;
+#define HASHSIZE 32
 
 int main(int argc, char* argv[])
 {
     string input;
 
     // a sha1 hash is 20 bytes
-    unsigned char hash[20];
+    unsigned char hash[HASHSIZE];
+
+    for (int i = 0; i < HASHSIZE; i++) {
+        hash[i] = 'x';
+    }
 
     //cout << "enter your string: ";
     //getline(cin, input);
@@ -28,10 +33,12 @@ int main(int argc, char* argv[])
     // since the hash array just contains a bunch of bytes,
     // print them as hexadecimal values
     cout << "the hash was: ";
-    for(int i = 0; i < 20; ++i) {
+    for(int i = 0; i < HASHSIZE; ++i) {
         cout << hex << setw(2) << setfill('0') << (int)hash[i];
     }
     cout << endl;
+    cout << "DONE!" << endl;
+   // free(hash)
 }
 
 string getPassword(string masterpass, string location) {
