@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
     }
     cout << endl;
     cout << "DONE!" << endl;
-   // free(hash)
 }
 
 string getPassword(string masterpass, string location) {
