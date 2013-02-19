@@ -29,7 +29,26 @@ string getPassword(string masterpass, string domain) {
 }
 
 void help() {
-	cout << "THIS IS THE HELP PAGE" << endl;
+	cout << "Welcome to the command line application for passcod.es" << endl;
+	cout << "written by Asher Glick (aglick@aglick.com)" << endl;
+	cout << endl;
+	cout << "Usage" << endl;
+	cout << "   passcodes [-s] [-h] [-d] <domain text> [-p] <password text>" << endl;
+	cout << endl;
+	cout << "Commands" << endl;
+	cout << " -d  Any text that comes after this flag is set as the domain" << endl;
+	cout << "     If no domain is given it is prompted for" << endl;
+	// cout << endl;
+	cout << " -p  Any text that comes after this flag is set as the password" << endl;
+	cout << "     If this flag is set a warning will be displayed" << endl;
+	cout << "     If this flag is not set the user is prompted for a password" << endl;
+	// cout << endl;
+	cout << " -h  Display the help menu" << endl;
+	cout << "     No other functions will be run if this flag is present" << endl;
+	// cout << endl;
+	cout << " -s  Suppress warnings" << endl;
+	cout << "     No warning messages will appear from using the -p flag" << endl;
+	cout << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -57,13 +76,11 @@ int main(int argc, char* argv[]) {
 			silent = true;
 		}
 		else if (string(argv[i]) == "-h") { // help flag
-			cout << "triggered on the help flag" << endl;
 			help();
 			return 0;
 		}
 		else {
 			if (pointer == NULL) {
-				cout << "triggered on bad argument " << argv[i] << endl;
 				help();
 				return 0;
 			}
