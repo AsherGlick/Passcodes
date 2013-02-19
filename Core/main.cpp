@@ -7,16 +7,38 @@ using namespace std;
 #define HASHSIZE 32
 
 string getCutHex(unsigned char hash[HASHSIZE]) {
-	unsigned char b64_1 = hash[0] >> 2;
-	unsigned char b64_2 = ((hash[0]&0x03)<<4) + (hash[1]>>4);
-	unsigned char b64_3 = ((hash[1]&0x0F)<<2) + (hash[2]>>6);
-	unsigned char b64_4 = hash[2] & 0x3F;
-	cout << (int)0x3F << endl;
-	cout << (int)hash[0] << ":" << (int)hash[1] << ":" << (int)hash[2] << endl;
-	cout << (int)b64_1 << ":" << (int)b64_2 << ":" << (int)b64_3 << ":" << (int)b64_4 << endl;
+	string base64Index = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#";
+	string output = "";
 
-	return "";
+	// Unrolled loop iteration 1
+	output += base64Index[hash[0]>>2];
+	output += base64Index[((hash[0]&0x03)<<4) + (hash[1]>>4)];
+	output += base64Index[((hash[1]&0x0F)<<2) + (hash[2]>>6)];
+	output += base64Index[hash[2] & 0x3F];
+	
+	// Unrolled loop iteration 2
+	output += base64Index[hash[3]>>2];
+	output += base64Index[((hash[3]&0x03)<<4) + (hash[4]>>4)];
+	output += base64Index[((hash[4]&0x0F)<<2) + (hash[5]>>6)];
+	output += base64Index[hash[5] & 0x3F];
+	
+	// Unrolled loop iteration 3
+	output += base64Index[hash[6]>>2];
+	output += base64Index[((hash[6]&0x03)<<4) + (hash[7]>>4)];
+	output += base64Index[((hash[7]&0x0F)<<2) + (hash[8]>>6)];
+	output += base64Index[hash[8] & 0x3F];
+
+	// Unrolled loop iteration 4
+	output += base64Index[hash[9]>>2];
+	output += base64Index[((hash[9]&0x03)<<4) + (hash[10]>>4)];
+	output += base64Index[((hash[10]&0x0F)<<2) + (hash[11]>>6)];
+	output += base64Index[hash[11] & 0x3F];
+
+	return output;
 }
+
+// DZ5PXnekn78Wmcwf
+// DZ5PXnekn78Wmcwf
 
 string getPassword(string masterpass, string domain) {
 	string prehash = masterpass+domain;
