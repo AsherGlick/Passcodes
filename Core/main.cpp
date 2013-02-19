@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <string>
 #include <openssl/sha.h>
+#include <unistd.h>
 
 using namespace std;
 #define HASHSIZE 32
@@ -24,11 +25,7 @@ string getPassword(string masterpass, string domain) {
 	string prehash = masterpass+domain;
 	unsigned char hash[HASHSIZE];
 	SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
-
-	getCutHex(hash);
-
-	//unsigned char hash[20];
-	return prehash;
+	return getCutHex(hash);;
 }
 
 void help() {
@@ -76,14 +73,20 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	if (domain == "") {
+		cout << "Enter Domain: ";
+		getline(cin, domain);
+	}
+
 	if (password != "" && !silent) {
 		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
 	}
 
+	else if (password == "") {
+		password = string(getpass("Enter Password: "));
+	}
 
-	cout << "domain is: " << domain << endl;
-	cout << "password is: " << password << endl;
-	getPassword (domain,password);
+	cout << getPassword (domain,password) << endl;;
 
-	cout << "DONE!" << endl;
+	//cout << "DONE!" << endl;
 }
