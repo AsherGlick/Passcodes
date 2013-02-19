@@ -44,7 +44,6 @@ int main(int argc, char* argv[]) {
 	// }
 
 	bool silent = false;
-	bool passwordFlag = false;
 	string domain = "";
 	string password = "";
 	string *pointer = NULL;
@@ -77,14 +76,14 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	if (passwordFlag && !silent) {
+	if (password != "" && !silent) {
 		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
 	}
 
 
 	cout << "domain is: " << domain << endl;
 	cout << "password is: " << password << endl;
-	getPassword ("harvy","dent");
+	getPassword (domain,password);
 
 	cout << "DONE!" << endl;
 }
