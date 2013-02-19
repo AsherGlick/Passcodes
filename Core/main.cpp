@@ -20,11 +20,6 @@ string getCutHex(unsigned char hash[HASHSIZE]) {
 	return output;
 }
 
-// DZ5PXnekn78Wmcwf
-// DZ5PXnekn78Wmcwf
-// DZ5PXnekn78Wmcwf
-// DZ5PXnekn78Wmcwf
-
 string getPassword(string masterpass, string domain) {
 	string prehash = masterpass+domain;
 	unsigned char hash[HASHSIZE];
@@ -36,38 +31,52 @@ string getPassword(string masterpass, string domain) {
 	return prehash;
 }
 
-
+void help() {
+	cout << "THIS IS THE HELP PAGE" << endl;
+}
 
 int main(int argc, char* argv[]) {
-	string input;
-
-	// a sha1 hash is 20 bytes
-
-
-	// for (int i = 0; i < HASHSIZE; i++) {
-	// 	hash[i] = 'x';
+	// check to make sure there are enough arguments
+	// if (argc < 3) {
+	// 	cout << "you must specify a username with -u" << endl;
+	// 	help();
+	// 	return 0;
 	// }
 
-	//cout << "enter your string: ";
-	//getline(cin, input);
-	input = "hello";
+	bool silent = false;
+	bool passwordFlag = false;
+	string domain = "";
+	string password = "";
+	string *pointer = NULL;
 
-	// compute the sha1 of the input, and store it our  hash array
 
-	// the above is the exact same thing as doing:
-	//    SHA_CTX ctx;
-	//    
-	//    SHA1_Init(&ctx);
-	//    SHA1_Update(&ctx, input.c_str(), input.size());
-	//    SHA1_Final(hash, &ctx);
+	for (int i = 1; i < argc; i++) {
+		if (string(argv[i]) == "-p") { // password flag
+			pointer = &password;
+		}
+		else if (string(argv[i]) == "-d") { // domain flag
+			pointer = &domain;
+		}
+		else if (string(argv[i]) == "-s") { // silent flag
+			silent = true;
+		}
+		else if (string(argv[i]) == "-h") { // help flag
+			cout << "triggered on the help flag" << endl;
+			help();
+			return 0;
+		}
+		else {
+			if (pointer == NULL) {
+				cout << "triggered on bad argument " << argv[i] << endl;
+				help();
+				return 0;
+			}
+		}
+	}
 
-	// since the hash array just contains a bunch of bytes,
-	// print them as hexadecimal values
-	// cout << "the hash was: ";
-	// for(int i = 0; i < HASHSIZE; ++i) {
-	// 	cout << hex << setw(2) << setfill('0') << (int)hash[i];
-	// }
-	// cout << endl;
+	if (passwordFlag && !silent) {
+		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
+	}
 
 	getPassword ("harvy","dent");
 
