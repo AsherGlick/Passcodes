@@ -71,6 +71,9 @@ int main(int argc, char* argv[]) {
 				help();
 				return 0;
 			}
+			else {
+				*pointer += argv[i];
+			}
 		}
 	}
 
@@ -78,6 +81,9 @@ int main(int argc, char* argv[]) {
 		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
 	}
 
+
+	cout << "domain is: " << domain << endl;
+	cout << "password is: " << password << endl;
 	getPassword ("harvy","dent");
 
 	cout << "DONE!" << endl;
