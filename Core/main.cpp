@@ -10,33 +10,18 @@ string getCutHex(unsigned char hash[HASHSIZE]) {
 	string base64Index = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#";
 	string output = "";
 
-	// Unrolled loop iteration 1
-	output += base64Index[hash[0]>>2];
-	output += base64Index[((hash[0]&0x03)<<4) + (hash[1]>>4)];
-	output += base64Index[((hash[1]&0x0F)<<2) + (hash[2]>>6)];
-	output += base64Index[hash[2] & 0x3F];
-	
-	// Unrolled loop iteration 2
-	output += base64Index[hash[3]>>2];
-	output += base64Index[((hash[3]&0x03)<<4) + (hash[4]>>4)];
-	output += base64Index[((hash[4]&0x0F)<<2) + (hash[5]>>6)];
-	output += base64Index[hash[5] & 0x3F];
-	
-	// Unrolled loop iteration 3
-	output += base64Index[hash[6]>>2];
-	output += base64Index[((hash[6]&0x03)<<4) + (hash[7]>>4)];
-	output += base64Index[((hash[7]&0x0F)<<2) + (hash[8]>>6)];
-	output += base64Index[hash[8] & 0x3F];
-
-	// Unrolled loop iteration 4
-	output += base64Index[hash[9]>>2];
-	output += base64Index[((hash[9]&0x03)<<4) + (hash[10]>>4)];
-	output += base64Index[((hash[10]&0x0F)<<2) + (hash[11]>>6)];
-	output += base64Index[hash[11] & 0x3F];
+	for (int i = 0; i < 12; i+=3) {
+		output += base64Index[hash[i+0]>>2];
+		output += base64Index[((hash[i+0]&0x03)<<4) + (hash[i+1]>>4)];
+		output += base64Index[((hash[i+1]&0x0F)<<2) + (hash[i+2]>>6)];
+		output += base64Index[hash[i+2] & 0x3F];
+	}
 
 	return output;
 }
 
+// DZ5PXnekn78Wmcwf
+// DZ5PXnekn78Wmcwf
 // DZ5PXnekn78Wmcwf
 // DZ5PXnekn78Wmcwf
 
