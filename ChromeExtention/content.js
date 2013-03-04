@@ -1,5 +1,9 @@
-var __passcodes__target = null;
+// This code is injected into every webpage that is opened
+// it saves the last clicked element so passcodes knows where to put the password
+// after it has been generated
 
+// Target Element Tracker
+var __passcodes__target = null;
 document.addEventListener("mousedown", function(event){
     //right click
     if(event.button == 2) { 
@@ -7,6 +11,7 @@ document.addEventListener("mousedown", function(event){
     }
 }, true);
  
+// Request Listener
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
 
@@ -28,13 +33,16 @@ chrome.extension.onRequest.addListener(
 		}
 		console.log("got message");
 
+		// Get Target Request
+		// The get target request returns the domain / url of the active tab
 		if(request.request == "__passcod.es__getTarget") {
 			sendResponse({responce:removeSubdomain()});
-			console.log("HELLO");
-
-			//var txtarea = __passcodes__target;
-			
+			console.log("HELLO");			
 		}
+
+		// Set Target Request
+		// The set target request is passed the password, genereated from the popup
+		// it then inserted into the editable area that was last selected
 		if (request.request == "__passcod.es__setTarget") {
 			var text = request.password;
 
