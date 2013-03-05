@@ -17,3 +17,28 @@ The core library uses openssl
 
 **Debian / Ubuntu**  
 `sudo apt-get install libssl-dev`
+
+
+No Arguments
+
+    $ ./passcodes
+    Enter Domain: domain
+    Enter Password: 
+    a1LWauOe!jhdaGWI
+
+Domain Argument
+
+    $ ./passcodes -d domain
+    Enter Password: 
+    a1LWauOe!jhdaGWI
+
+Domain and password argument
+
+    $ ./passcodes -d domain -p world
+    WARNING: you should not use the -p flag as it may be insecure
+    a1LWauOe!jhdaGWI
+
+Domain and password arguemnt with suppressed warnings
+
+    $ ./passcodes -s -d domain -p world
+    a1LWauOe!jhdaGWI
