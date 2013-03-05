@@ -2,16 +2,27 @@
 // it saves the last clicked element so passcodes knows where to put the password
 // after it has been generated
 
-// Target Element Tracker
+/*************************** TARGET ELEMENT LISTENER **************************\
+| This listsner checks for every right click (context menu opening click) on   |
+| the page and saves the element that was last clicked as the target for       |
+| passcodes                                                                    |
+\******************************************************************************/
 var __passcodes__target = null;
 document.addEventListener("mousedown", function(event){
-    //right click
+    // Check right click
     if(event.button == 2) { 
         __passcodes__target = event.target;
     }
 }, true);
  
-// Request Listener
+/****************************** REQUEST LISTENER ******************************\
+| This request listener waits for requests from the passcodes popup. The       |
+| first request it recieves is the 'getTarget' request which returns the       |
+| domain of the current tab after passing it through the removeSubdomain       |
+| function. The second request it recieves is the 'setTarget' request which    |
+| is also bundled with the generated password that the page will insert into   |
+| the passcodes target.                                                        |
+\******************************************************************************/
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
 
