@@ -99,14 +99,11 @@ void help() {
 	cout << "Commands" << endl;
 	cout << " -d  Any text that comes after this flag is set as the domain" << endl;
 	cout << "     If no domain is given it is prompted for" << endl;
-	// cout << endl;
 	cout << " -p  Any text that comes after this flag is set as the password" << endl;
 	cout << "     If this flag is set a warning will be displayed" << endl;
 	cout << "     If this flag is not set the user is prompted for a password" << endl;
-	// cout << endl;
 	cout << " -h  Display the help menu" << endl;
 	cout << "     No other functions will be run if this flag is present" << endl;
-	// cout << endl;
 	cout << " -s  Suppress warnings" << endl;
 	cout << "     No warning messages will appear from using the -p flag" << endl;
 	cout << endl;
