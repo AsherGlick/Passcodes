@@ -1,3 +1,6 @@
 [submodule "SafariExtention"]
 	path = SafariExtention
 	url = git://github.com/mdznr/Safari-Passcode.git
+[submodule "iOS"]
+	path = iOS
+	url = git://github.com/mdznr/iOS-Passcode.git
