@@ -11,7 +11,7 @@ Safari Extention - [Safari Passcode](https://github.com/mdznr/Safari-Passcode)
 Android App - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Android)  
 iPhone App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
 iPad App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
-Terminal Program - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Core)
+Terminal Program - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Core)  
 Windows Standalone GUI  
 Linux Standalone GUI  
 Mac Standalone GUI  
