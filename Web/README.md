@@ -1,3 +1,5 @@
 A web front for the passcod.es interface so that it is allways accessable 
 
-Code was minimized using google's closure compiler
+Amassite is used to compile the web page down into a minimized form
+
+Amassite can be found on [github](https://github.com/AsherGlick/Amassite)
