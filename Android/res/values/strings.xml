@@ -7,5 +7,7 @@
     <string name="domain_box_help">Domain</string>
     <string name="password_box_help">Password</string>
     <string name="submit_button_text">Genearate and Copy</string>
+    <string name="title_activity_display_password">DisplayPassword</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
