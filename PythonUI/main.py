@@ -12,12 +12,21 @@ class mainWidget(QtGui.QWidget):
 		super(mainWidget, self).__init__()
 		#self.setStyleSheet("*{margin-left: auto;margin-right: auto}")
 		#self.setStyleSheet("*{margin-left: 10px;}")
-
+		self.setStyleSheet("""
+			QPushButton {
+				width:200px;
+				height: 30px;
+			}
+			QLineEdit {
+				height: 30px;
+			}
+			""")
 		self.initUI()
+		self.isPasswordCopied = False
 
 
 	def initUI(self):
-		self.resize(600, 500)
+		self.resize(70, 70)
 		self.setWindowTitle("Passcod.es Desktop Application")
 
 		self.inputhlayout = QtGui.QHBoxLayout()
@@ -33,13 +42,9 @@ class mainWidget(QtGui.QWidget):
 		self.password.setPlaceholderText("Password")
 		self.inputvlayout.addWidget(self.password)
 		# Create the show password button
-		self.displayPasswordButton = QtGui.QPushButton("Show Password", self)
+		self.displayPasswordButton = QtGui.QPushButton("Copy Password", self)
 		self.displayPasswordButton.clicked.connect(self.displayPassword)
 		self.inputvlayout.addWidget(self.displayPasswordButton)
-		# Create the copy password to clipboard button
-		self.copyPasswordButton = QtGui.QPushButton("Copy Password to Clipboard", self)
-		self.copyPasswordButton.clicked.connect(self.copyPassword)
-		self.inputvlayout.addWidget(self.copyPasswordButton)
 		# Finish configuring the layput
 		self.inputvlayout.addStretch(1)
 		self.inputhlayout.addLayout(self.inputvlayout)
@@ -49,28 +54,14 @@ class mainWidget(QtGui.QWidget):
 
 
 	def displayPassword(self):
-		self.outputhlayout = QtGui.QHBoxLayout()
-		self.outputhlayout.addStretch(1)
-		self.outputvlayout = QtGui.QVBoxLayout()
-		self.outputvlayout.addStretch(1)
-		# Create the domain text box
-		self.domain = QtGui.QLineEdit("",self)
-		#############self.domain.setPlaceholderText("Domain")################### will be set text
-		self.outputvlayout.addWidget(self.domain)
-		# Create the button to return to the main display
-		self.displayPasswordButton = QtGui.QPushButton("Back", self)
-		self.displayPasswordButton.clicked.connect(self.initUI)
-		self.outputvlayout.addWidget(self.displayPasswordButton)
-		# Finish configuring the layput
-		self.outputvlayout.addStretch(1)
-		self.outputhlayout.addLayout(self.outputvlayout)
-		self.outputhlayout.addStretch(1)
-		# Set the layout to the hlayout
-		self.inputhlayout.setParent(None)
-		self.setLayout(self.outputhlayout)
+		if self.isPasswordCopied:
+			# display the password if it has already been copied
+			pass
 
+		else:
+			self.copyPassword()
 	def copyPassword(self):
-		pass
+		self.displayPasswordButton.setText("Display Password")
 
 
 
