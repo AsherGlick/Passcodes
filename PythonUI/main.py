@@ -30,7 +30,7 @@ class mainWidget(QtGui.QWidget):
 
 
 	def initUI(self):
-		self.resize(70, 70)
+		#self.resize(70, 70)
 		self.setWindowTitle("Passcod.es Desktop Application")
 
 		self.inputhlayout = QtGui.QHBoxLayout()
@@ -52,6 +52,7 @@ class mainWidget(QtGui.QWidget):
 		# Create the box to display the password in
 		self.displayPasswordBox = QtGui.QLabel("I am a password",self)
 		self.displayPasswordBox.setAlignment(QtCore.Qt.AlignHCenter)
+		self.displayPasswordBox.hide()
 		self.inputvlayout.addWidget(self.displayPasswordBox)
 		# Finish configuring the layput
 		self.inputvlayout.addStretch(1)
@@ -60,16 +61,22 @@ class mainWidget(QtGui.QWidget):
 		# Set the layout to the hlayout
 		self.setLayout(self.inputhlayout)
 
-
 	def displayPassword(self):
+		self.domain.text()
 		if self.isPasswordCopied:
 			# display the password if it has already been copied
-			pass
+			hashpassword = generatePassword(self.domain.text(),self.password.text())
+			self.displayPasswordBox.setText(hashpassword)
+			self.displayPasswordBox.show()
 
 		else:
 			self.copyPassword()
 	def copyPassword(self):
+		hashpassword = generatePassword(self.domain.text(),self.password.text())
+		clipboard = QtGui.QApplication.clipboard()
+		clipboard.setText(hashpassword)
 		self.displayPasswordButton.setText("Display Password")
+		self.isPasswordCopied = True
 
 
 
