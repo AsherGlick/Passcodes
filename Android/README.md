@@ -1,4 +1,4 @@
-The android app has not been published to the marketplace yet
+You can install the Android app [here](https://play.google.com/store/apps/details?id=app.seraph.passcodes)
 
 Screenshot
 ----------
