@@ -20,6 +20,10 @@ class mainWidget(QtGui.QWidget):
 			QLineEdit {
 				height: 30px;
 			}
+			QLabel {
+				margin-top: 9px;
+				margin-bottom: 6px;
+			}
 			""")
 		self.initUI()
 		self.isPasswordCopied = False
@@ -45,6 +49,10 @@ class mainWidget(QtGui.QWidget):
 		self.displayPasswordButton = QtGui.QPushButton("Copy Password", self)
 		self.displayPasswordButton.clicked.connect(self.displayPassword)
 		self.inputvlayout.addWidget(self.displayPasswordButton)
+		# Create the box to display the password in
+		self.displayPasswordBox = QtGui.QLabel("I am a password",self)
+		self.displayPasswordBox.setAlignment(QtCore.Qt.AlignHCenter)
+		self.inputvlayout.addWidget(self.displayPasswordBox)
 		# Finish configuring the layput
 		self.inputvlayout.addStretch(1)
 		self.inputhlayout.addLayout(self.inputvlayout)
