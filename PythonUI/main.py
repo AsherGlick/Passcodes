@@ -1,10 +1,15 @@
-import sys, random, time
+import sys, random, time, hashlib
 from PyQt4 import QtGui, QtCore
+import base64
 
 
-
+#create the sha256 hash
+# convert the pasword into base64 using ! and # instead of + and /
+# return the first 16 characters of that hash
 def generatePassword(domain, password):
-	return "deadbeef"
+	hashedPassword = hashlib.sha256(domain+password).digest()
+	base64Password = base64.b64encode(hashedPassword)
+	return base64Password[0:16]
 
 #class mainWidget(QtGui.QMainWindow):
 class mainWidget(QtGui.QWidget):
@@ -62,10 +67,9 @@ class mainWidget(QtGui.QWidget):
 		self.setLayout(self.inputhlayout)
 
 	def displayPassword(self):
-		self.domain.text()
 		if self.isPasswordCopied:
 			# display the password if it has already been copied
-			hashpassword = generatePassword(self.domain.text(),self.password.text())
+			hashpassword = generatePassword(str(self.domain.text()),str(self.password.text()))
 			self.displayPasswordBox.setText(hashpassword)
 			self.displayPasswordBox.show()
 
