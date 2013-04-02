@@ -48,6 +48,7 @@ class mainWidget(QtGui.QWidget):
 		self.inputvlayout.addWidget(self.domain)
 		# Create the password text box
 		self.password = QtGui.QLineEdit("",self)
+		self.password.setEchoMode(QtGui.QLineEdit.Password)
 		self.password.setPlaceholderText("Password")
 		self.inputvlayout.addWidget(self.password)
 		# Create the show password button
