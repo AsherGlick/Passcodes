@@ -74,16 +74,41 @@ string convertAndCutHex(unsigned char hash[HASHSIZE]) {
 	return output;
 }
 
-int newBaseLength(int oldbase, int oldbaselength, int newBase) {
-	double logOldBase = log(oldbase);
+int calculateNewBaseLength(int oldBase, int oldbaselength, int newBase) {
+	double logOldBase = log(oldBase);
 	double logNewBase = log(newBase);
-	double newBaseLength = oldbaselength * (logOldBase/logNewBase);
+	double newBaseLength = oldBaselength * (logOldBase/logNewBase);
 	int intNewBaseLength = newBaseLength;
 	if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
 	return intNewBaseLength;
 }
 
-int* newBase(int oldbase, int oldbaselength, int newBase, int* number) {
+int* newBase(int oldBase, int oldBaselength, int newBase, int* number) {
+	int newBaseLength = calculateNewBaseLength(oldBase, oldBaselength, newBase);
+	int maxLength = newBaseLength>oldBaselength?newBaseLength:oldBaselength;
+	int newNumber[maxLength];
+
+	// number[0] is the most significant digit
+	// number[last] is the least significatn digit
+
+	// Calculate the offset to align the digits correctly
+	int baseOffset = maxLength - oldBaselength;
+	baseOffset = baseOffset<0?0:baseOffset;
+
+	// initilzie the new number
+	for (int i = 0; i < maxLength; i++) {
+		if (i >= baseOffset) { newNumber[i] = number[i - baseOffset]; } 
+		else { newNumber[i] = 0; }
+	}
+
+	// Calculate the differences in bases
+	int baseDifference = oldBase-newBase
+
+	// Multiply the results
+	for (int i = maxLength-1; i > 0; i++) {
+		newNumber[i-1] * 
+	}
+
 	return NULL;
 }
 
@@ -94,7 +119,6 @@ int* newBase(int oldbase, int oldbaselength, int newBase, int* number) {
 | hash                                                                         |
 \******************************************************************************/
 string generatePassword(string masterpass, string domain) {
-	cout << newBaseLength(2,256,2) << endl;
 
 	string prehash = masterpass+domain;
 	unsigned char hash[HASHSIZE];
@@ -152,6 +176,11 @@ void help() {
 | generated password to the user                                               |
 \******************************************************************************/
 int main(int argc, char* argv[]) {
+	int number[] = {1,0,0,0,0,0,0,1};
+	newBase(10, 8, 2, number);
+	newBase(2, 8, 10, number);
+
+
 	bool silent = false;
 	string domain = "";
 	string password = "";
