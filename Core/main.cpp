@@ -73,6 +73,15 @@ string convertAndCutHex(unsigned char hash[HASHSIZE]) {
 	return output;
 }
 
+int newBaseLength(int oldbase, int oldbaselength, int newBase) {
+	return 0;
+}
+
+int* newBase(int oldbase, int oldbaselength, int newBase, int* number) {
+	return NULL;
+}
+
+#define ITERATIONCOUNT 100000
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
@@ -81,8 +90,27 @@ string convertAndCutHex(unsigned char hash[HASHSIZE]) {
 string generatePassword(string masterpass, string domain) {
 	string prehash = masterpass+domain;
 	unsigned char hash[HASHSIZE];
-	SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
-	return convertAndCutHex(hash);;
+
+	string output = "";
+
+	for (int i = 0; i < ITERATIONCOUNT; i++) {
+		SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
+		
+		prehash = "";
+		for (int j = 0; j < HASHSIZE; j++) {
+			prehash += hash[j];
+		}
+
+		output = convertAndCutHex(hash);
+		bool goodMatch = true;
+		for (unsigned int j = 0; j < output.length(); j++) {
+			if (output[j] == '!' || output[j] == '#') {
+				goodMatch = false;
+			}
+		}
+		if (goodMatch) return output;
+	}
+	return "Failed";
 }
 
 /************************************ HELP ************************************\
