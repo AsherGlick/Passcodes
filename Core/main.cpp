@@ -50,6 +50,7 @@
 #include <string>
 #include <openssl/sha.h>
 #include <unistd.h>
+#include <math.h>
 
 using namespace std;
 #define HASHSIZE 32
@@ -74,7 +75,12 @@ string convertAndCutHex(unsigned char hash[HASHSIZE]) {
 }
 
 int newBaseLength(int oldbase, int oldbaselength, int newBase) {
-	return 0;
+	double logOldBase = log(oldbase);
+	double logNewBase = log(newBase);
+	double newBaseLength = oldbaselength * (logOldBase/logNewBase);
+	int intNewBaseLength = newBaseLength;
+	if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
+	return intNewBaseLength;
 }
 
 int* newBase(int oldbase, int oldbaselength, int newBase, int* number) {
@@ -88,6 +94,8 @@ int* newBase(int oldbase, int oldbaselength, int newBase, int* number) {
 | hash                                                                         |
 \******************************************************************************/
 string generatePassword(string masterpass, string domain) {
+	cout << newBaseLength(2,256,2) << endl;
+
 	string prehash = masterpass+domain;
 	unsigned char hash[HASHSIZE];
 
