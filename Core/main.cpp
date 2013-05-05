@@ -87,56 +87,7 @@ int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
 
 
 
-int* calculateNewBase(int oldBase, int oldBaseLength, int newBase, int* number) {
-	int newBaseLength = calculateNewBaseLength(oldBase, oldBaseLength, newBase);
-	int maxLength = newBaseLength>oldBaseLength?newBaseLength:oldBaseLength;
-	int newNumber[maxLength];
 
-	// number[0] is the most significant digit
-	// number[last] is the least significatn digit
-
-	// Calculate the offset to align the digits correctly
-	int baseOffset = maxLength - oldBaseLength;
-	baseOffset = baseOffset<0?0:baseOffset;
-
-	// initilzie the new number
-	for (int i = 0; i < maxLength; i++) {
-		if (i >= baseOffset) { newNumber[i] = number[i - baseOffset]; } 
-		else { newNumber[i] = 0; }
-	}
-
-	// Calculate the differences in bases
-	int baseDifference = oldBase-newBase;
-
-	// Multiply the results
-	for (int i = maxLength-1; i > 0; i--) {
-		newNumber[i] = (newNumber[i-1] * baseDifference) + newNumber[i];
-	}
-
-	// 
-	for (int i = maxLength-1; i > 0; i--) {
-		int overflow = newNumber[i] / newBase;
-		if (overflow > 0) {
-			newNumber[i] = newNumber[i] % newBase;
-			newNumber[i-1] += overflow;
-		}
-		if (overflow < 0) {
-			newNumber[i] = -newNumber[i] % newBase;
-			newNumber[i-1] += overflow;
-		}
-		if (newNumber[i] < 0) {
-			newNumber[i] = newBase + newNumber[i];
-			newNumber[i-1] -= 1;
-		}
-	}
-
-	for (int i = 0; i < maxLength; i++) {
-		cout << newNumber[i] << " ";
-	}
-	cout << endl;
-
-	return NULL;
-}
 
 // Trims all of the preceding zeros off a function
 vector<int> trimNumber(vector<int> v) {
@@ -190,6 +141,40 @@ vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumbe
 	
 	return trimNumber(resultNumber);
 }
+
+
+
+vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
+	int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
+	vector<int> newNumber (newNumberLength,0);
+	vector<int> conversionFactor (1,1); // a single digit of 1 
+	for (int i = oldNumber.size()-1; i >= 0; i--) {
+		vector<int> difference (conversionFactor);
+		// size the vector
+		for (unsigned int j = 0; j < difference.size(); j++) {
+			difference[j] *= oldNumber[i];
+		}
+		// add the vector
+		for (unsigned int j = 0; j < difference.size(); j++) {
+			int newNumberIndex =  j + newNumberLength - difference.size();
+			newNumber[newNumberIndex] += difference[j];
+		}
+		// increment the conversion factor by oldbase 10
+		conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
+
+	}
+
+	// Flatten number to base
+	for (int i = newNumber.size()-1; i >=0; i--) {
+		if (newNumber[i] > newBase) {
+			newNumber[i-1] += newNumber[i]/newBase;
+			newNumber[i] = newNumber[i]%newBase;
+		}
+	}
+
+	return trimNumber(newNumber);
+}
+
 
 
 #define ITERATIONCOUNT 100000
@@ -263,18 +248,14 @@ int main(int argc, char* argv[]) {
 	// for (int i = 0; i < 99; i++) {
 	// 	tenInOldBase (i, 50);
 	// }
+	int ints[] = {1,5,7,3,2};
+	int oldBase = 19;
+	int newBase = 40;
+	vector <int> inputs (ints, ints + sizeof(ints) / sizeof(int));
+	vector <int> result =  calculateNewBase(oldBase, newBase, inputs);
 
-	vector <int> hundred = multiply(2, tenInOldBase(10,2), tenInOldBase(10,2));
-	vector <int> thousand= multiply(2, tenInOldBase(10,2), hundred);
-	vector <int> tenthou = multiply(2, tenInOldBase(10,2), thousand);
-
-	for (int i = 0; i < thousand.size(); i++) {
-		cout << thousand[i] << ":";
-	}
-	cout << endl;
-
-	for (int i = 0; i < tenthou.size(); i++) {
-		cout << tenthou[i] << ":";
+	for (unsigned int i = 0; i < result.size(); i++) {
+		cout << result[i] << " ";
 	}
 	cout << endl;
 
