@@ -138,10 +138,20 @@ int* calculateNewBase(int oldBase, int oldBaseLength, int newBase, int* number) 
 	return NULL;
 }
 
+// Trims all of the preceding zeros off a function
 vector<int> trimNumber(vector<int> v) {
-	
+	vector<int>::iterator i = v.begin();
+	while (i != v.end()-1) {
+		if (*i != 0) {
+			break;
+		}
+		i++;
+	}
+
+	return vector<int>(i,v.end());
 }
 
+// creats a new base number of the old base value of 10
 vector<int> tenInOldBase (int oldBase, int newBase) {
 	//int ten[] = {1,0};
 	int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
@@ -154,21 +164,31 @@ vector<int> tenInOldBase (int oldBase, int newBase) {
 		newNumber[i] = currentNumber % newBase;
 		currentNumber = currentNumber / newBase;
 	}
-	bool hitDigit = false;
-	for (int i = 0; i < maxLength; i++) {
-		if (hitDigit || newNumber[i] != 0) {
-			cout << newNumber[i] << " ";
-			hitDigit = true;
-		}
-	}
-	cout << endl;
+
+	newNumber = trimNumber(newNumber);
+
 	//return calculateNewBase(oldBase, 2, newBase, ten);
-	return NULL;
+	return newNumber;
 }
 
-vector <int> multiply(int base, vector<int> firstNumbers, vector<int> secondNumbers) {
-	length
-	for (int i = 0; )
+// Multiplies two base n numbers together
+vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
+	int resultLength = firstNumber.size() + secondNumber.size();
+	vector<int> resultNumber (resultLength,0);
+	for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
+		for (int j = secondNumber.size() - 1; j >= 0; j--) {
+			resultNumber[i+j + 1] += firstNumber[i] * secondNumber[j];
+		}
+	}
+
+	for (int i = resultNumber.size() -1; i > 0; i--) {
+		if (resultNumber[i] >= base) {
+			resultNumber[i-1] += resultNumber[i]/base;
+			resultNumber[i] = resultNumber[i] % base;
+		}
+	}
+	
+	return trimNumber(resultNumber);
 }
 
 
@@ -240,10 +260,23 @@ int main(int argc, char* argv[]) {
 	// {int number[] = {1,1,1,1};		cout << "Base  9: "; newBase(10, 4, 9, number);}
 	// {int number[] = {2,1,1,1,1};	cout << "Base  9: "; newBase(10, 5, 9, number);}
 	// {int number[] = {2,1,1,1,1,1};	cout << "Base  9: "; newBase(10, 6, 9, number);}
-	for (int i = 0; i < 99; i++) {
-		tenInOldBase (i, 50);
-	}
+	// for (int i = 0; i < 99; i++) {
+	// 	tenInOldBase (i, 50);
+	// }
 
+	vector <int> hundred = multiply(2, tenInOldBase(10,2), tenInOldBase(10,2));
+	vector <int> thousand= multiply(2, tenInOldBase(10,2), hundred);
+	vector <int> tenthou = multiply(2, tenInOldBase(10,2), thousand);
+
+	for (int i = 0; i < thousand.size(); i++) {
+		cout << thousand[i] << ":";
+	}
+	cout << endl;
+
+	for (int i = 0; i < tenthou.size(); i++) {
+		cout << tenthou[i] << ":";
+	}
+	cout << endl;
 
 	bool silent = false;
 	string domain = "";
