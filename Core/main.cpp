@@ -51,6 +51,7 @@
 #include <openssl/sha.h>
 #include <unistd.h>
 #include <math.h>
+#include <vector>
 
 using namespace std;
 #define HASHSIZE 32
@@ -74,25 +75,28 @@ string convertAndCutHex(unsigned char hash[HASHSIZE]) {
 	return output;
 }
 
-int calculateNewBaseLength(int oldBase, int oldbaselength, int newBase) {
+int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
 	double logOldBase = log(oldBase);
 	double logNewBase = log(newBase);
-	double newBaseLength = oldBaselength * (logOldBase/logNewBase);
+	double newBaseLength = oldBaseLength * (logOldBase/logNewBase);
 	int intNewBaseLength = newBaseLength;
 	if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
 	return intNewBaseLength;
 }
 
-int* newBase(int oldBase, int oldBaselength, int newBase, int* number) {
-	int newBaseLength = calculateNewBaseLength(oldBase, oldBaselength, newBase);
-	int maxLength = newBaseLength>oldBaselength?newBaseLength:oldBaselength;
+
+
+
+int* calculateNewBase(int oldBase, int oldBaseLength, int newBase, int* number) {
+	int newBaseLength = calculateNewBaseLength(oldBase, oldBaseLength, newBase);
+	int maxLength = newBaseLength>oldBaseLength?newBaseLength:oldBaseLength;
 	int newNumber[maxLength];
 
 	// number[0] is the most significant digit
 	// number[last] is the least significatn digit
 
 	// Calculate the offset to align the digits correctly
-	int baseOffset = maxLength - oldBaselength;
+	int baseOffset = maxLength - oldBaseLength;
 	baseOffset = baseOffset<0?0:baseOffset;
 
 	// initilzie the new number
@@ -102,15 +106,71 @@ int* newBase(int oldBase, int oldBaselength, int newBase, int* number) {
 	}
 
 	// Calculate the differences in bases
-	int baseDifference = oldBase-newBase
+	int baseDifference = oldBase-newBase;
 
 	// Multiply the results
-	for (int i = maxLength-1; i > 0; i++) {
-		newNumber[i-1] * 
+	for (int i = maxLength-1; i > 0; i--) {
+		newNumber[i] = (newNumber[i-1] * baseDifference) + newNumber[i];
 	}
+
+	// 
+	for (int i = maxLength-1; i > 0; i--) {
+		int overflow = newNumber[i] / newBase;
+		if (overflow > 0) {
+			newNumber[i] = newNumber[i] % newBase;
+			newNumber[i-1] += overflow;
+		}
+		if (overflow < 0) {
+			newNumber[i] = -newNumber[i] % newBase;
+			newNumber[i-1] += overflow;
+		}
+		if (newNumber[i] < 0) {
+			newNumber[i] = newBase + newNumber[i];
+			newNumber[i-1] -= 1;
+		}
+	}
+
+	for (int i = 0; i < maxLength; i++) {
+		cout << newNumber[i] << " ";
+	}
+	cout << endl;
 
 	return NULL;
 }
+
+vector<int> trimNumber(vector<int> v) {
+	
+}
+
+vector<int> tenInOldBase (int oldBase, int newBase) {
+	//int ten[] = {1,0};
+	int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
+	int maxLength = newBaseLength>2?newBaseLength:2;
+	
+	vector <int> newNumber (maxLength,0);
+
+	int currentNumber = oldBase;
+	for (int i = maxLength-1; i >=0; i--) {
+		newNumber[i] = currentNumber % newBase;
+		currentNumber = currentNumber / newBase;
+	}
+	bool hitDigit = false;
+	for (int i = 0; i < maxLength; i++) {
+		if (hitDigit || newNumber[i] != 0) {
+			cout << newNumber[i] << " ";
+			hitDigit = true;
+		}
+	}
+	cout << endl;
+	//return calculateNewBase(oldBase, 2, newBase, ten);
+	return NULL;
+}
+
+vector <int> multiply(int base, vector<int> firstNumbers, vector<int> secondNumbers) {
+	length
+	for (int i = 0; )
+}
+
 
 #define ITERATIONCOUNT 100000
 /****************************** GENERATE PASSWORD *****************************\
@@ -176,9 +236,13 @@ void help() {
 | generated password to the user                                               |
 \******************************************************************************/
 int main(int argc, char* argv[]) {
-	int number[] = {1,0,0,0,0,0,0,1};
-	newBase(10, 8, 2, number);
-	newBase(2, 8, 10, number);
+	// {int number[] = {1,1,1};		cout << "Base  9: "; newBase(10, 3, 9, number);}
+	// {int number[] = {1,1,1,1};		cout << "Base  9: "; newBase(10, 4, 9, number);}
+	// {int number[] = {2,1,1,1,1};	cout << "Base  9: "; newBase(10, 5, 9, number);}
+	// {int number[] = {2,1,1,1,1,1};	cout << "Base  9: "; newBase(10, 6, 9, number);}
+	for (int i = 0; i < 99; i++) {
+		tenInOldBase (i, 50);
+	}
 
 
 	bool silent = false;
