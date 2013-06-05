@@ -55,27 +55,29 @@ body {
 	background-color: #999;
 	border-radius: 5px;
 	padding: 5px;
+	max-width: 400px;
 }
 
-@media screen {
-	.content {
-		/*dosent seem to be anything special for the mobile browser*/
-	}
-	.infoLinkWrapper {
-		margin-top: 10px;
-	}
-	.aboutLink {
-		padding: 10px;
-	}
+.content {
+	margin-left: auto;
+	margin-right: auto;
+}
+.infoLinkWrapper {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	max-width: 410px;
+}
+.aboutLink {
+	padding: 10px;
 }
 @media only screen and (min-width: 530px) {
 	.content {
 		width: 200px;
-		margin-left: auto;
-		margin-right: auto;
 		margin-top: 100px;
 	}
 	.infoLinkWrapper {
+		margin: 0;
 		position: absolute;
 		bottom: 20px;
 		left: 20px;
@@ -97,8 +99,9 @@ body {
 	cursor:pointer;
 	padding: 10px;
 	border: 1px solid #CCC;
-	margin: 0px;
+	margin: 0;
 	width: 100%;
+	-moz-appearance: none;
 	-webkit-appearance: none;
 
 	background: #eeeeee; /* Old browsers */
@@ -176,4 +179,5 @@ a {
 	/* @alternate */ background: -ms-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%); /* IE10+ */
 	/* @alternate */ background: linear-gradient(to bottom, #ffa84c 0%,#ff7b0d 100%); /* W3C */
 	/* @alternate */ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 10px;
 }
