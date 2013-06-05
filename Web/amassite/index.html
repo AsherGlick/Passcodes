@@ -53,13 +53,14 @@
 
 
 	</head>
-	<body>
+	<body style="margin: 0px; padding: 0px">
+		<div class="message" style="text-align: center; padding: 10px"> <b>Version Update:</b> We will be updating the method of generating passwords to a more secure and widely accepted method </div>
 		<!--<div id="full">-->
 			<div class="content">
 				<form name="passcodesInput" action="javascript:showPassword();" method="post" style="margin:0px">
 					<input class="textbox" type="textbox" id="website" placeholder="Website" autocomplete="off"/> <br />
 					<input class="textbox" type="password" id="masterPassword" placeholder="Password" autocomplete="off"/> <br />
-					<input class="button" type="submit" value="Generate" />
+					<input class="button" type="submit" value="Generate" style="outline: none;" />
 				</form>
 				<div id="outbox" class="outputbox" onclick="selectHash(this)">  </div>
 			</div>
