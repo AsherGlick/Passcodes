@@ -58,12 +58,12 @@ using namespace std;
 #define HASHSIZE 32
 
 int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
-	double logOldBase = log(oldBase);
-	double logNewBase = log(newBase);
-	double newBaseLength = oldBaseLength * (logOldBase/logNewBase);
-	int intNewBaseLength = newBaseLength;
-	if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
-	return intNewBaseLength;
+    double logOldBase = log(oldBase);
+    double logNewBase = log(newBase);
+    double newBaseLength = oldBaseLength * (logOldBase/logNewBase);
+    int intNewBaseLength = newBaseLength;
+    if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
+    return intNewBaseLength;
 }
 
 
@@ -73,88 +73,88 @@ int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
 
 // Trims all of the preceding zeros off a function
 vector<int> trimNumber(vector<int> v) {
-	vector<int>::iterator i = v.begin();
-	while (i != v.end()-1) {
-		if (*i != 0) {
-			break;
-		}
-		i++;
-	}
+    vector<int>::iterator i = v.begin();
+    while (i != v.end()-1) {
+        if (*i != 0) {
+            break;
+        }
+        i++;
+    }
 
-	return vector<int>(i,v.end());
+    return vector<int>(i,v.end());
 }
 
 // creats a new base number of the old base value of 10
 vector<int> tenInOldBase (int oldBase, int newBase) {
-	//int ten[] = {1,0};
-	int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
-	int maxLength = newBaseLength>2?newBaseLength:2;
-	
-	vector <int> newNumber (maxLength,0);
+    //int ten[] = {1,0};
+    int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
+    int maxLength = newBaseLength>2?newBaseLength:2;
+    
+    vector <int> newNumber (maxLength,0);
 
-	int currentNumber = oldBase;
-	for (int i = maxLength-1; i >=0; i--) {
-		newNumber[i] = currentNumber % newBase;
-		currentNumber = currentNumber / newBase;
-	}
+    int currentNumber = oldBase;
+    for (int i = maxLength-1; i >=0; i--) {
+        newNumber[i] = currentNumber % newBase;
+        currentNumber = currentNumber / newBase;
+    }
 
-	newNumber = trimNumber(newNumber);
+    newNumber = trimNumber(newNumber);
 
-	//return calculateNewBase(oldBase, 2, newBase, ten);
-	return newNumber;
+    //return calculateNewBase(oldBase, 2, newBase, ten);
+    return newNumber;
 }
 
 // Multiplies two base n numbers together
 vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
-	int resultLength = firstNumber.size() + secondNumber.size();
-	vector<int> resultNumber (resultLength,0);
-	for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
-		for (int j = secondNumber.size() - 1; j >= 0; j--) {
-			resultNumber[i+j + 1] += firstNumber[i] * secondNumber[j];
-		}
-	}
+    int resultLength = firstNumber.size() + secondNumber.size();
+    vector<int> resultNumber (resultLength,0);
+    for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
+        for (int j = secondNumber.size() - 1; j >= 0; j--) {
+            resultNumber[i+j + 1] += firstNumber[i] * secondNumber[j];
+        }
+    }
 
-	for (int i = resultNumber.size() -1; i > 0; i--) {
-		if (resultNumber[i] >= base) {
-			resultNumber[i-1] += resultNumber[i]/base;
-			resultNumber[i] = resultNumber[i] % base;
-		}
-	}
-	
-	return trimNumber(resultNumber);
+    for (int i = resultNumber.size() -1; i > 0; i--) {
+        if (resultNumber[i] >= base) {
+            resultNumber[i-1] += resultNumber[i]/base;
+            resultNumber[i] = resultNumber[i] % base;
+        }
+    }
+    
+    return trimNumber(resultNumber);
 }
 
 
 
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
-	int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
-	vector<int> newNumber (newNumberLength,0);
-	vector<int> conversionFactor (1,1); // a single digit of 1 
-	for (int i = oldNumber.size()-1; i >= 0; i--) {
-		vector<int> difference (conversionFactor);
-		// size the vector
-		for (unsigned int j = 0; j < difference.size(); j++) {
-			difference[j] *= oldNumber[i];
-		}
-		// add the vector
-		for (unsigned int j = 0; j < difference.size(); j++) {
-			int newNumberIndex =  j + newNumberLength - difference.size();
-			newNumber[newNumberIndex] += difference[j];
-		}
-		// increment the conversion factor by oldbase 10
-		conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
+    int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
+    vector<int> newNumber (newNumberLength,0);
+    vector<int> conversionFactor (1,1); // a single digit of 1 
+    for (int i = oldNumber.size()-1; i >= 0; i--) {
+        vector<int> difference (conversionFactor);
+        // size the vector
+        for (unsigned int j = 0; j < difference.size(); j++) {
+            difference[j] *= oldNumber[i];
+        }
+        // add the vector
+        for (unsigned int j = 0; j < difference.size(); j++) {
+            int newNumberIndex =  j + newNumberLength - difference.size();
+            newNumber[newNumberIndex] += difference[j];
+        }
+        // increment the conversion factor by oldbase 10
+        conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
 
-	}
+    }
 
-	// Flatten number to base
-	for (int i = newNumber.size()-1; i >=0; i--) {
-		if (newNumber[i] >= newBase) {
-			newNumber[i-1] += newNumber[i]/newBase;
-			newNumber[i] = newNumber[i]%newBase;
-		}
-	}
+    // Flatten number to base
+    for (int i = newNumber.size()-1; i >=0; i--) {
+        if (newNumber[i] >= newBase) {
+            newNumber[i-1] += newNumber[i]/newBase;
+            newNumber[i] = newNumber[i]%newBase;
+        }
+    }
 
-	return trimNumber(newNumber);
+    return trimNumber(newNumber);
 }
 
 
@@ -167,30 +167,30 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
 \******************************************************************************/
 string generatePassword(string masterpass, string domain) {
 
-	string prehash = masterpass+domain;
-	unsigned char hash[HASHSIZE];
+    string prehash = masterpass+domain;
+    unsigned char hash[HASHSIZE];
 
-	string output = "";
+    string output = "";
 
-	for (int i = 0; i < ITERATIONCOUNT; i++) {
-		SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
-		
-		prehash = "";
-		for (int j = 0; j < HASHSIZE; j++) {
-			prehash += hash[j];
-		}
-	}
+    for (int i = 0; i < ITERATIONCOUNT; i++) {
+        SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
+        
+        prehash = "";
+        for (int j = 0; j < HASHSIZE; j++) {
+            prehash += hash[j];
+        }
+    }
 
-	vector<int> hashedValues(32);
-	for (int j = 0; j < HASHSIZE; j++) {
-		hashedValues[j] = int(hash[j]);
-	}
-	vector<int> newValues = calculateNewBase(256, 64, hashedValues);
+    vector<int> hashedValues(32);
+    for (int j = 0; j < HASHSIZE; j++) {
+        hashedValues[j] = int(hash[j]);
+    }
+    vector<int> newValues = calculateNewBase(256, 64, hashedValues);
 
-	for (int val : newValues) {
-		cout << val << ", ";
-	}
-	return "Failed";
+    for (int val : newValues) {
+        cout << val << ", ";
+    }
+    return "Failed";
 }
 
 /************************************ HELP ************************************\
@@ -198,23 +198,23 @@ string generatePassword(string masterpass, string domain) {
 | help flag is present or if the user has used the program incorrectly         |
 \******************************************************************************/
 void help() {
-	cout << "Welcome to the command line application for passcod.es" << endl;
-	cout << "written by Asher Glick (aglick@aglick.com)" << endl;
-	cout << endl;
-	cout << "Usage" << endl;
-	cout << "   passcodes [-s] [-h] [-d] <domain text> [-p] <password text>" << endl;
-	cout << endl;
-	cout << "Commands" << endl;
-	cout << " -d  Any text that comes after this flag is set as the domain" << endl;
-	cout << "     If no domain is given it is prompted for" << endl;
-	cout << " -p  Any text that comes after this flag is set as the password" << endl;
-	cout << "     If this flag is set a warning will be displayed" << endl;
-	cout << "     If this flag is not set the user is prompted for a password" << endl;
-	cout << " -h  Display the help menu" << endl;
-	cout << "     No other functions will be run if this flag is present" << endl;
-	cout << " -s  Suppress warnings" << endl;
-	cout << "     No warning messages will appear from using the -p flag" << endl;
-	cout << endl;
+    cout << "Welcome to the command line application for passcod.es" << endl;
+    cout << "written by Asher Glick (aglick@aglick.com)" << endl;
+    cout << endl;
+    cout << "Usage" << endl;
+    cout << "   passcodes [-s] [-h] [-d] <domain text> [-p] <password text>" << endl;
+    cout << endl;
+    cout << "Commands" << endl;
+    cout << " -d  Any text that comes after this flag is set as the domain" << endl;
+    cout << "     If no domain is given it is prompted for" << endl;
+    cout << " -p  Any text that comes after this flag is set as the password" << endl;
+    cout << "     If this flag is set a warning will be displayed" << endl;
+    cout << "     If this flag is not set the user is prompted for a password" << endl;
+    cout << " -h  Display the help menu" << endl;
+    cout << "     No other functions will be run if this flag is present" << endl;
+    cout << " -s  Suppress warnings" << endl;
+    cout << "     No warning messages will appear from using the -p flag" << endl;
+    cout << endl;
 }
 
 /************************************ MAIN ************************************\
@@ -224,48 +224,48 @@ void help() {
 | generated password to the user                                               |
 \******************************************************************************/
 int main(int argc, char* argv[]) {
-	bool silent = false;
-	string domain = "";
-	string password = "";
-	string *pointer = NULL;
+    bool silent = false;
+    string domain = "";
+    string password = "";
+    string *pointer = NULL;
 
-	// Parse the arguments
-	for (int i = 1; i < argc; i++) {
-		if (string(argv[i]) == "-p") { // password flag
-			pointer = &password;
-		} else if (string(argv[i]) == "-d") { // domain flag
-			pointer = &domain;
-		} else if (string(argv[i]) == "-s") { // silent flag
-			silent = true;
-		} else if (string(argv[i]) == "-h") { // help flag
-			help();
-			return 0;
-		} else {
-			if (pointer == NULL) {
-				help();
-				return 0;
-			}
-			else {
-				*pointer += argv[i];
-			}
-		}
-	}
+    // Parse the arguments
+    for (int i = 1; i < argc; i++) {
+        if (string(argv[i]) == "-p") { // password flag
+            pointer = &password;
+        } else if (string(argv[i]) == "-d") { // domain flag
+            pointer = &domain;
+        } else if (string(argv[i]) == "-s") { // silent flag
+            silent = true;
+        } else if (string(argv[i]) == "-h") { // help flag
+            help();
+            return 0;
+        } else {
+            if (pointer == NULL) {
+                help();
+                return 0;
+            }
+            else {
+                *pointer += argv[i];
+            }
+        }
+    }
 
-	// If there is no domain given, prompt the user for a domain
-	if (domain == "") {
-		cout << "Enter Domain: ";
-		getline(cin, domain);
-	}
-	// If there is a password given and the silent flag is not present
-	// give the user a warning telling them that the password flag is insecure
-	if (password != "" && !silent) {
-		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
-	}
-	// If there is not a password given, prompt the user for a password securly
-	else if (password == "") {
-		password = string(getpass("Enter Password: "));
-	}
+    // If there is no domain given, prompt the user for a domain
+    if (domain == "") {
+        cout << "Enter Domain: ";
+        getline(cin, domain);
+    }
+    // If there is a password given and the silent flag is not present
+    // give the user a warning telling them that the password flag is insecure
+    if (password != "" && !silent) {
+        cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
+    }
+    // If there is not a password given, prompt the user for a password securly
+    else if (password == "") {
+        password = string(getpass("Enter Password: "));
+    }
 
-	// Output the generated Password to the user
-	cout << generatePassword (domain,password) << endl;
+    // Output the generated Password to the user
+    cout << generatePassword (domain,password) << endl;
 }
