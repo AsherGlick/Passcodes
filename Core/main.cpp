@@ -165,7 +165,6 @@ struct settingWrapper {
     uint maxCharacters;
     string regex;
 };
-
     
 
 settingWrapper getSettings(string domain) {
@@ -216,21 +215,25 @@ settingWrapper getSettings(string domain) {
             ifstream cashedSubscritption;
             string subscriptionPath = configPath + "cashe/" + cashedSubscriptionName + "/" + domain;
             cashedSubscritption.open(subscriptionPath);
-            if (cashedSubscritption.is_open()) cout << "FILE IS OPEN" << endl;
-            else cout << "FILE IS NOT OPEN" << endl;
-            string maxLength = "";
-            getline(cashedSubscritption, maxLength);
-            cout << maxLength << endl;
-            if (maxLength != "") settings.maxCharacters = stoi(maxLength);
-            string regex = "";
-            getline(cashedSubscritption, regex);
-            if (regex != "") settings.regex = regex;
-            string allowedCharacters = "";
-            getline(cashedSubscritption, allowedCharacters);
-            if (allowedCharacters != "") settings.allowedCharacters = allowedCharacters;
-            string parent = "";
-            getline(cashedSubscritption, parent);
-            if (parent != "") settings.domain = parent;
+            if (cashedSubscritption.is_open()) {
+                string maxLength = "";
+                getline(cashedSubscritption, maxLength);
+                cout << maxLength << endl;
+                if (maxLength != "") settings.maxCharacters = stoi(maxLength);
+                string regex = "";
+                getline(cashedSubscritption, regex);
+                if (regex != "") settings.regex = regex;
+                string allowedCharacters = "";
+                getline(cashedSubscritption, allowedCharacters);
+                if (allowedCharacters != "") settings.allowedCharacters = allowedCharacters;
+                string parent = "";
+                getline(cashedSubscritption, parent);
+                if (parent != "") settings.domain = parent;
+            }
+            else {
+                //cout << "No cashed version of " << domain << " exists from the subscrition " << subscription << endl;
+                //cout << "Run \"passcodes --update\" to update the cashe from all your subscriptions" << endl;
+            }
 
             cout << subscriptionPath << endl;
         }
@@ -239,11 +242,6 @@ settingWrapper getSettings(string domain) {
     // open each file in the subscriptions list in order
       // ~/.passcodes/<subscription>/<domain>
       // add any non-blank entry to the settings, latter entries overriding former
-
-    cout << "MAX LENGTH: " << settings.maxCharacters << endl;
-    cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
-    cout << "DOMAIN: " << settings.domain << endl;
-    cout << "REGEX MATHC: " << settings.regex << endl;
 
     return settings;
 }
@@ -258,6 +256,11 @@ settingWrapper getSettings(string domain) {
 \******************************************************************************/
 string generatePassword(string domain, string masterpass ) {
     settingWrapper settings = getSettings(domain);
+
+    cout << "MAX LENGTH: " << settings.maxCharacters << endl;
+    cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
+    cout << "DOMAIN: " << settings.domain << endl;
+    cout << "REGEX MATHC: " << settings.regex << endl;
 
     string prehash = domain+masterpass;
     unsigned char hash[HASHSIZE];
