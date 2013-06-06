@@ -213,10 +213,25 @@ settingWrapper getSettings(string domain) {
                 cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
                 cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
             }
-            ifstream subscription;
+            ifstream cashedSubscritption;
             string subscriptionPath = configPath + "cashe/" + cashedSubscriptionName + "/" + domain;
-            subscription.open(subscriptionPath);
-            string maxLength
+            cashedSubscritption.open(subscriptionPath);
+            if (cashedSubscritption.is_open()) cout << "FILE IS OPEN" << endl;
+            else cout << "FILE IS NOT OPEN" << endl;
+            string maxLength = "";
+            getline(cashedSubscritption, maxLength);
+            cout << maxLength << endl;
+            if (maxLength != "") settings.maxCharacters = stoi(maxLength);
+            string regex = "";
+            getline(cashedSubscritption, regex);
+            if (regex != "") settings.regex = regex;
+            string allowedCharacters = "";
+            getline(cashedSubscritption, allowedCharacters);
+            if (allowedCharacters != "") settings.allowedCharacters = allowedCharacters;
+            string parent = "";
+            getline(cashedSubscritption, parent);
+            if (parent != "") settings.domain = parent;
+
             cout << subscriptionPath << endl;
         }
     }
@@ -224,6 +239,11 @@ settingWrapper getSettings(string domain) {
     // open each file in the subscriptions list in order
       // ~/.passcodes/<subscription>/<domain>
       // add any non-blank entry to the settings, latter entries overriding former
+
+    cout << "MAX LENGTH: " << settings.maxCharacters << endl;
+    cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
+    cout << "DOMAIN: " << settings.domain << endl;
+    cout << "REGEX MATHC: " << settings.regex << endl;
 
     return settings;
 }
@@ -234,7 +254,7 @@ settingWrapper getSettings(string domain) {
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
-| hash                                                                         |
+| hash                     o                                                    |
 \******************************************************************************/
 string generatePassword(string domain, string masterpass ) {
     settingWrapper settings = getSettings(domain);
