@@ -206,7 +206,6 @@ settingWrapper getSettings(string domain) {
     if (configFile.is_open()) {
         cout << "File is open" << endl;
         while (getline(configFile, subscription)) {
-            cout << "LINE" << endl;
             unsigned char hash[20];
             SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
             string cashedSubscriptionName = "";
@@ -214,8 +213,11 @@ settingWrapper getSettings(string domain) {
                 cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
                 cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
             }
-            cout << cashedSubscriptionName << endl;
-            
+            ifstream subscription;
+            string subscriptionPath = configPath + "cashe/" + cashedSubscriptionName + "/" + domain;
+            subscription.open(subscriptionPath);
+            string maxLength
+            cout << subscriptionPath << endl;
         }
     }
     // look for 'subscriptions' section
@@ -234,10 +236,10 @@ settingWrapper getSettings(string domain) {
 | then returns the 16 character long base64 password based off of the sha256   |
 | hash                                                                         |
 \******************************************************************************/
-string generatePassword(string masterpass, string domain) {
+string generatePassword(string domain, string masterpass ) {
     settingWrapper settings = getSettings(domain);
 
-    string prehash = masterpass+domain;
+    string prehash = domain+masterpass;
     unsigned char hash[HASHSIZE];
 
     string output = "";
