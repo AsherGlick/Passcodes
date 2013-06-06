@@ -45,14 +45,14 @@
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 \******************************************************************************/
 
-#include <iostream>
-#include <iomanip>
-#include <string>
 #include <openssl/sha.h>
 #include <unistd.h>
 #include <math.h>
+
+#include <iostream>
+#include <iomanip>
+#include <string>
 #include <vector>
-//#include <stoi>
 
 using namespace std;
 #define HASHSIZE 32
@@ -62,7 +62,7 @@ int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
     double logNewBase = log(newBase);
     double newBaseLength = oldBaseLength * (logOldBase/logNewBase);
     int intNewBaseLength = newBaseLength;
-    if (newBaseLength > intNewBaseLength) intNewBaseLength += 1; // round up 
+    if (newBaseLength > intNewBaseLength) intNewBaseLength += 1;  // round up
     return intNewBaseLength;
 }
 
@@ -81,16 +81,16 @@ vector<int> trimNumber(vector<int> v) {
         i++;
     }
 
-    return vector<int>(i,v.end());
+    return vector<int>(i, v.end());
 }
 
 // creats a new base number of the old base value of 10
-vector<int> tenInOldBase (int oldBase, int newBase) {
-    //int ten[] = {1,0};
+vector<int> tenInOldBase(int oldBase, int newBase) {
+    // int ten[] = {1,0};
     int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
     int maxLength = newBaseLength>2?newBaseLength:2;
-    
-    vector <int> newNumber (maxLength,0);
+
+    vector <int> newNumber(maxLength, 0);
 
     int currentNumber = oldBase;
     for (int i = maxLength-1; i >=0; i--) {
@@ -100,14 +100,14 @@ vector<int> tenInOldBase (int oldBase, int newBase) {
 
     newNumber = trimNumber(newNumber);
 
-    //return calculateNewBase(oldBase, 2, newBase, ten);
+    // return calculateNewBase(oldBase, 2, newBase, ten);
     return newNumber;
 }
 
 // Multiplies two base n numbers together
 vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
     int resultLength = firstNumber.size() + secondNumber.size();
-    vector<int> resultNumber (resultLength,0);
+    vector<int> resultNumber(resultLength, 0);
     for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
         for (int j = secondNumber.size() - 1; j >= 0; j--) {
             resultNumber[i+j + 1] += firstNumber[i] * secondNumber[j];
@@ -120,7 +120,6 @@ vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumbe
             resultNumber[i] = resultNumber[i] % base;
         }
     }
-    
     return trimNumber(resultNumber);
 }
 
@@ -128,10 +127,10 @@ vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumbe
 
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
-    vector<int> newNumber (newNumberLength,0);
-    vector<int> conversionFactor (1,1); // a single digit of 1 
+    vector<int> newNumber(newNumberLength, 0);
+    vector<int> conversionFactor(1, 1);  // a single digit of 1
     for (int i = oldNumber.size()-1; i >= 0; i--) {
-        vector<int> difference (conversionFactor);
+        vector<int> difference(conversionFactor);
         // size the vector
         for (unsigned int j = 0; j < difference.size(); j++) {
             difference[j] *= oldNumber[i];
@@ -143,7 +142,6 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
         }
         // increment the conversion factor by oldbase 10
         conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
-
     }
 
     // Flatten number to base
@@ -166,7 +164,6 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
 | hash                                                                         |
 \******************************************************************************/
 string generatePassword(string masterpass, string domain) {
-
     string prehash = masterpass+domain;
     unsigned char hash[HASHSIZE];
 
@@ -174,7 +171,7 @@ string generatePassword(string masterpass, string domain) {
 
     for (int i = 0; i < ITERATIONCOUNT; i++) {
         SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
-        
+
         prehash = "";
         for (int j = 0; j < HASHSIZE; j++) {
             prehash += hash[j];
@@ -231,21 +228,20 @@ int main(int argc, char* argv[]) {
 
     // Parse the arguments
     for (int i = 1; i < argc; i++) {
-        if (string(argv[i]) == "-p") { // password flag
+        if (string(argv[i]) == "-p") {  // password flag
             pointer = &password;
-        } else if (string(argv[i]) == "-d") { // domain flag
+        } else if (string(argv[i]) == "-d") {  // domain flag
             pointer = &domain;
-        } else if (string(argv[i]) == "-s") { // silent flag
+        } else if (string(argv[i]) == "-s") {  // silent flag
             silent = true;
-        } else if (string(argv[i]) == "-h") { // help flag
+        } else if (string(argv[i]) == "-h") {  // help flag
             help();
             return 0;
         } else {
             if (pointer == NULL) {
                 help();
                 return 0;
-            }
-            else {
+            } else {
                 *pointer += argv[i];
             }
         }
@@ -267,5 +263,5 @@ int main(int argc, char* argv[]) {
     }
 
     // Output the generated Password to the user
-    cout << generatePassword (domain,password) << endl;
+    cout << generatePassword(domain, password) << endl;
 }
