@@ -180,7 +180,7 @@ string generatePassword(string masterpass, string domain) {
 
     vector<int> hashedValues(32);
     for (int j = 0; j < HASHSIZE; j++) {
-        hashedValues[j] = int(hash[j]);
+        hashedValues[j] = static_cast<int>(hash[j]);
     }
     vector<int> newValues = calculateNewBase(256, 64, hashedValues);
 
