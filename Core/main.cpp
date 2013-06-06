@@ -284,13 +284,14 @@ string generatePassword(string domain, string masterpass ) {
     }
 
     int newbase = settings.allowedCharacters.length();
-    cout << "NEWBASE: " << newbase << endl;
     vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
 
+
+    string password = "";
     for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
-        cout << settings.allowedCharacters[newValues[i]];
+        password += settings.allowedCharacters[newValues[i]];
     }
-    return "Failed";
+    return password;
 }
 
 /************************************ HELP ************************************\
