@@ -199,12 +199,13 @@ settingWrapper getSettings(string domain) {
         configFile.open(subscriptionPath.c_str());
     }
 
-    cout << "opening file" << endl;
-    //configFile.open(subscriptionPath.c_str());
     string subscription = "";
     if (configFile.is_open()) {
-        cout << "File is open" << endl;
+        // For each subscription look up the 
         while (getline(configFile, subscription)) {
+
+            // Get a hash of the subscription path, hashses are used to insure
+            // the folder the cashe exists in is a valid folder name
             unsigned char hash[20];
             SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
             string cashedSubscriptionName = "";
@@ -212,13 +213,14 @@ settingWrapper getSettings(string domain) {
                 cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
                 cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
             }
+
+            // Open the domain in the current subscription folder
             ifstream cashedSubscritption;
             string subscriptionPath = configPath + "cashe/" + cashedSubscriptionName + "/" + domain;
             cashedSubscritption.open(subscriptionPath);
             if (cashedSubscritption.is_open()) {
                 string maxLength = "";
                 getline(cashedSubscritption, maxLength);
-                cout << maxLength << endl;
                 if (maxLength != "") settings.maxCharacters = stoi(maxLength);
                 string regex = "";
                 getline(cashedSubscritption, regex);
@@ -235,7 +237,7 @@ settingWrapper getSettings(string domain) {
                 //cout << "Run \"passcodes --update\" to update the cashe from all your subscriptions" << endl;
             }
 
-            cout << subscriptionPath << endl;
+            //cout << subscriptionPath << endl;
         }
     }
     // look for 'subscriptions' section
@@ -257,12 +259,12 @@ settingWrapper getSettings(string domain) {
 string generatePassword(string domain, string masterpass ) {
     settingWrapper settings = getSettings(domain);
 
-    cout << "MAX LENGTH: " << settings.maxCharacters << endl;
-    cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
-    cout << "DOMAIN: " << settings.domain << endl;
-    cout << "REGEX MATHC: " << settings.regex << endl;
+    // cout << "MAX LENGTH: " << settings.maxCharacters << endl;
+    // cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
+    // cout << "DOMAIN: " << settings.domain << endl;
+    // cout << "REGEX MATHC: " << settings.regex << endl;
 
-    string prehash = domain+masterpass;
+    string prehash = settings.domain+masterpass;
     unsigned char hash[HASHSIZE];
 
     string output = "";
@@ -280,10 +282,13 @@ string generatePassword(string domain, string masterpass ) {
     for (int j = 0; j < HASHSIZE; j++) {
         hashedValues[j] = static_cast<int>(hash[j]);
     }
-    vector<int> newValues = calculateNewBase(256, 64, hashedValues);
 
-    for (int val : newValues) {
-        cout << val << ", ";
+    int newbase = settings.allowedCharacters.length();
+    cout << "NEWBASE: " << newbase << endl;
+    vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
+
+    for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
+        cout << settings.allowedCharacters[newValues[i]];
     }
     return "Failed";
 }
