@@ -184,7 +184,7 @@ settingWrapper getSettings(string domain) {
     configFile.open(subscriptionPath.c_str());
 
     if (!configFile.is_open()) {
-
+        cout << "File does not exist" << endl;
         #if defined(_WIN32)
         _mkdir(strPath.c_str());
          #else
@@ -193,25 +193,30 @@ settingWrapper getSettings(string domain) {
 
         ofstream testFile;
         testFile.open(subscriptionPath.c_str());
+        testFile << "http://passcod.es/global.chanel" << endl;
+        testFile << "http://asherglick.github.io/Passcodes" << endl;
         testFile.close();
 
         configFile.open(subscriptionPath.c_str());
     }
 
-
-    configFile.open(subscriptionPath.c_str());
+    cout << "opening file" << endl;
+    //configFile.open(subscriptionPath.c_str());
     string subscription = "";
-    if (configFile.is_open())
-    while (getline(configFile, subscription)) {
-        unsigned char hash[20];
-        SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
-        string cashedSubscriptionName = "";
-        for (int i = 0; i < 4; i++) {
-            cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
-            cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
+    if (configFile.is_open()) {
+        cout << "File is open" << endl;
+        while (getline(configFile, subscription)) {
+            cout << "LINE" << endl;
+            unsigned char hash[20];
+            SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
+            string cashedSubscriptionName = "";
+            for (int i = 0; i < 4; i++) {
+                cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
+                cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
+            }
+            cout << cashedSubscriptionName << endl;
+            
         }
-        cout << cashedSubscriptionName << endl;
-        
     }
     // look for 'subscriptions' section
     // open each file in the subscriptions list in order
