@@ -52,6 +52,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <vector>
+//#include <stoi>
 
 using namespace std;
 #define HASHSIZE 32
@@ -179,6 +180,16 @@ string generatePassword(string masterpass, string domain) {
 			prehash += hash[j];
 		}
 	}
+
+	vector<int> hashedValues(32);
+	for (int j = 0; j < HASHSIZE; j++) {
+		hashedValues[j] = int(hash[j]);
+	}
+	vector<int> newValues = calculateNewBase(256, 64, hashedValues);
+
+	for (int val : newValues) {
+		cout << val << ", ";
+	}
 	return "Failed";
 }
 
@@ -213,54 +224,12 @@ void help() {
 | generated password to the user                                               |
 \******************************************************************************/
 int main(int argc, char* argv[]) {
-	// {int number[] = {1,1,1};		cout << "Base  9: "; newBase(10, 3, 9, number);}
-	// {int number[] = {1,1,1,1};		cout << "Base  9: "; newBase(10, 4, 9, number);}
-	// {int number[] = {2,1,1,1,1};	cout << "Base  9: "; newBase(10, 5, 9, number);}
-	// {int number[] = {2,1,1,1,1,1};	cout << "Base  9: "; newBase(10, 6, 9, number);}
-	// for (int i = 0; i < 99; i++) {
-	// 	tenInOldBase (i, 50);
-	// }
-	int ints[] = {1,8,9};
-	int oldBase = 19;
-	int newBase = 40;
-	vector <int> inputs (ints, ints + sizeof(ints) / sizeof(int));
-
-	vector <int> result;
-	result =  calculateNewBase(10,  2, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  3, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  4, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  5, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  6, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  7, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  8, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10,  9, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 10, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 11, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 12, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 13, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 14, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 15, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 16, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 17, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 18, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 19, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 20, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 21, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 22, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 23, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 24, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 25, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-	result =  calculateNewBase(10, 26, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
-
-
-
-
 	bool silent = false;
 	string domain = "";
 	string password = "";
 	string *pointer = NULL;
 
-    // Parse the arguments
+	// Parse the arguments
 	for (int i = 1; i < argc; i++) {
 		if (string(argv[i]) == "-p") { // password flag
 			pointer = &password;
@@ -282,21 +251,21 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-    // If there is no domain given, prompt the user for a domain
+	// If there is no domain given, prompt the user for a domain
 	if (domain == "") {
 		cout << "Enter Domain: ";
 		getline(cin, domain);
 	}
-    // If there is a password given and the silent flag is not present
-    // give the user a warning telling them that the password flag is insecure
+	// If there is a password given and the silent flag is not present
+	// give the user a warning telling them that the password flag is insecure
 	if (password != "" && !silent) {
 		cout <<"WARNING: you should not use the -p flag as it may be insecure" << endl;
 	}
-    // If there is not a password given, prompt the user for a password securly
+	// If there is not a password given, prompt the user for a password securly
 	else if (password == "") {
 		password = string(getpass("Enter Password: "));
 	}
 
-    // Output the generated Password to the user
+	// Output the generated Password to the user
 	cout << generatePassword (domain,password) << endl;
 }
