@@ -48,7 +48,9 @@
 #include <openssl/sha.h>
 #include <unistd.h>
 #include <math.h>
+#include <pwd.h>
 
+#include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -57,6 +59,9 @@
 using namespace std;
 #define HASHSIZE 32
 
+  //////////////////////////////////////////////////////////////////////////////
+ //////////////////////// BASE MODIFICATION FUNCTIONS ///////////////////////// 
+//////////////////////////////////////////////////////////////////////////////  
 int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
     double logOldBase = log(oldBase);
     double logNewBase = log(newBase);
@@ -65,12 +70,6 @@ int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
     if (newBaseLength > intNewBaseLength) intNewBaseLength += 1;  // round up
     return intNewBaseLength;
 }
-
-
-
-
-
-
 // Trims all of the preceding zeros off a function
 vector<int> trimNumber(vector<int> v) {
     vector<int>::iterator i = v.begin();
@@ -155,8 +154,51 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     return trimNumber(newNumber);
 }
 
+  //////////////////////////////////////////////////////////////////////////////
+ /////////////////////////////// READ SETTINGS //////////////////////////////// 
+//////////////////////////////////////////////////////////////////////////////  
+struct settingWrapper {
+    string domain;
+    string allowedCharacters;
+    uint maxCharacters;
+    string regex;
+};
 
 
+settingWrapper getSettings(string domain) {
+    string hexCharacters = "0123456789abcdef";
+
+    settingWrapper settings;
+
+    // open ~/.passcodes/config
+    ifstream configFile;
+    struct passwd *pw = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
+    string path = string(homedir) + "/.passcodes/subscriptions";
+    configFile.open(path.c_str());
+    string subscription = "";
+    if (configFile.is_open())
+    while (getline(configFile, subscription)) {
+        unsigned char hash[20];
+        SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
+        string cashedSubscriptionName = "";
+        for (int i = 0; i < 4; i++) {
+            cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
+            cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
+        }
+        cout << cashedSubscriptionName << endl;
+        
+    }
+    // look for 'subscriptions' section
+    // open each file in the subscriptions list in order
+      // ~/.passcodes/<subscription>/<domain>
+      // add any non-blank entry to the settings, latter entries overriding former
+
+    return settings;
+}
+  //////////////////////////////////////////////////////////////////////////////
+ //////////////////////// GENERATE PASSWORD FUNCTIONS ///////////////////////// 
+//////////////////////////////////////////////////////////////////////////////  
 #define ITERATIONCOUNT 100000
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
@@ -164,6 +206,8 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
 | hash                                                                         |
 \******************************************************************************/
 string generatePassword(string masterpass, string domain) {
+    settingWrapper settings = getSettings(domain);
+
     string prehash = masterpass+domain;
     unsigned char hash[HASHSIZE];
 
