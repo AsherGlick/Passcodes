@@ -56,25 +56,6 @@
 using namespace std;
 #define HASHSIZE 32
 
-/***************************** CONVERT AND CUT HEX ****************************\
-| The convert nad cut hex function takes in an array of characters generated   |
-| by the SHA256 function and then converts it into bas64 until 16 base64       |
-| characters exist. It returns the 16 character long base64 string             |
-\******************************************************************************/
-string convertAndCutHex(unsigned char hash[HASHSIZE]) {
-	string base64Index = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#";
-	string output = "";
-
-	for (int i = 0; i < 12; i+=3) {
-		output += base64Index[hash[i+0]>>2];
-		output += base64Index[((hash[i+0]&0x03)<<4) + (hash[i+1]>>4)];
-		output += base64Index[((hash[i+1]&0x0F)<<2) + (hash[i+2]>>6)];
-		output += base64Index[hash[i+2] & 0x3F];
-	}
-
-	return output;
-}
-
 int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
 	double logOldBase = log(oldBase);
 	double logNewBase = log(newBase);
@@ -166,7 +147,7 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
 
 	// Flatten number to base
 	for (int i = newNumber.size()-1; i >=0; i--) {
-		if (newNumber[i] > newBase) {
+		if (newNumber[i] >= newBase) {
 			newNumber[i-1] += newNumber[i]/newBase;
 			newNumber[i] = newNumber[i]%newBase;
 		}
@@ -197,15 +178,6 @@ string generatePassword(string masterpass, string domain) {
 		for (int j = 0; j < HASHSIZE; j++) {
 			prehash += hash[j];
 		}
-
-		output = convertAndCutHex(hash);
-		bool goodMatch = true;
-		for (unsigned int j = 0; j < output.length(); j++) {
-			if (output[j] == '!' || output[j] == '#') {
-				goodMatch = false;
-			}
-		}
-		if (goodMatch) return output;
 	}
 	return "Failed";
 }
@@ -248,16 +220,40 @@ int main(int argc, char* argv[]) {
 	// for (int i = 0; i < 99; i++) {
 	// 	tenInOldBase (i, 50);
 	// }
-	int ints[] = {1,5,7,3,2};
+	int ints[] = {1,8,9};
 	int oldBase = 19;
 	int newBase = 40;
 	vector <int> inputs (ints, ints + sizeof(ints) / sizeof(int));
-	vector <int> result =  calculateNewBase(oldBase, newBase, inputs);
 
-	for (unsigned int i = 0; i < result.size(); i++) {
-		cout << result[i] << " ";
-	}
-	cout << endl;
+	vector <int> result;
+	result =  calculateNewBase(10,  2, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  3, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  4, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  5, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  6, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  7, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  8, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10,  9, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 10, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 11, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 12, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 13, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 14, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 15, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 16, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 17, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 18, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 19, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 20, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 21, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 22, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 23, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 24, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 25, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+	result =  calculateNewBase(10, 26, inputs); for (unsigned int i = 0; i < result.size(); i++) { cout << result[i] << " ";} cout << endl;
+
+
+
 
 	bool silent = false;
 	string domain = "";
