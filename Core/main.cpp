@@ -195,23 +195,24 @@ string generatePassword(string masterpass, string domain) {
 | help flag is present or if the user has used the program incorrectly         |
 \******************************************************************************/
 void help() {
-    cout << "Welcome to the command line application for passcod.es" << endl;
-    cout << "written by Asher Glick (aglick@aglick.com)" << endl;
-    cout << endl;
-    cout << "Usage" << endl;
-    cout << "   passcodes [-s] [-h] [-d] <domain text> [-p] <password text>" << endl;
-    cout << endl;
-    cout << "Commands" << endl;
-    cout << " -d  Any text that comes after this flag is set as the domain" << endl;
-    cout << "     If no domain is given it is prompted for" << endl;
-    cout << " -p  Any text that comes after this flag is set as the password" << endl;
-    cout << "     If this flag is set a warning will be displayed" << endl;
-    cout << "     If this flag is not set the user is prompted for a password" << endl;
-    cout << " -h  Display the help menu" << endl;
-    cout << "     No other functions will be run if this flag is present" << endl;
-    cout << " -s  Suppress warnings" << endl;
-    cout << "     No warning messages will appear from using the -p flag" << endl;
-    cout << endl;
+    cout <<
+    "Welcome to the command line application for passcod.es\n"
+    "written by Asher Glick (aglick@aglick.com)\n"
+    "\n"
+    "Usage\n"
+    "   passcodes [-s] [-h] [-d] <domain text> [-p] <password text>\n"
+    "\n"
+    "Commands\n"
+    " -d  Any text that comes after this flag is set as the domain\n"
+    "     If no domain is given it is prompted for\n"
+    " -p  Any text that comes after this flag is set as the password\n"
+    "     If this flag is set a warning will be displayed\n"
+    "     If this flag is not set the user is prompted for a password\n"
+    " -h  Display the help menu\n"
+    "     No other functions will be run if this flag is present\n"
+    " -s  Suppress warnings\n"
+    "     No warning messages will appear from using the -p flag\n"
+    << endl;
 }
 
 /************************************ MAIN ************************************\
