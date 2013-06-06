@@ -49,6 +49,8 @@
 #include <unistd.h>
 #include <math.h>
 #include <pwd.h>
+ #include <stdio.h>
+ #include <sys/stat.h>
 
 #include <fstream>
 #include <iostream>
@@ -164,6 +166,7 @@ struct settingWrapper {
     string regex;
 };
 
+    
 
 settingWrapper getSettings(string domain) {
     string hexCharacters = "0123456789abcdef";
@@ -174,8 +177,29 @@ settingWrapper getSettings(string domain) {
     ifstream configFile;
     struct passwd *pw = getpwuid(getuid());
     const char *homedir = pw->pw_dir;
-    string path = string(homedir) + "/.passcodes/subscriptions";
-    configFile.open(path.c_str());
+    string configPath = string(homedir) + "/.passcodes/";
+    string subscriptionPath = string(homedir) + "/.passcodes/subscriptions";
+
+
+    configFile.open(subscriptionPath.c_str());
+
+    if (!configFile.is_open()) {
+
+        #if defined(_WIN32)
+        _mkdir(strPath.c_str());
+         #else
+        mkdir(configPath.c_str(), 0777); // notice that 777 is different than 0777
+        #endif
+
+        ofstream testFile;
+        testFile.open(subscriptionPath.c_str());
+        testFile.close();
+
+        configFile.open(subscriptionPath.c_str());
+    }
+
+
+    configFile.open(subscriptionPath.c_str());
     string subscription = "";
     if (configFile.is_open())
     while (getline(configFile, subscription)) {
