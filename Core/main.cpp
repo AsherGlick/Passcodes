@@ -299,24 +299,24 @@ string generatePassword(string domain, string masterpass ) {
             password += settings.allowedCharacters[newValues[i]];
         }
 
-        cout << "REGEX: " << settings.regex  << ":" << endl;
+        //cout << "REGEX: " << settings.regex  << ":" << endl;
         
 
 
-       //try {
+       try {
             boost::regex rulesCheck(settings.regex);
-            cout << "CREATED REGEX" << endl;
+            //cout << "CREATED REGEX" << endl;
             if (regex_match (password, rulesCheck)) {
                 return password;
             }
-        //}
+        }
 
-        // catch (const std::regex_error& e) {
-        //     std::cout << "regex_error caught: " << e.what() << '\n';
-        //     if (e.code() == std::regex_constants::error_brack) {
-        //         std::cout << "The code was error_brack\n";
-        //     }
-        // }
+        catch (const boost::regex_error& e) {
+            std::cout << "regex_error caught: " << e.what() << '\n';
+            if (e.code() == boost::regex_constants::error_brack) {
+                std::cout << "The code was error_brack\n";
+            }
+        }
 
 
         
