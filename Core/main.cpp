@@ -254,7 +254,9 @@ settingWrapper getSettings(string domain) {
                 string disallowedCharacters = "";
                 getline(cashedSubscritption, disallowedCharacters);
                 for (char character : disallowedCharacters) {
-                    settings.allowedCharacters.erase(settings.allowedCharacters.find(character),1);
+                    int location = settings.allowedCharacters.find(character);
+                    if (location == -1) continue; // skip duplicates
+                    settings.allowedCharacters.erase(location,1);
                 }
                 string parent = "";
                 getline(cashedSubscritption, parent);
