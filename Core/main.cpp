@@ -152,7 +152,7 @@ vector<int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber
 \******************************************************************************/
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
-    vector<int> newNumber(newNumberLength, 0);
+    vector<int> newNumber(newNumberLength, 0); // blank vector of 0's
     vector<int> conversionFactor(1, 1);  // a single digit of 1
     for (int i = oldNumber.size()-1; i >= 0; i--) {
         vector<int> difference(conversionFactor);
@@ -165,7 +165,9 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
             int newNumberIndex =  j + newNumberLength - difference.size();
             newNumber[newNumberIndex] += difference[j];
         }
-        // increment the conversion factor by oldbase 10
+
+        // increment the conversion factor by oldbase 10 to have it represent the
+        // value of the next digit in the old base
         conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
     }
 
