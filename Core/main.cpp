@@ -276,7 +276,8 @@ settingWrapper getSettings(string domain) {
   //////////////////////////////////////////////////////////////////////////////
  //////////////////////// GENERATE PASSWORD FUNCTIONS ///////////////////////// 
 //////////////////////////////////////////////////////////////////////////////  
-#define ITERATIONCOUNT 100000
+//#define ITERATIONCOUNT 100000
+#define ITERATIONCOUNT  99999
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
@@ -305,7 +306,6 @@ string generatePassword(string domain, string masterpass ) {
         }
         // make sure at least a certian number of iterations are done
         if (iterations < ITERATIONCOUNT) continue;
-
         // Turn the hashed value into a displayable password
         vector<int> hashedValues(32);
         string password = "";
@@ -317,7 +317,8 @@ string generatePassword(string domain, string masterpass ) {
         vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
 
         for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
-            password += settings.allowedCharacters[newValues[i]];
+            int reverseIndex = newValues.size()-i-1;
+            password += settings.allowedCharacters[newValues[reverseIndex]];
         }
 
         // Make sure the generated password conforms to the password rules
