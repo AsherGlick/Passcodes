@@ -226,9 +226,8 @@ settingWrapper getSettings(string domain) {
 
     string subscription = "";
     if (configFile.is_open()) {
-        // For each subscription look up the 
+        // For each subscription look up the
         while (getline(configFile, subscription)) {
-
             // Get a hash of the subscription path, hashses are used to insure
             // the folder the cashe exists in is a valid folder name
             unsigned char hash[20];
@@ -304,9 +303,12 @@ string generatePassword(string domain, string masterpass ) {
         for (int j = 0; j < HASHSIZE; j++) {
             prehash += hash[j];
         }
-        if (iterations < ITERATIONCOUNT) continue; // make sure at least a certian number of iterations are done
+        // make sure at least a certian number of iterations are done
+        if (iterations < ITERATIONCOUNT) continue;
 
+        // Turn the hashed value into a displayable password
         vector<int> hashedValues(32);
+        string password = "";
         for (int j = 0; j < HASHSIZE; j++) {
             hashedValues[j] = static_cast<int>(hash[j]);
         }
@@ -314,20 +316,16 @@ string generatePassword(string domain, string masterpass ) {
         int newbase = settings.allowedCharacters.length();
         vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
 
-
-        string password = "";
         for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
             password += settings.allowedCharacters[newValues[i]];
         }
 
-        //cout << "REGEX: " << settings.regex  << ":" << endl;
-        
-
-
-       try {
+        // Make sure the generated password conforms to the password rules
+        try {
             boost::regex rulesCheck(settings.regex);
-            //cout << "CREATED REGEX" << endl;
-            if (regex_match (password, rulesCheck)) {
+
+            // If it does conform then exit the program
+            if (regex_match(password, rulesCheck)) {
                 return password;
             }
         }
@@ -338,11 +336,8 @@ string generatePassword(string domain, string masterpass ) {
                 std::cout << "The code was error_brack\n";
             }
         }
-
-
-        
     }
-    return ""; // this will never be hit
+    return "";  // this will never be hit
 }
 
 /************************************ HELP ************************************\
