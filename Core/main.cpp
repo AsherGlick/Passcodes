@@ -49,14 +49,17 @@
 #include <unistd.h>
 #include <math.h>
 #include <pwd.h>
- #include <stdio.h>
- #include <sys/stat.h>
+#include <stdio.h>
+#include <sys/stat.h>
 
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <vector>
+//#include <regex>
+#include <boost/regex.hpp>  // use the boost library until gcc supports regex
+
 
 using namespace std;
 #define HASHSIZE 32
@@ -271,30 +274,54 @@ string generatePassword(string domain, string masterpass ) {
     unsigned char hash[HASHSIZE];
 
     string output = "";
-
-    for (int i = 0; i < ITERATIONCOUNT; i++) {
+    int iterations = 0;
+    while (true) {
+        ++iterations;
         SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
 
         prehash = "";
         for (int j = 0; j < HASHSIZE; j++) {
             prehash += hash[j];
         }
+        if (iterations < ITERATIONCOUNT) continue; // make sure at least a certian number of iterations are done
+
+        vector<int> hashedValues(32);
+        for (int j = 0; j < HASHSIZE; j++) {
+            hashedValues[j] = static_cast<int>(hash[j]);
+        }
+
+        int newbase = settings.allowedCharacters.length();
+        vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
+
+
+        string password = "";
+        for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
+            password += settings.allowedCharacters[newValues[i]];
+        }
+
+        cout << "REGEX: " << settings.regex  << ":" << endl;
+        
+
+
+       //try {
+            boost::regex rulesCheck(settings.regex);
+            cout << "CREATED REGEX" << endl;
+            if (regex_match (password, rulesCheck)) {
+                return password;
+            }
+        //}
+
+        // catch (const std::regex_error& e) {
+        //     std::cout << "regex_error caught: " << e.what() << '\n';
+        //     if (e.code() == std::regex_constants::error_brack) {
+        //         std::cout << "The code was error_brack\n";
+        //     }
+        // }
+
+
+        
     }
-
-    vector<int> hashedValues(32);
-    for (int j = 0; j < HASHSIZE; j++) {
-        hashedValues[j] = static_cast<int>(hash[j]);
-    }
-
-    int newbase = settings.allowedCharacters.length();
-    vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
-
-
-    string password = "";
-    for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
-        password += settings.allowedCharacters[newValues[i]];
-    }
-    return password;
+    return ""; // this will never be hit
 }
 
 /************************************ HELP ************************************\
