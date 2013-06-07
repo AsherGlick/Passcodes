@@ -61,8 +61,6 @@
 using namespace std;
 #define HASHSIZE 32
 
-string allCharacters = " !\"#$%&'()*+,-./1234567890:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
   //////////////////////////////////////////////////////////////////////////////
  //////////////////////// BASE MODIFICATION FUNCTIONS ///////////////////////// 
 //////////////////////////////////////////////////////////////////////////////  
@@ -173,6 +171,7 @@ settingWrapper getSettings(string domain) {
     string hexCharacters = "0123456789abcdef";
 
     settingWrapper settings;
+    settings.allowedCharacters = " !\"#$%&'()*+,-./1234567890:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
     // open ~/.passcodes/config
     ifstream configFile;
@@ -227,9 +226,12 @@ settingWrapper getSettings(string domain) {
                 string regex = "";
                 getline(cashedSubscritption, regex);
                 if (regex != "") settings.regex = regex;
-                string allowedCharacters = "";
-                getline(cashedSubscritption, allowedCharacters);
-                if (allowedCharacters != "") settings.allowedCharacters = allowedCharacters;
+                string disallowedCharacters = "";
+                getline(cashedSubscritption, disallowedCharacters);
+                for (char character : disallowedCharacters) {
+                    cout << character;
+                }
+                cout << endl;
                 string parent = "";
                 getline(cashedSubscritption, parent);
                 if (parent != "") settings.domain = parent;
