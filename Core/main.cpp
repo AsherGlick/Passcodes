@@ -67,6 +67,11 @@ using namespace std;
   //////////////////////////////////////////////////////////////////////////////
  //////////////////////// BASE MODIFICATION FUNCTIONS ///////////////////////// 
 //////////////////////////////////////////////////////////////////////////////  
+
+/************************** CALUCLATE NEW BASE LENGTH *************************\
+| This function calculates the maximum number of digits that can be in a       |
+| number of a given base given the number of digits it is in another base.     |
+\******************************************************************************/
 int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
     double logOldBase = log(oldBase);
     double logNewBase = log(newBase);
@@ -75,7 +80,12 @@ int calculateNewBaseLength(int oldBase, int oldBaseLength, int newBase) {
     if (newBaseLength > intNewBaseLength) intNewBaseLength += 1;  // round up
     return intNewBaseLength;
 }
-// Trims all of the preceding zeros off a function
+
+/********************************* TRIM NUMBER ********************************\
+| This function takes in a vector representing a multi digit number and        |
+| removes all of the preceding zero value digits returning a vector of only    |
+| meaningful digits.                                                           |
+\******************************************************************************/
 vector<int> trimNumber(vector<int> v) {
     vector<int>::iterator i = v.begin();
     while (i != v.end()-1) {
@@ -88,9 +98,12 @@ vector<int> trimNumber(vector<int> v) {
     return vector<int>(i, v.end());
 }
 
-// creats a new base number of the old base value of 10
+/******************************* TEN IN OLD BASE ******************************\
+| This function converts the value of the old base to it's equivilant value    |
+| in the new base. This is used when calulating the effect each digit of the   |
+| old base has on each digit of the new base.                                  |
+\******************************************************************************/
 vector<int> tenInOldBase(int oldBase, int newBase) {
-    // int ten[] = {1,0};
     int newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
     int maxLength = newBaseLength>2?newBaseLength:2;
 
@@ -103,13 +116,15 @@ vector<int> tenInOldBase(int oldBase, int newBase) {
     }
 
     newNumber = trimNumber(newNumber);
-
-    // return calculateNewBase(oldBase, 2, newBase, ten);
     return newNumber;
 }
 
-// Multiplies two base n numbers together
-vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
+/*************************** MULTIPLY ARBITRARY BASE **************************\
+| This function takes two numbers that are the same arbitrary base and         |
+| multiplies them together returning a vector containing the product of the    |
+| two numbers in the same base that they were originally in                    |
+\******************************************************************************/
+vector<int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
     int resultLength = firstNumber.size() + secondNumber.size();
     vector<int> resultNumber(resultLength, 0);
     for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
@@ -127,8 +142,14 @@ vector <int> multiply(int base, vector<int> firstNumber, vector<int> secondNumbe
     return trimNumber(resultNumber);
 }
 
-
-
+/***************************** CALCULATE NEW BASE *****************************\
+| This function takes in a number of an arbitrary base and returns the same    |
+| number in another base. It functions by cycling through each digit of the    |
+| original base and adding it's corrisponding value in the new base to the     |
+| new number. The corrisponding value in the new base is updated each          |
+| iteration instead of being calculated at the begining of the function,       |
+| allowing for faster conversion                                               |
+\******************************************************************************/
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
     vector<int> newNumber(newNumberLength, 0);
@@ -188,7 +209,7 @@ settingWrapper getSettings(string domain) {
 
     if (!configFile.is_open()) {
         cout << "File does not exist" << endl;
-        #if defined(_WIN32)
+        #if defined(_WIN32) // I actually havent done any testing with windows
         _mkdir(strPath.c_str());
          #else
         mkdir(configPath.c_str(), 0777); // notice that 777 is different than 0777
