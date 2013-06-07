@@ -229,9 +229,8 @@ settingWrapper getSettings(string domain) {
                 string disallowedCharacters = "";
                 getline(cashedSubscritption, disallowedCharacters);
                 for (char character : disallowedCharacters) {
-                    cout << character;
+                    settings.allowedCharacters.erase(settings.allowedCharacters.find(character),1);
                 }
-                cout << endl;
                 string parent = "";
                 getline(cashedSubscritption, parent);
                 if (parent != "") settings.domain = parent;
