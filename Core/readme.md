@@ -13,10 +13,11 @@ Usage
 Compiling
 ---------
 
-The core library uses openssl  
+The core library uses openssl and boost regex
 
 **Debian / Ubuntu**  
 `sudo apt-get install libssl-dev`
+`sudo apt-get install libboost-regex-dev`
 
 Examples
 --------
