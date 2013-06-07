@@ -167,7 +167,6 @@ struct settingWrapper {
     uint maxCharacters;
     string regex;
 };
-
     
 
 settingWrapper getSettings(string domain) {
@@ -202,12 +201,13 @@ settingWrapper getSettings(string domain) {
         configFile.open(subscriptionPath.c_str());
     }
 
-    cout << "opening file" << endl;
-    //configFile.open(subscriptionPath.c_str());
     string subscription = "";
     if (configFile.is_open()) {
-        cout << "File is open" << endl;
+        // For each subscription look up the 
         while (getline(configFile, subscription)) {
+
+            // Get a hash of the subscription path, hashses are used to insure
+            // the folder the cashe exists in is a valid folder name
             unsigned char hash[20];
             SHA1((unsigned char*)subscription.c_str(), subscription.size(), hash);
             string cashedSubscriptionName = "";
@@ -215,11 +215,31 @@ settingWrapper getSettings(string domain) {
                 cashedSubscriptionName += hexCharacters[hash[i]&0x0F];
                 cashedSubscriptionName += hexCharacters[(hash[i]>>4)&0x0F];
             }
-            ifstream subscription;
+
+            // Open the domain in the current subscription folder
+            ifstream cashedSubscritption;
             string subscriptionPath = configPath + "cashe/" + cashedSubscriptionName + "/" + domain;
-            subscription.open(subscriptionPath);
-            string maxLength
-            cout << subscriptionPath << endl;
+            cashedSubscritption.open(subscriptionPath);
+            if (cashedSubscritption.is_open()) {
+                string maxLength = "";
+                getline(cashedSubscritption, maxLength);
+                if (maxLength != "") settings.maxCharacters = stoi(maxLength);
+                string regex = "";
+                getline(cashedSubscritption, regex);
+                if (regex != "") settings.regex = regex;
+                string allowedCharacters = "";
+                getline(cashedSubscritption, allowedCharacters);
+                if (allowedCharacters != "") settings.allowedCharacters = allowedCharacters;
+                string parent = "";
+                getline(cashedSubscritption, parent);
+                if (parent != "") settings.domain = parent;
+            }
+            else {
+                //cout << "No cashed version of " << domain << " exists from the subscrition " << subscription << endl;
+                //cout << "Run \"passcodes --update\" to update the cashe from all your subscriptions" << endl;
+            }
+
+            //cout << subscriptionPath << endl;
         }
     }
     // look for 'subscriptions' section
@@ -236,12 +256,17 @@ settingWrapper getSettings(string domain) {
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
-| hash                                                                         |
+| hash                     o                                                    |
 \******************************************************************************/
 string generatePassword(string domain, string masterpass ) {
     settingWrapper settings = getSettings(domain);
 
-    string prehash = domain+masterpass;
+    // cout << "MAX LENGTH: " << settings.maxCharacters << endl;
+    // cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
+    // cout << "DOMAIN: " << settings.domain << endl;
+    // cout << "REGEX MATHC: " << settings.regex << endl;
+
+    string prehash = settings.domain+masterpass;
     unsigned char hash[HASHSIZE];
 
     string output = "";
@@ -259,12 +284,16 @@ string generatePassword(string domain, string masterpass ) {
     for (int j = 0; j < HASHSIZE; j++) {
         hashedValues[j] = static_cast<int>(hash[j]);
     }
-    vector<int> newValues = calculateNewBase(256, 64, hashedValues);
 
-    for (int val : newValues) {
-        cout << val << ", ";
+    int newbase = settings.allowedCharacters.length();
+    vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
+
+
+    string password = "";
+    for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
+        password += settings.allowedCharacters[newValues[i]];
     }
-    return "Failed";
+    return password;
 }
 
 /************************************ HELP ************************************\
