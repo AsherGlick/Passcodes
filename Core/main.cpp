@@ -161,15 +161,10 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     // For each digit in the old number add that digit's new base value to the
     // new number
     for (int i = oldNumber.size()-1; i >= 0; i--) {
-        vector<int> modifiedConversionValue(conversionValue); // create a modifyable copy of the conversion value
-        // Multiply the conversionValue by the value of the current digit
-        for (unsigned int j = 0; j < modifiedConversionValue.size(); j++) {
-            modifiedConversionValue[j] *= oldNumber[i];
-        }
         // Add the modified ConversionValue to the new number
-        for (unsigned int j = 0; j < modifiedConversionValue.size(); j++) {
-            int newNumberIndex =  j + newNumberLength - modifiedConversionValue.size();
-            newNumber[newNumberIndex] += modifiedConversionValue[j];
+        for (unsigned int j = 0; j < conversionValue.size(); j++) {
+            int newNumberIndex =  j + newNumberLength - conversionValue.size();
+            newNumber[newNumberIndex] += conversionValue[j] * oldNumber[i];
         }
 
         // increment the conversion factor by oldbase 10 to have it represent the
