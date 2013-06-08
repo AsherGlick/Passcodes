@@ -127,12 +127,15 @@ vector<int> tenInOldBase(int oldBase, int newBase) {
 vector<int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber) {
     int resultLength = firstNumber.size() + secondNumber.size();
     vector<int> resultNumber(resultLength, 0);
+
+    // Do basic long multiplication on the numbers
     for (int i = firstNumber.size() - 1 ; i >= 0; i--) {
         for (int j = secondNumber.size() - 1; j >= 0; j--) {
             resultNumber[i+j + 1] += firstNumber[i] * secondNumber[j];
         }
     }
 
+    // Flatten number to base
     for (int i = resultNumber.size() -1; i > 0; i--) {
         if (resultNumber[i] >= base) {
             resultNumber[i-1] += resultNumber[i]/base;
@@ -153,22 +156,25 @@ vector<int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
     int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
     vector<int> newNumber(newNumberLength, 0); // blank vector of 0's
-    vector<int> conversionFactor(1, 1);  // a single digit of 1
+    vector<int> conversionValue(1, 1);  // a single digit of 1
+    
+    // For each digit in the old number add that digit's new base value to the
+    // new number
     for (int i = oldNumber.size()-1; i >= 0; i--) {
-        vector<int> difference(conversionFactor);
-        // size the vector
-        for (unsigned int j = 0; j < difference.size(); j++) {
-            difference[j] *= oldNumber[i];
+        vector<int> modifiedConversionValue(conversionValue); // create a modifyable copy of the conversion value
+        // Multiply the conversionValue by the value of the current digit
+        for (unsigned int j = 0; j < modifiedConversionValue.size(); j++) {
+            modifiedConversionValue[j] *= oldNumber[i];
         }
-        // add the vector
-        for (unsigned int j = 0; j < difference.size(); j++) {
-            int newNumberIndex =  j + newNumberLength - difference.size();
-            newNumber[newNumberIndex] += difference[j];
+        // Add the modified ConversionValue to the new number
+        for (unsigned int j = 0; j < modifiedConversionValue.size(); j++) {
+            int newNumberIndex =  j + newNumberLength - modifiedConversionValue.size();
+            newNumber[newNumberIndex] += modifiedConversionValue[j];
         }
 
         // increment the conversion factor by oldbase 10 to have it represent the
         // value of the next digit in the old base
-        conversionFactor = multiply(newBase, conversionFactor, tenInOldBase(oldBase,newBase));
+        conversionValue = multiply(newBase, conversionValue, tenInOldBase(oldBase,newBase));
     }
 
     // Flatten number to base
