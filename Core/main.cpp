@@ -146,33 +146,31 @@ vector<int> multiply(int base, vector<int> firstNumber, vector<int> secondNumber
 }
 
 /***************************** CALCULATE NEW BASE *****************************\
-| This function takes in a number of an arbitrary base and returns the same    |
-| number in another base. It functions by cycling through each digit of the    |
-| original base and adding it's corrisponding value in the new base to the     |
-| new number. The corrisponding value in the new base is updated each          |
-| iteration instead of being calculated at the begining of the function,       |
-| allowing for faster conversion                                               |
+| The calculate new base function takes in a number of one base and converts   |
+| it to a number of another base. It does this by converting the value of      |
+| each digit of the old number into its corisponding value in the new base     |
+| and summing all the numbers                                                  |
 \******************************************************************************/
 vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
-    int newNumberLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
-    vector<int> newNumber(newNumberLength, 0); // blank vector of 0's
-    vector<int> conversionValue(1, 1);  // a single digit of 1
+    int newLength = calculateNewBaseLength(oldBase, oldNumber.size(), newBase);
+    vector<int> newNumber(newLength, 0);
+    vector<int> oldBaseTen = tenInOldBase(oldBase, newBase);
+
+    // The starting conversion value is 1 ( 1 = 1 for every base)
+    vector<int> conversionValue(1, 1);
     
-    // For each digit in the old number add that digit's new base value to the
-    // new number
+    // add each value of the digits of the old number to the new number
     for (int i = oldNumber.size()-1; i >= 0; i--) {
-        // Add the modified ConversionValue to the new number
         for (unsigned int j = 0; j < conversionValue.size(); j++) {
-            int newNumberIndex =  j + newNumberLength - conversionValue.size();
+            int newNumberIndex =  j + newLength - conversionValue.size();
             newNumber[newNumberIndex] += conversionValue[j] * oldNumber[i];
         }
 
-        // increment the conversion factor by oldbase 10 to have it represent the
-        // value of the next digit in the old base
-        conversionValue = multiply(newBase, conversionValue, tenInOldBase(oldBase,newBase));
+        // increment the conversion value to the conversion for the next digit
+        conversionValue = multiply(newBase, conversionValue, oldBaseTen);
     }
-
-    // Flatten number to base
+    
+    // Flatten number to the new base
     for (int i = newNumber.size()-1; i >=0; i--) {
         if (newNumber[i] >= newBase) {
             newNumber[i-1] += newNumber[i]/newBase;
@@ -180,6 +178,7 @@ vector<int> calculateNewBase(int oldBase, int newBase, vector<int> oldNumber) {
         }
     }
 
+    // Trim and return the number
     return trimNumber(newNumber);
 }
 
