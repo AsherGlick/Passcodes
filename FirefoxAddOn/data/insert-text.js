@@ -1,11 +1,13 @@
-self.on("click", function (node, data) {
-	//console.log(data);
-	//window.openDialog(data);
-	self.postMessage(document.URL);
+var __passcodes__target = null;
+document.addEventListener("mousedown", function(event){
+	console.log("HELLO!");
+	// Check right click
+	if(event.button == 2) {
+		__passcodes__target = event.target;
+	}
+}, true);
 
-});
-
-
+/*
 self.on("message", function(message) {
 	var text = message;
 
@@ -24,4 +26,15 @@ self.on("message", function(message) {
 	txtarea.selectionEnd = strPos;
 	txtarea.focus();
 	txtarea.scrollTop = scrollPos;
+});
+*/
+
+
+
+self.port.on("getElements", function(tag) {
+  var elements = document.getElementsByTagName(tag);
+  for (var i = 0; i < elements.length; i++) {
+    self.port.emit("gotElement", elements[i].innerHTML);
+  }
+  self.port.emit("gotElement", "DONE!");
 });
