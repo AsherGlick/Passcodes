@@ -1,7 +1,10 @@
 self.on("click", function (node, data) {
-	//self.postMessage(node.src);
+	self.postMessage(document.URL);
+});
 
-	var text = "Hello There!";
+
+self.on("message", function(message) {
+	var text = message;
 
 	var txtarea = node;
 	var scrollPos = txtarea.scrollTop;
