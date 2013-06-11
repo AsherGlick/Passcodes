@@ -20,24 +20,26 @@ pageMod.PageMod({
 	contentScriptFile: data.url("insert-text.js"),
 	onAttach: function(worker) {
 		console.log("Attached");
-		worker.port.emit("getElements", tag);
-		worker.port.on("gotElement", function(elementContent) {
-			console.log(elementContent);
+
+
+		worker.port.on("__passcod.es__target", function(target) {
+			console.log("Got Target");
+
+			worker.port.emit("__passcod.es__setTarget", target);
 		});
 
-		worker.port.on("clicked", function () {
-			console.log("GOT A CLICK");
-		});
 
 
 		var menuItem = contextMenu.Item({
-		label: "Fill In Passcode Here",
-		context: contextMenu.SelectorContext("input"),
-		image: "http://passcod.es/favicon.ico",
-		onMessage: function (selectionText) {
-			worker.port.emit("getSelectedNode");
-		}
-	});
+			label: "Fill In Passcode Here",
+			context: contextMenu.SelectorContext("input"),
+			image: "http://passcod.es/favicon.ico",
+			contentScript: 'self.on("click", function() {self.postMessage();});',
+			onMessage: function (selectionText) {
+				console.log("Caught Click");
+				worker.port.emit("__passcod.es__getTarget");
+			}
+		});
 	}
 });
 
