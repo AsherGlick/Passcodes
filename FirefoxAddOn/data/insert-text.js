@@ -1,5 +1,8 @@
 self.on("click", function (node, data) {
+	//console.log(data);
+	//window.openDialog(data);
 	self.postMessage(document.URL);
+
 });
 
 
