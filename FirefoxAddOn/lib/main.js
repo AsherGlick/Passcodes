@@ -25,7 +25,17 @@ pageMod.PageMod({
 		worker.port.on("__passcod.es__target", function(target) {
 			console.log("Got Target");
 
-			worker.port.emit("__passcod.es__setTarget", target);
+			var panel = require("sdk/panel").Panel({
+				width: 300,
+				height: 300,
+				// contentScriptFile: data.url("generatePassword.js"),
+				contentURL: data.url("popup.html")
+			});
+
+			panel.show();
+			panel.on("__passcod.es__result", function(result) {
+				worker.port.emit("__passcod.es__setTarget", result);
+			});
 		});
 
 
