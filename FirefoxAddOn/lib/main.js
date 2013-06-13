@@ -23,7 +23,7 @@ pageMod.PageMod({
 
 
 		worker.port.on("__passcod.es__target", function(target) {
-			console.log("Got Target");
+			console.log("Got Target: "+target);
 
 			var panel = require("sdk/panel").Panel({
 				width: 300,
@@ -34,7 +34,7 @@ pageMod.PageMod({
 
 			
 			panel.on("show", function () {
-				panel.port.emit("__passcod.es__showPanel");
+				panel.port.emit("__passcod.es__showPanel",target);
 			});
 			panel.on("__passcod.es__result", function(result) {
 				console.log("Finished Message");

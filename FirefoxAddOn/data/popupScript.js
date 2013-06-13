@@ -40,8 +40,14 @@ document.getElementById('form').onsubmit = function() {
 	console.log("Text sumbitted");
 	self.port.emit("__passcod.es__result", generatePassword());
 };
-self.port.on("__passcod.es__showPanel", function () {
-	document.getElementById("website").focus();
+self.port.on("__passcod.es__showPanel", function (domain) {
+	if (domain == "") {
+		document.getElementById("website").focus();
+	}
+	else {
+		document.getElementById("website").value = domain;
+		document.getElementById("masterPassword").focus();
+	}
 	console.log("SHOWN!");
 });
 console.log("Parsed PopupScript");
