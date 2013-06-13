@@ -28,7 +28,7 @@ pageMod.PageMod({
 			var panel = require("sdk/panel").Panel({
 				width: 300,
 				height: 300,
-				contentScriptFile: data.url("popupScript.js"),
+				contentScriptFile: [data.url("sha256.js"), data.url("core.js"), data.url("popupScript.js")],
 				contentURL: data.url("popup.html")
 			});
 
@@ -36,8 +36,8 @@ pageMod.PageMod({
 			panel.on("show", function () {
 				panel.port.emit("__passcod.es__showPanel",target);
 			});
-			panel.on("__passcod.es__result", function(result) {
-				console.log("Finished Message");
+			panel.port.on("__passcod.es__result", function(result) {
+				console.log("Finished Message: " + result);
 				worker.port.emit("__passcod.es__setTarget", result);
 				panel.hide();
 			});

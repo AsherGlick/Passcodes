@@ -37,8 +37,13 @@
 \******************************************************************************/
 console.log("Entered PopupScript");
 document.getElementById('form').onsubmit = function() {
-	console.log("Text sumbitted");
-	self.port.emit("__passcod.es__result", generatePassword());
+	try {
+		self.port.emit("__passcod.es__result", generatePassword());
+		console.log("Text sumbitted");
+	}
+	catch (err) {
+		console.log("ERROR: "+err);
+	}
 };
 self.port.on("__passcod.es__showPanel", function (domain) {
 	if (domain == "") {
