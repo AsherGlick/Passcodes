@@ -55,7 +55,7 @@ function removeSubdomain () {
 
 self.port.on("__passcod.es__getTarget", function() {
 	console.log("GET TARGET REQUEST");
-  self.port.emit("__passcod.es__target", removeSubdomain());
+	self.port.emit("__passcod.es__target", removeSubdomain());
 });
 
 
