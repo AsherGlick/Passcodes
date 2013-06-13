@@ -15,6 +15,9 @@ var tag = "p";
 var data = require("sdk/self").data;
 var pageMod = require("sdk/page-mod");
 
+var workers = [];
+var target;
+
 pageMod.PageMod({
 	include: ["*"],
 	contentScriptFile: data.url("insert-text.js"),
@@ -22,41 +25,56 @@ pageMod.PageMod({
 		console.log("Attached");
 
 
-		worker.port.on("__passcod.es__target", function(target) {
+		worker.port.on("__passcod.es__target", function(_target) {
+			target = _target;
 			console.log("Got Target: "+target);
+			panel.show();
+		});
 
-			var panel = require("sdk/panel").Panel({
+
+		workers[worker.tab] = worker;
+		
+	}
+});
+
+
+var panel = require("sdk/panel").Panel({
 				width: 300,
 				height: 300,
 				contentScriptFile: [data.url("sha256.js"), data.url("core.js"), data.url("popupScript.js")],
-				contentURL: data.url("popup.html")
+				contentURL: data.url("popup.html"),
 			});
 
 			
 			panel.on("show", function () {
 				panel.port.emit("__passcod.es__showPanel",target);
+				target = "";
 			});
 			panel.port.on("__passcod.es__result", function(result) {
 				console.log("Finished Message: " + result);
-				worker.port.emit("__passcod.es__setTarget", result);
+				workers[calledTab].port.emit("__passcod.es__setTarget", result);
 				panel.hide();
 			});
-			panel.show();
-		});
 
 
-
-		var menuItem = contextMenu.Item({
-			label: "Fill In Passcode Here",
-			context: contextMenu.SelectorContext("input"),
-			image: "http://passcod.es/favicon.ico",
-			contentScript: 'self.on("click", function() {self.postMessage();});',
-			onMessage: function (selectionText) {
-				console.log("Caught Click");
-				worker.port.emit("__passcod.es__getTarget");
-			}
-		});
+var menuItem = contextMenu.Item({
+	label: "Fill In Passcode Here",
+	context: contextMenu.SelectorContext("input"),
+	image: "http://passcod.es/favicon.ico",
+	contentScript: 'self.on("click", function() {self.postMessage();});',
+	onMessage: function (selectionText) {
+		console.log("Caught Click");
+		workers[currentTab].port.emit("__passcod.es__getTarget");
+		calledTab = currentTab;
 	}
 });
 
+// Track which tab is being used
+var currentTab = tabs[0]; // make the current tab the starting tab
+// Just in case track the tab that was last called on
+var calledTab;
 
+var tabs = require("sdk/tabs");
+tabs.on('activate', function(tab) {
+	console.log(tab.url);
+});
