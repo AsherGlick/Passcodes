@@ -16,8 +16,8 @@ Terminal Program       | [Functional](Core)                                     
 Windows Standalone GUI | Not Functional                                         | 0
 Linux Standalone GUI   | Not Functional                                         | 0
 Mac Standalone GUI     | Not Functional                                         | 0
-Web                    | [Functional](Web)                                      | 0
-Mobile Web             | [Functional](Web)                                      | 0
+Web                    | [Functional](Web)                                      | 2
+Mobile Web             | [Functional](Web)                                      | 2
 
 Our aim is to make the application simple enough that anyone will be able to pick up and use it without it getting in their way
 
