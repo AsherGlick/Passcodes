@@ -32,8 +32,8 @@ pageMod.PageMod({
 		});
 
 
-		workers[worker.tab] = worker;
-		
+		workers[worker.tab.id] = worker;
+		console.log("Number of Workers: "+ Object.keys(workers).length);
 	}
 });
 
@@ -70,11 +70,17 @@ var menuItem = contextMenu.Item({
 });
 
 // Track which tab is being used
-var currentTab = tabs[0]; // make the current tab the starting tab
+var currentTab = tabs[0].id; // make the current tab the starting tab
 // Just in case track the tab that was last called on
 var calledTab;
 
 var tabs = require("sdk/tabs");
 tabs.on('activate', function(tab) {
-	console.log(tab.url);
+	console.log(tab.id + ":" + tab.url);
+	currentTab = tab.id;
+
+});
+
+tabs.on('close', function(tab) {
+	delete workers[tab.id];
 });
