@@ -1,9 +1,9 @@
 {
-  "name": "firefoxaddon",
-  "fullName": "FirefoxAddOn",
+  "name": "passcodes",
+  "fullName": "Passcodes",
   "id": "jid1-9Y7WqwzdULfH0A",
-  "description": "a basic add-on",
+  "description": "A easy add on for generating and regenrating passcodes passwords",
   "author": "",
-  "license": "MPL 2.0",
-  "version": "0.1"
+  "license": "BSD 2 Clause",
+  "version": "0.5"
 }
