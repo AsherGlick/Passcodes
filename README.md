@@ -2,26 +2,27 @@ Passcodes
 =========
 Passcodes web interface can be found at [passcod.es](http://passcod.es)
 
-
 Striving to get versions compatable on the following devics
 
-Firefox Extention - [Functional](FirefoxExtention)  
-Chrome Extention - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/ChromeExtention)  
-Safari Extention - [Safari Passcode](https://github.com/mdznr/Safari-Passcode)  
-Android App - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Android)  
-iPhone App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
-iPad App - [iOS Passcode](https://github.com/mdznr/iOS-Passcode)  
-Terminal Program - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Core)  
-Windows Standalone GUI  
-Linux Standalone GUI  
-Mac Standalone GUI  
-Web - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Web)  
-Mobile Web - [Functional](https://github.com/AsherGlick/Passcodes/tree/master/Web)  
+Planned Applications   | Current Status
+-----------------------|----------------------------------------------------------------
+Firefox Extention      | [Version 2 Generator](FirefoxExtention)  
+Chrome Extention       | [Version 2 Generator](https://github.com/AsherGlick/Passcodes/tree/master/ChromeExtention)  
+Safari Extention       | [Version 1 Generator](https://github.com/mdznr/Safari-Passcode)  
+Android App            | [Version 2 Generator](https://github.com/AsherGlick/Passcodes/tree/master/Android)  
+iPhone App             | [Version 2 Generator](https://github.com/mdznr/iOS-Passcode)  
+iPad App               | [Version 1 Generator](https://github.com/mdznr/iOS-Passcode)  
+Terminal Program       | [Version 2 Generator](https://github.com/AsherGlick/Passcodes/tree/master/Core)  
+Windows Standalone GUI | Not Ready
+Linux Standalone GUI   | Not Ready
+Mac Standalone GUI     | Not Ready
+Web                    | [Version 2 Generator](https://github.com/AsherGlick/Passcodes/tree/master/Web)  
+Mobile Web             | [Version 2 Generator](https://github.com/AsherGlick/Passcodes/tree/master/Web)  
 
-Hopefully using this program will be easy enough that many people will begin to use it
+Our aim is to make the application simple enough that anyone will be able to pick up and use it without it getting in their way
 
-How it works
-------------
+How Version 2 works
+-------------------
 
     domain = input()
     domain = domain.toLowerCase()
