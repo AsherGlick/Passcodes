@@ -35,14 +35,14 @@
 | the text boxes. Then sends the generated password to the tab that called     |
 | this popup to have it insert into the page                                   |
 \******************************************************************************/
-console.log("Entered PopupScript");
+//console.log("Entered PopupScript");
 document.getElementById('form').onsubmit = function() {
 	try {
 		self.port.emit("__passcod.es__result", generatePassword());
-		console.log("Text sumbitted");
+		//console.log("Text sumbitted");
 	}
 	catch (err) {
-		console.log("ERROR: "+err);
+		//console.log("ERROR: "+err);
 	}
 };
 self.port.on("__passcod.es__showPanel", function (domain) {
@@ -53,6 +53,6 @@ self.port.on("__passcod.es__showPanel", function (domain) {
 		document.getElementById("website").value = domain;
 		document.getElementById("masterPassword").focus();
 	}
-	console.log("SHOWN!");
+	//console.log("SHOWN!");
 });
-console.log("Parsed PopupScript");
+//console.log("Parsed PopupScript");

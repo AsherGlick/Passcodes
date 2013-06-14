@@ -54,13 +54,13 @@ function removeSubdomain () {
 }
 
 self.port.on("__passcod.es__getTarget", function() {
-	console.log("GET TARGET REQUEST");
+	//console.log("GET TARGET REQUEST");
 	self.port.emit("__passcod.es__target", removeSubdomain());
 });
 
 
 self.port.on("__passcod.es__setTarget", function(password) {
-	console.log("SET TARGET REQUEST");
+	//console.log("SET TARGET REQUEST");
 	var text = password;
 
 	// run all code here
