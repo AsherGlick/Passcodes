@@ -8,3 +8,4 @@ git checkout gh-pages
 git status
 #git commit -m "$MESSAGE"
 git checkout master
+cd Web
