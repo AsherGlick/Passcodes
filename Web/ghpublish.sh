@@ -1,11 +1,9 @@
-TMPDIR=`mktemp -d`
+TMPDIR=`mktemp -u`
+./git-new-workdir . $TMPDIR gh-pages
+git pull
 amassite amassite/ $TMPDIR -C
-echo "$TMPDIR"
-read -p "Commit Message " MESSAGE 
-cd ..
-git checkout gh-pages
-#git add *
-git status
-#git commit -m "$MESSAGE"
-git checkout master
-cd Web
+cd $TMPDIR
+git add *
+git commit
+git push
+rm -r $TMPDIR
