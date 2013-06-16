@@ -93,7 +93,7 @@ pageMod.PageMod({
 var panel = require("sdk/panel").Panel({
     width: 300,
     height: 300,
-    contentScriptFile: [data.url("sha256.js"), data.url("core.js"), data.url("popupScript.js")],
+    contentScriptFile: [data.url("cryptojs-core.js"), data.url("cryptojs-sha256.js"), data.url("core.js"), data.url("popupScript.js")],
     contentURL: data.url("popup.html")
 });
 
