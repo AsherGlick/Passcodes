@@ -1,6 +1,7 @@
 Passcodes
 =========
 Passcodes web interface can be found at [passcod.es](http://passcod.es)
+Backup Web interface can be found at [github pages](http://asherglick.github.io/Passcodes/)
 
 Striving to get versions compatable on the following devics
 
