@@ -22,7 +22,6 @@ if ($request[0] == 'domain') {
 
 function getRules ($domain, $inifile) {
 	$mysqli = new mysqli($inifile['url'], $inifile['username'], $inifile['password'], $inifile['database']) ;
-	// mysql_select_db($inifile['database']) or die("Unable to select database");
 
 	/* check connection */
 	if (mysqli_connect_errno()) {
@@ -30,12 +29,9 @@ function getRules ($domain, $inifile) {
 	    exit();
 	}
 
-	// $domain = $mysqli->real_escape_string($domain);
+	$domain = $mysqli->escape_string($domain);
 
-	// $sql = "SELECT * from " . $inifile['rulesTable'] . " WHERE (name, version) IN (SELECT name, MAX(version) FROM rules WHERE name = '" . $domain . "' GROUP BY name)";
-	$sql = "SELECT * from rules";// . $inifile['rulesTable'];
-	print $sql . "\n";
-
+	$sql = "SELECT name, version, creationdate, minlength, maxlength, restrictedcharacters, regex, parent from " . $inifile['rulesTable'] . " WHERE (name, version) IN (SELECT name, MAX(version) FROM rules WHERE name in ('" . $domain . "', 'example') GROUP BY name)";
 
 	$result = $mysqli->query($sql) or die("Unable to select: " . $mysqli->error );
 
@@ -44,7 +40,9 @@ function getRules ($domain, $inifile) {
 	while($row = $result->fetch_assoc()) {
 	    $rows[] = $row;
 	}
+	print_r ($rows);
+	print "\n";
 	print json_encode($rows);
-
 }
+
 ?>
