@@ -1,6 +1,6 @@
-[submodule "SafariExtention"]
+[submodule "source/SafariExtention"]
 	path = source/SafariExtention
 	url = git://github.com/mdznr/Safari-Passcode.git
-[submodule "iOS"]
+[submodule "source/iOS"]
 	path = source/iOS
 	url = git://github.com/mdznr/iOS-Passcode.git
