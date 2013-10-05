@@ -1,0 +1,59 @@
+Version 1 API documentation <br>
+Any issues or bugs should be addressed on the github issue tracker<br>
+Developer contact: aglick@passcod.es <br>
+api.passcod.es/v1/domain/google <br>
+<pre>
+[
+  {
+    "name":"google",
+    "version":"4",
+    "creationdate":"2013-10-24 00:00:00",
+    "minlength":"11",
+    "maxlength":"83",
+    "restrictedcharacters":"",
+    "regex":"*",
+    "parent":""
+  }
+]
+</pre>
+
+api.passcod.es/v1/domain/google+example+bogusurl
+<pre>
+[
+  {
+    "name":"example",
+    "version":"3",
+    "creationdate":"2013-10-24 00:00:00",
+    "minlength":"10",
+    "maxlength":"82",
+    "restrictedcharacters":"",
+    "regex":"*",
+    "parent":""
+  },
+  {
+    "name":"google",
+    "version":"4",
+    "creationdate":"2013-10-24 00:00:00",
+    "minlength":"11",
+    "maxlength":"83",
+    "restrictedcharacters":"",
+    "regex":"*",
+    "parent":""
+  },
+  {
+    "name":"bogusurl",
+    "version":"0"
+  }
+]
+</pre>
+If the domain is not present then the version # will be zero and no other arguments will be provided <br>
+
+http://api.passcod.es/v1/domain/bogusurl
+<pre>
+[
+  {
+    "name":"bogusurl",
+    "version":"0"
+  }
+]
+</pre>
