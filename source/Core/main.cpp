@@ -60,6 +60,8 @@
 //#include <regex>
 #include <boost/regex.hpp>  // use the boost library until gcc supports regex
 
+#include "settings.h"
+
 
 using namespace std;
 #define HASHSIZE 32
@@ -285,10 +287,21 @@ settingWrapper getSettings(string domain) {
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
-| hash                     o                                                    |
+| hash                                                                         |
 \******************************************************************************/
 string generatePassword(string domain, string masterpass ) {
-    settingWrapper settings = getSettings(domain);
+
+    SettingsAPI settingsDatabase;
+
+    if (!settingsDatabase.IsOpen()) {
+        cout << "Error: Local settings database is not opened" << endl;
+    }
+    else {
+        cout << "Local settings database opened" << endl;
+    }
+
+    DomainSettings settings = settingsDatabase.GetSettings(domain); // use versionless command for now
+    // settingWrapper settings = getSettings(domain);
 
     // cout << "MAX LENGTH: " << settings.maxCharacters << endl;
     // cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
@@ -332,6 +345,9 @@ string generatePassword(string domain, string masterpass ) {
             // If it does conform then exit the program
             if (regex_match(password, rulesCheck)) {
                 return password;
+            }
+            else {
+                // std::cout << "BAD WORD CHECK" << std::endl;
             }
         }
 
