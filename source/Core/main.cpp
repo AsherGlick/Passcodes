@@ -94,7 +94,7 @@ vector<int> trimNumber(vector<int> v) {
         if (*i != 0) {
             break;
         }
-        i++;
+        ++i;
     }
 
     return vector<int>(i, v.end());
