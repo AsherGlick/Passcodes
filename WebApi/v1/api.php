@@ -1,7 +1,7 @@
 <?
 header('Content-Type: application/json; charset=utf-8'); // feels hacky just changing this one line of the header (maybe not)
 
-$inifile = parse_ini_file("./database.ini");
+$inifile = parse_ini_file("./.database.ini");
 // [Database Configuration]
 // url = <database.url.com>
 // username = <username>
