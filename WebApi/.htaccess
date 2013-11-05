@@ -3,6 +3,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule v1/(.*)$ v1/api.php?request=$1 [QSA,NC,L]
+RewriteRule deploy/(.*) - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 </IfModule>
 
 RedirectMatch 404 /\..*$
