@@ -14,12 +14,12 @@ function log_exec($command) {
     $data = exec($command, $output, $return_var);
 
     // Report all the results to the log file
-    file_put_contents("update_history.log", $timestamp . ' [COMMAND] ' . $command . "\n", FILE_APPEND );
+    file_put_contents(".update_history.log", $timestamp . ' [COMMAND] ' . $command . "\n", FILE_APPEND );
 
     foreach ($output as $stdoutLine) {
-        file_put_contents("update_history.log", $timestamp . ' [STDOUT] ' . $stdoutLine . "\n", FILE_APPEND );
+        file_put_contents(".update_history.log", $timestamp . ' [STDOUT] ' . $stdoutLine . "\n", FILE_APPEND );
     }
-    file_put_contents("update_history.log", $timestamp . ' [RETURNCODE] ' . $return_var . "\n", FILE_APPEND );  
+    file_put_contents(".update_history.log", $timestamp . ' [RETURNCODE] ' . $return_var . "\n", FILE_APPEND );  
 
     return $return_var;
 }
@@ -32,8 +32,8 @@ function log_exec($command) {
 \******************************************************************************/
 function log_message($text) {
     $timestamp = "[" . date("Y-m-d H:i:s") . "]";
-    file_put_contents ( "update_history.log" , $timestamp . ' [LOG] ' . $text, FILE_APPEND );
-    file_put_contents ( "update_history.log" , "\n", FILE_APPEND );
+    file_put_contents ( ".update_history.log" , $timestamp . ' [LOG] ' . $text, FILE_APPEND );
+    file_put_contents ( ".update_history.log" , "\n", FILE_APPEND );
 }
 
 
@@ -99,9 +99,9 @@ if (is_null($username) || is_null($password) || $password == "") {
         // Git pull 
         log_message("Accessed by $username ");
         log_exec('git --version');
-        if (log_exec("cd ../../passcod.es/dev2/; git pull origin gh-pages") == 128) {
+        if (log_exec("cd ../../passcod.es/; git pull origin gh-pages") == 128) {
             log_message("Git Repo not initilized, creating repo");
-            log_exec("cd ../../passcod.es/dev2/; git clone -b gh-pages https://github.com/AsherGlick/Passcodes.git .");
+            log_exec("cd ../../passcod.es/; git clone -b gh-pages https://github.com/AsherGlick/Passcodes.git .");
         }
 
         foreach ($_POST as $key => $value) {
