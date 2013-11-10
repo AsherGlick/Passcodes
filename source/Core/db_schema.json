@@ -1,0 +1,16 @@
+{
+	"ID":{
+		"Depricated":false,
+
+		},
+	"Domain":{
+		"Type":"varchar",
+		"Size":100,
+		"Description":"The name of the domain that is being querried",
+		"Index":true,
+		"Default":"",
+		"Extra":"",
+		"Depricated":false,
+		}
+	""
+}
