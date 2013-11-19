@@ -7,7 +7,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"AUTO_INCREMENT",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"Domain":{
 		"Type":"varchar",
@@ -17,7 +17,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"Version":{
 		"Type":"int",
@@ -27,7 +27,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"CreationDate":{
 		"Type":"timestamp",
@@ -36,7 +36,7 @@
 		"Default":"CURRENT_TIMESTAMP",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"MinLength":{
 		"Type":"int",
@@ -46,7 +46,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"MaxLenght":{
 		"Type":"int",
@@ -56,7 +56,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"RestrictedCharacters":{
 		"Type":"varchar",
@@ -66,7 +66,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"Regex":{
 		"Type":"varchar",
@@ -76,7 +76,7 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
+		"Depricated":false
 		},
 	"Parent":{
 		"Type":"varchar",
@@ -86,6 +86,6 @@
 		"Default":"",
 		"Nullable":false,
 		"Extra":"",
-		"Depricated":false,
-		},
+		"Depricated":false
+		}
 }
