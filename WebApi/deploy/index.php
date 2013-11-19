@@ -99,11 +99,14 @@ if (is_null($username) || is_null($password) || $password == "") {
         // Git pull 
         log_message("Accessed by $username ");
         log_exec('git --version');
+
+        // pull down the repo, if it is not created yet clone the repo then pull
         if (log_exec("cd ../../passcod.es/; git pull origin gh-pages") == 128) {
             log_message("Git Repo not initilized, creating repo");
             log_exec("cd ../../passcod.es/; git clone -b gh-pages https://github.com/AsherGlick/Passcodes.git .");
         }
 
+        // Log the post message that was sent
         foreach ($_POST as $key => $value) {
             log_message($key . " ==> " . $value);
         }
