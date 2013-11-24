@@ -85,7 +85,7 @@
 		"rule_id_index":"ID",
 		"rule_domain_index":"Domain",
 		"rule_version_index":"Version",
-		"rule_creation_index":"CreationDate",
+		"rule_creation_index":"CreationDate"
 
 	}
 }
