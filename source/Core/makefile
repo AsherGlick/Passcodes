@@ -1,4 +1,4 @@
 all:
-	g++ schemaCompiler.cpp -lssl -W -Wall -Wextra -pedantic -std=c++0x -o schemaCompiler
+	g++ schemaCompiler.cpp -W -Wall -Wextra -Wshadow -pedantic -std=c++0x -o schemaCompiler
 clean:
-	rm schemaCompilerk
+	rm schemaCompiler
