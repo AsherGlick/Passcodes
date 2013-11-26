@@ -8,8 +8,18 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
+#include <vector>
+#include <sstream>
+#include <map>
 using namespace std;
 
+
+
+map <string, string> SQLtoC {
+	{"varchar", "string"},
+	{"int", "int"},
+	{"timestamp", "sql_timestamp"}
+};
 
 
 int main() {
@@ -26,28 +36,41 @@ int main() {
 
 
 	cout << "Parsing File" << endl;
-	for ( ptree::value_type const& v : pt.get_child("")) {
+
+	stringstream cfile;        // Really these should all be files
+	stringstream sqlrows;    // to be joined and encapsulated
+	vector<string> slqindexes; // to be joined as is
+
+	sqlrows << "CREATE TABLE rules ("; 
+
+
+	string concatinator = "";
+	for ( ptree::value_type const& v : pt.get_child("columns")) {
 
 		string columnName = v.first;
 
 		ptree subtree = v.second;
-		string type = subtree.get<std::string>("Type"); 
+		string type = subtree.get<std::string>("Type");
 		string size = subtree.get("Size", "");
 		string description = subtree.get("Description", "");
-		bool isIndex = subtree.get("Index", false);
+		string indexName = subtree.get("Index", "");
 		string defaultValue = subtree.get("Default", "");
 		bool isNullable = subtree.get("Nullable", true);
 		string extraData = subtree.get("Extra", "");
 		bool isDepricated = subtree.get("Depricated", false);
 
 
-		cout << "  `" << boost::to_lower_copy(columnName) << "`";
-		cout << " " << boost::to_lower_copy(type); if (size.length() > 0) cout << "(" << size << ")"; cout << " ";
-		if (!isNullable) cout << "NOT NULL";
-		if (extraData.length() > 0) cout << " " << extraData;
-		cout << "," << endl;
 
 
+		sqlrows << concatinator << endl << "  `" << boost::to_lower_copy(columnName) << "`";
+		sqlrows << " " << boost::to_lower_copy(type); if (size.length() > 0) sqlrows << "(" << size << ")"; sqlrows << " ";
+		if (!isNullable) sqlrows << "NOT NULL";
+		if (defaultValue.length() > 0) sqlrows << " DEFAULT " << defaultValue;
+		if (extraData.length() > 0) sqlrows << " " << extraData;
+		concatinator = ",";
+
+
+		cfile << SQLtoC[type] << " " << columnName << ";" << endl;
 
 		// CREATE TABLE `virtual_aliases` (
 		//   `id` int(11) NOT NULL auto_increment,
@@ -60,4 +83,8 @@ int main() {
 
 	}
 
+	sqlrows << endl << ") ENGINE=InnoDB DEFAULT CHARSET=utf8;" << endl; // the engine data might not be nessasary but IDK
+	// cout << "CREATE INDEX " << indexName << "ON rules (" << columnName << ");" << endl;
+	cout << sqlrows.rdbuf() << endl;
+	cout << cfile.rdbuf() << endl;
 }
