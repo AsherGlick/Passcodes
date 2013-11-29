@@ -44,7 +44,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"MaxLenght":{
+		"MaxLength":{
 			"Type":"int",
 			"Size":9,
 			"Description":"The maximum length of a password generated for this domain",
