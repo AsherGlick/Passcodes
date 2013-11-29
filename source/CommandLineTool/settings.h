@@ -20,7 +20,7 @@ class DomainSettings {
     uint maxCharacters;
     std::string regex;
 
-    // Default initilizer
+    // Default initilizer (DEFAULT SETTINGS if the domain does not exist in the database)
     DomainSettings( std::string domain ) {
         this->domain = domain;
         this->allowedCharacters = " !\"#$%&'()*+,-./1234567890:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; // every typeable ascii character
@@ -28,7 +28,7 @@ class DomainSettings {
         this->regex = ".*"; // Match anything
     }
 
-    // Full initilizer
+    // Full initilizer  (DEPRICATED)
     DomainSettings( std::string domain, std::string allowedCharacters, uint maxCharacters, std::string regex) {
         this->domain = domain;
         this->allowedCharacters = allowedCharacters;
