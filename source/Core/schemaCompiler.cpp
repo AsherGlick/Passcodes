@@ -7,6 +7,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
+// #include <boost/date.hpp>
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -14,11 +15,25 @@
 using namespace std;
 
 
-
-map <string, string> SQLtoC {
-	{"varchar", "string"},
+// Mapping of each SQL datatype to the corrisponding C++ datatype
+map <string, string> SQLtoCPP {
+	{"varchar", "std::string"},
 	{"int", "int"},
-	{"timestamp", "sql_timestamp"}
+	{"timestamp", "std::string"}
+};
+
+// Mapping of each sql datatype to the C++ sqlite3 function to get that type from the database
+map <string, string> SQLITEtoCPP{
+	{"varchar", "std::string(reinterpret_cast<const char*> (sqlite3_column_text ("},
+	{"int", "sqlite3_column_int ("},
+	{"timestamp", "std::string(reinterpret_cast<const char*> (sqlite3_column_text (" } // Timestamp
+};
+
+// Mapping of each SQL datatype to the corrisponding Java datatype
+map <string, string> SQLtoJava {
+	{"varchar", "String"},
+	{"int", "Integer"},
+	{"timestamp", "String"}
 };
 
 
@@ -37,13 +52,16 @@ int main() {
 
 	cout << "Parsing File" << endl;
 
-	stringstream cfile;        // Really these should all be files
-	stringstream sqlrows;    // to be joined and encapsulated
-	vector<string> slqindexes; // to be joined as is
+	stringstream CPPVariables;        // Really these should all be files
+	stringstream CPPConstructor; // the construction for initilizing all of the variables from a sqlite3 statement
+	stringstream SQLRows;    // to be joined and encapsulated
+	vector<string> SQLIndexes; // to be joined as is
 
-	sqlrows << "CREATE TABLE rules ("; 
+	// Pre loop constructors
+	SQLRows << "CREATE TABLE rules ("; 
 
 
+	// Loop Constructors
 	string concatinator = "";
 	for ( ptree::value_type const& v : pt.get_child("columns")) {
 
@@ -61,16 +79,19 @@ int main() {
 
 
 
-
-		sqlrows << concatinator << endl << "  `" << boost::to_lower_copy(columnName) << "`";
-		sqlrows << " " << boost::to_lower_copy(type); if (size.length() > 0) sqlrows << "(" << size << ")"; sqlrows << " ";
-		if (!isNullable) sqlrows << "NOT NULL";
-		if (defaultValue.length() > 0) sqlrows << " DEFAULT " << defaultValue;
-		if (extraData.length() > 0) sqlrows << " " << extraData;
+		// SQL colum Value
+		SQLRows << concatinator << endl << "  `" << boost::to_lower_copy(columnName) << "`";
+		SQLRows << " " << boost::to_lower_copy(type); if (size.length() > 0) SQLRows << "(" << size << ")"; SQLRows << " ";
+		if (!isNullable) SQLRows << "NOT NULL";
+		if (defaultValue.length() > 0) SQLRows << " DEFAULT " << defaultValue;
+		if (extraData.length() > 0) SQLRows << " " << extraData;
 		concatinator = ",";
 
+		// C++ Datatype variables
+		CPPVariables << "    " << SQLtoCPP[type] << " " << columnName << ";" << endl;
 
-		cfile << SQLtoC[type] << " " << columnName << ";" << endl;
+		// C++ SQLITE3 CONVERSIONS
+		CPPConstructor << "    if (columnName == \"" << boost::to_lower_copy(columnName) << "\") {" << columnName << " = " << SQLITEtoCPP[type] << "statement,i);}" << endl;
 
 		// CREATE TABLE `virtual_aliases` (
 		//   `id` int(11) NOT NULL auto_increment,
@@ -83,8 +104,29 @@ int main() {
 
 	}
 
-	sqlrows << endl << ") ENGINE=InnoDB DEFAULT CHARSET=utf8;" << endl; // the engine data might not be nessasary but IDK
+	// Post Loop Constst	ructors
+	SQLRows << endl << ");" << endl; // the engine data might not be nessasary but IDK how SQL differes between implementations
+
+
+
 	// cout << "CREATE INDEX " << indexName << "ON rules (" << columnName << ");" << endl;
-	cout << sqlrows.rdbuf() << endl;
-	cout << cfile.rdbuf() << endl;
+
+	stringstream CPPFile;
+
+	CPPFile << "#IFNDEF __DOMAINSETTINGS_H_" << endl;
+	CPPFile << "#DEFINE __DOMAINSETTINGS_H_" << endl;
+	CPPFile << "class DomainSettings {" << endl;
+	CPPFile << "  public:" << endl;
+	CPPFile << CPPVariables.rdbuf() << endl;
+	CPPFile << "    DomainSettings {" << endl;
+	CPPFile << "        [[CONSTRUCTOR]]" << endl;
+	CPPFile << "    }" << endl;
+	CPPFile << "}" << endl;
+	CPPFile << "#ENDIF" << endl;
+
+	cout << SQLRows.rdbuf() << endl;
+	cout << CPPConstructor.rdbuf() << endl;
+
+
+	cout << CPPFile.rdbuf() << endl;
 }
