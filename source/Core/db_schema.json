@@ -1,6 +1,6 @@
 {
 	"columns":{
-		"ID":{
+		"id":{
 			"Type":"int",
 			"Size":11,
 			"Description":"The ID of the row in the table",
@@ -9,7 +9,7 @@
 			"Extra":"AUTO_INCREMENT",
 			"Depricated":false
 			},
-		"Domain":{
+		"domain":{
 			"Type":"varchar",
 			"Size":100,
 			"Description":"The name of the domain that is being querried",
@@ -18,7 +18,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"Version":{
+		"version":{
 			"Type":"int",
 			"Size":8,
 			"Description":"The version of the rule for the specified domain",
@@ -27,7 +27,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"CreationDate":{
+		"creationDate":{
 			"Type":"timestamp",
 			"Description":"The time at which the rule was added to the databse",
 			"Default":"CURRENT_TIMESTAMP",
@@ -35,7 +35,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"MinLength":{
+		"minLength":{
 			"Type":"int",
 			"Size":9,
 			"Description":"The minimum length of a password generated for this domain",
@@ -44,7 +44,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"MaxLength":{
+		"maxLength":{
 			"Type":"int",
 			"Size":9,
 			"Description":"The maximum length of a password generated for this domain",
@@ -53,7 +53,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"RestrictedCharacters":{
+		"restrictedCharacters":{
 			"Type":"varchar",
 			"Size":95,
 			"Description":"A list of characters that cannot be included in the password / a list of characters that can be used in the password",
@@ -62,7 +62,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"Regex":{
+		"regex":{
 			"Type":"varchar",
 			"Size":200,
 			"Description":"A regular expression that must be matched to the generated password before it is displayed. If a hash does not match this an additional iteration of hashing occurs and this step is repeated",
@@ -71,7 +71,7 @@
 			"Extra":"",
 			"Depricated":false
 			},
-		"Parent":{
+		"parent":{
 			"Type":"varchar",
 			"Size":100,
 			"Description":"The domain that has the same password as the one being looked up. EG: Youtube's parent is Google as they share a password while having different domains.",
@@ -82,10 +82,10 @@
 			}
 	},
 	"indexes":{
-		"rule_id_index":"ID",
-		"rule_domain_index":"Domain",
-		"rule_version_index":"Version",
-		"rule_creation_index":"CreationDate"
+		"rule_id_index":"id",
+		"rule_domain_index":"domain",
+		"rule_version_index":"version",
+		"rule_creation_index":"creationDate"
 
 	}
 }
