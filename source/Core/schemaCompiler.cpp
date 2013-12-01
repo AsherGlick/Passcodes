@@ -7,11 +7,15 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
 // #include <boost/date.hpp>
 #include <iostream>
 #include <vector>
 #include <sstream>
 #include <map>
+
+#include <stdlib.h>
+
 using namespace std;
 
 
@@ -24,9 +28,9 @@ map <string, string> SQLtoCPP {
 
 // Mapping of each sql datatype to the C++ sqlite3 function to get that type from the database
 map <string, string> SQLITEtoCPP{
-	{"varchar", "std::string(reinterpret_cast<const char*> (sqlite3_column_text ("},
-	{"int", "sqlite3_column_int ("},
-	{"timestamp", "std::string(reinterpret_cast<const char*> (sqlite3_column_text (" } // Timestamp
+	{"varchar", "std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement,i)))"},
+	{"int", "sqlite3_column_int (statement,i)"},
+	{"timestamp", "std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement,i)))" } // Timestamp
 };
 
 // Mapping of each SQL datatype to the corrisponding Java datatype
@@ -55,11 +59,15 @@ int main() {
 	stringstream CPPVariables;        // Really these should all be files
 	stringstream CPPConstructor; // the construction for initilizing all of the variables from a sqlite3 statement
 	stringstream SQLRows;    // to be joined and encapsulated
+	stringstream SQLITERows; // special formatting for sqlite (no extra data, no newlines)
 	vector<string> SQLIndexes; // to be joined as is
 
 	// Pre loop constructors
-	SQLRows << "CREATE TABLE rules ("; 
+	SQLRows << "CREATE TABLE rules (";
+	SQLITERows << "CREATE TABLE rules ("; 
 
+	// Allow tracking of the number of columns
+	int columnCount = 0; 
 
 	// Loop Constructors
 	string concatinator = "";
@@ -77,8 +85,6 @@ int main() {
 		string extraData = subtree.get("Extra", "");
 		bool isDepricated = subtree.get("Depricated", false);
 
-
-
 		// SQL colum Value
 		SQLRows << concatinator << endl << "  `" << boost::to_lower_copy(columnName) << "`";
 		SQLRows << " " << boost::to_lower_copy(type); if (size.length() > 0) SQLRows << "(" << size << ")"; SQLRows << " ";
@@ -87,11 +93,18 @@ int main() {
 		if (extraData.length() > 0) SQLRows << " " << extraData;
 		concatinator = ",";
 
+		//SQLITE3 Constructor (no extra data, no newlines)
+		SQLITERows << concatinator << " `" << boost::to_lower_copy(columnName) << "`";
+		SQLITERows << " " << boost::to_lower_copy(type); if (size.length() > 0) SQLITERows << "\\(" << size << "\\)"; SQLITERows << " ";
+		if (!isNullable) SQLITERows << "NOT NULL";
+		if (defaultValue.length() > 0) SQLITERows << " DEFAULT " << defaultValue;
+		concatinator = ",";
+
 		// C++ Datatype variables
-		CPPVariables << "    " << SQLtoCPP[type] << " " << columnName << ";" << endl;
+		CPPVariables << "\t" << SQLtoCPP[type] << " " << columnName << ";" << endl;
 
 		// C++ SQLITE3 CONVERSIONS
-		CPPConstructor << "    if (columnName == \"" << boost::to_lower_copy(columnName) << "\") {" << columnName << " = " << SQLITEtoCPP[type] << "statement,i);}" << endl;
+		CPPConstructor << "\t\t\tif (columnName == \"" << boost::to_lower_copy(columnName) << "\") {" << columnName << " = " << SQLITEtoCPP[type] << ";}" << endl;
 
 		// CREATE TABLE `virtual_aliases` (
 		//   `id` int(11) NOT NULL auto_increment,
@@ -101,32 +114,54 @@ int main() {
 		//   PRIMARY KEY (`id`),
 		//   FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
 		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+		columnCount++;
 	}
 
 	// Post Loop Constst	ructors
 	SQLRows << endl << ");" << endl; // the engine data might not be nessasary but IDK how SQL differes between implementations
-
+	SQLITERows << ");";
 
 
 	// cout << "CREATE INDEX " << indexName << "ON rules (" << columnName << ");" << endl;
 
-	stringstream CPPFile;
 
-	CPPFile << "#IFNDEF __DOMAINSETTINGS_H_" << endl;
-	CPPFile << "#DEFINE __DOMAINSETTINGS_H_" << endl;
-	CPPFile << "class DomainSettings {" << endl;
-	CPPFile << "  public:" << endl;
-	CPPFile << CPPVariables.rdbuf() << endl;
-	CPPFile << "    DomainSettings {" << endl;
-	CPPFile << "        [[CONSTRUCTOR]]" << endl;
-	CPPFile << "    }" << endl;
-	CPPFile << "}" << endl;
-	CPPFile << "#ENDIF" << endl;
+	ifstream CPPFileIn;
+	ofstream CPPFileOut;
+	char inputFilename[] = "templates/DomainSettings.h";
+	char outputFilename[] = "../CommandLineTool/DomainSettings.h";
+
+
+	CPPFileIn.open(inputFilename, ios::in);
+
+	if (!CPPFileIn) {
+	  cerr << "Can't open input file " << inputFilename << endl;
+	  exit(1);
+	}
+
+	CPPFileOut.open(outputFilename, ios::out);
+
+	if (!CPPFileOut) {
+	  cerr << "Can't open output file " << outputFilename << endl;
+	  exit(1);
+	}
+
+	string CPPFileLine;
+	while (getline(CPPFileIn, CPPFileLine)) {
+
+		CPPFileLine = boost::regex_replace(CPPFileLine, boost::regex("\\[\\[SQLCOLUMNCOUNT\\]\\]"), std::to_string(columnCount), boost::match_default | boost::format_all);
+		CPPFileLine = boost::regex_replace(CPPFileLine, boost::regex("\\[\\[SQLCREATETABLE\\]\\]"), "\""+SQLITERows.str()+"\"", boost::match_default | boost::format_all);
+
+		if (boost::regex_match(CPPFileLine, boost::regex ("\\s*\\[\\[CPPVARIABLES\\]\\]"))) {
+			CPPFileOut << CPPVariables.rdbuf();
+		}
+		else if (boost::regex_match(CPPFileLine, boost::regex("\\s*\\[\\[CPPCONSTRUCTOR\\]\\]"))) {
+			CPPFileOut << CPPConstructor.rdbuf();
+		}
+		else {
+			CPPFileOut << CPPFileLine << "\n"; // reappend the newline to the file
+		}
+	}
 
 	cout << SQLRows.rdbuf() << endl;
 	cout << CPPConstructor.rdbuf() << endl;
-
-
-	cout << CPPFile.rdbuf() << endl;
 }
