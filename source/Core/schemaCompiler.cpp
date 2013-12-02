@@ -1,9 +1,12 @@
-// Coding Standard: Unpublishable
-// This crap is going to work if it is the last thing I do tonight
-// I really miss having a desk that fits me, I dont even know what is going on 'osajgnnd[onea
-// Lets go
-
-
+/************************************ ABOUT ***********************************\
+| This file is used to compile the db_schema.json file into any nessasary      |
+| formats including                                                            |
+| SQL Initilizer Query (For both MySQL and SQLite3)                            |
+| C++ object to store a row of the database for easy access                    |
+| Java object to store a row of the databasae for easy access (android)        |
+| - Eventually there may be javascript support for the firefox / chrome        |
+| plugins                                                                      |
+\******************************************************************************/
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
