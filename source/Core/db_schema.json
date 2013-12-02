@@ -39,7 +39,7 @@
 			"Type":"int",
 			"Size":9,
 			"Description":"The minimum length of a password generated for this domain",
-			"Default":"",
+			"Default":"0",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -48,7 +48,7 @@
 			"Type":"int",
 			"Size":9,
 			"Description":"The maximum length of a password generated for this domain",
-			"Default":"",
+			"Default":"16",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -66,7 +66,7 @@
 			"Type":"varchar",
 			"Size":200,
 			"Description":"A regular expression that must be matched to the generated password before it is displayed. If a hash does not match this an additional iteration of hashing occurs and this step is repeated",
-			"Default":"",
+			"Default":"`.*`",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -76,7 +76,7 @@
 			"Size":100,
 			"Description":"The domain that has the same password as the one being looked up. EG: Youtube's parent is Google as they share a password while having different domains.",
 			"Default":"",
-			"Nullable":false,
+			"Nullable":true,
 			"Extra":"",
 			"Depricated":false
 			}
