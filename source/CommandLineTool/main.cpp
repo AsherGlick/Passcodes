@@ -330,12 +330,12 @@ string generatePassword(string domain, string masterpass ) {
             hashedValues[j] = static_cast<int>(hash[j]);
         }
 
-        int newbase = settings.allowedCharacters.length();
+        int newbase = settings.allowedCharacters().length();
         vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
 
-        for (unsigned int i = 0; i < 16 && i < settings.maxCharacters; i++) {
+        for (int i = 0; i < 16 && i < settings.maxLength; i++) {
             int reverseIndex = newValues.size()-i-1;
-            password += settings.allowedCharacters[newValues[reverseIndex]];
+            password += settings.allowedCharacters()[newValues[reverseIndex]];
         }
 
         // Make sure the generated password conforms to the password rules
