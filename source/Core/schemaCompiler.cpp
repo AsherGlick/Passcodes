@@ -14,6 +14,7 @@
 // #include <boost/date.hpp>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <sstream>
 #include <map>
 
@@ -104,10 +105,10 @@ int main() {
         concatinator = ",";
 
         // C++ Datatype variables
-        CPPVariables << "\t" << SQLtoCPP[type] << " " << columnName << ";" << endl;
+        CPPVariables << "    " << SQLtoCPP[type] << " " << columnName << ";" << endl;
 
         // C++ SQLITE3 CONVERSIONS
-        CPPConstructor << "\t\t\tif (columnName == \"" << boost::to_lower_copy(columnName) << "\") {" << columnName << " = " << SQLITEtoCPP[type] << ";}" << endl;
+        CPPConstructor << "            if (columnName == \"" << boost::to_lower_copy(columnName) << "\") {" << columnName << " = " << SQLITEtoCPP[type] << ";}" << endl;
 
         // CREATE TABLE `virtual_aliases` (
         //   `id` int(11) NOT NULL auto_increment,
