@@ -8,71 +8,7 @@
 #include <sqlite3.h>
 #include <string>
 
-/******************************* DOMAIN SETTINGS ******************************\
-| The domain settings struct is a wrapper for the settings that are pulled     |
-| out of the databse. This type of object is returned to the user when using   |
-| the get settings command.                                                    |
-\******************************************************************************/
-class DomainSettings {
-  public:
-    std::string domain;
-    std::string allowedCharacters;
-    uint maxCharacters;
-    std::string regex;
-
-    // Default initilizer (DEFAULT SETTINGS if the domain does not exist in the database)
-    DomainSettings( std::string domain ) {
-        this->domain = domain;
-        this->allowedCharacters = " !\"#$%&'()*+,-./1234567890:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; // every typeable ascii character
-        this->maxCharacters = 16;
-        this->regex = ".*"; // Match anything
-    }
-
-    // Full initilizer  (DEPRICATED)
-    DomainSettings( std::string domain, std::string allowedCharacters, uint maxCharacters, std::string regex) {
-        this->domain = domain;
-        this->allowedCharacters = allowedCharacters;
-        this->maxCharacters = maxCharacters;
-        this->regex = regex;
-    }
-
-    // Initilizer from SQL
-    DomainSettings( sqlite3_stmt *statement ) {
-
-        // do a quick check to make sure the database schema has not changed
-        if (sqlite3_column_count(statement) != 4) { 
-            fprintf(stderr, "The databse schema vseems to be incorrect, maybe this should be cheked\n");
-            fprintf(stderr, "The version of the software or database may be out of date\n");
-        }
-
-        // Create the variables
-        std::string domain;
-        std::string allowedCharacters;
-        uint maxCharacters;
-        std::string regex;
-
-
-        for (int i = 0; i < sqlite3_column_count(statement); i++) {
-            std::string columnName = std::string( reinterpret_cast<const char*>( sqlite3_column_table_name(statement,i)));
-
-            if (columnName == "domain") {
-                
-            }
-
-
-        }
-        
-
-        // Assign all the variables to the columns they corrispond to
-        domain = std::string(reinterpret_cast<const char*> (sqlite3_column_text(statement, 0)));
-        allowedCharacters = std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement, 1)));
-        maxCharacters = sqlite3_column_int (statement, 2);
-        regex = std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement, 3)));
-
-        // return the generated settings object
-        return DomainSettings(domain, allowedCharacters, maxCharacters, regex);
-    }
-};
+#include "./DomainSettings.h"
 
 /******************************** SETTINGS API ********************************\
 | This class handles all the data to and from the database. It involves        |
@@ -98,12 +34,12 @@ class SettingsAPI {
 | database is not found at the given file it will be created                   |
 \******************************************************************************/
 SettingsAPI::SettingsAPI() {
-    // Open the database 
+    // Open the database
     int rc = sqlite3_open_v2("./passworddatabse", &(this->database), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
     if (rc) {
         this->isOpened = false;
     }
-    else  {
+    else {
         this->isOpened = true;
     }
 }
@@ -147,50 +83,11 @@ DomainSettings SettingsAPI::GetSettings(std::string domain, int version) {
     }
 
     // Get the results
-    DomainSettings settings = SQLToSettings(statement);
+    DomainSettings settings = DomainSettings(statement);
 
     // finalize query
     sqlite3_finalize(statement);
 
     // Return the final settings object
     return settings;
-}
-
-/*********************** SETTINGS API :: SQL TO SETTINGS **********************\
-| This function takes in a sql statement / row and sets the values of that     |
-| row to a DomainSettings object. If the SQL querry or schema changes then     |
-| this function will also need to be changed.                                  |
-|                                                                              |    
-| This function maybe should be moved to the DomainSettings variable, maybe    |
-\******************************************************************************/
-DomainSettings SettingsAPI::SQLToSettings(sqlite3_stmt *statement) {
-
-    // do a quick check to make sure the database schema has not changed
-    if (sqlite3_column_count(statement) != 4) { 
-                fprintf(stderr, "The databse schema seems to be incorrect, maybe this should be cheked\n");
-    }
-
-    // Create the variables
-    std::string domain;
-    std::string allowedCharacters;
-    uint maxCharacters;
-    std::string regex;
-
-
-// const char *sqlite3_column_database_name(sqlite3_stmt*,int);
-// const void *sqlite3_column_database_name16(sqlite3_stmt*,int);
-// const char *sqlite3_column_table_name(sqlite3_stmt*,int);
-// const void *sqlite3_column_table_name16(sqlite3_stmt*,int);
-// const char *sqlite3_column_origin_name(sqlite3_stmt*,int);
-// const void *sqlite3_column_origin_name16(sqlite3_stmt*,int);
-    
-
-    // Assign all the variables to the columns they corrispond to
-    domain = std::string(reinterpret_cast<const char*> (sqlite3_column_text(statement, 0)));
-    allowedCharacters = std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement, 1)));
-    maxCharacters = sqlite3_column_int (statement, 2);
-    regex = std::string(reinterpret_cast<const char*> (sqlite3_column_text (statement, 3)));
-
-    // return the generated settings object
-    return DomainSettings(domain, allowedCharacters, maxCharacters, regex);
 }
