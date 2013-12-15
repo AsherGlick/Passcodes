@@ -67,8 +67,8 @@ int main() {
     vector<string> SQLIndexes; // to be joined as is
 
     // Pre loop constructors
-    SQLRows << "CREATE TABLE rules (";
-    SQLITERows << "CREATE TABLE rules ("; 
+    SQLRows << "CREATE TABLE IF NOT EXISTS rules (";
+    SQLITERows << "CREATE TABLE IF NOT EXISTS rules \\("; 
 
     // Allow tracking of the number of columns
     int columnCount = 0; 
@@ -95,7 +95,6 @@ int main() {
         if (!isNullable) SQLRows << "NOT NULL";
         if (defaultValue.length() > 0) SQLRows << " DEFAULT " << defaultValue;
         if (extraData.length() > 0) SQLRows << " " << extraData;
-        concatinator = ",";
 
         //SQLITE3 Constructor (no extra data, no newlines)
         SQLITERows << concatinator << " `" << boost::to_lower_copy(columnName) << "`";
@@ -123,7 +122,7 @@ int main() {
 
     // Post Loop Constst    ructors
     SQLRows << endl << ");" << endl; // the engine data might not be nessasary but IDK how SQL differes between implementations
-    SQLITERows << ");";
+    SQLITERows << "\\);";
 
 
     // cout << "CREATE INDEX " << indexName << "ON rules (" << columnName << ");" << endl;
