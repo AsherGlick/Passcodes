@@ -19,20 +19,20 @@ class DomainSettings {
 
     // Initilizer from SQL
     explicit DomainSettings(sqlite3_stmt *statement) {
+
         // do a quick check to make sure the database schema has not changed
         if (sqlite3_column_count(statement) != columnCount) {
             fprintf(stderr, "The databse schema vseems to be incorrect, maybe this should be cheked\n");
             fprintf(stderr, "The version of the software or database may be out of date\n");
         }
 
-
         for (int i = 0; i < sqlite3_column_count(statement); i++) {
-            std::string columnName = std::string(reinterpret_cast<const char*> (*sqlite3_column_table_name(statement, i)));
+            std::string columnName = std::string(reinterpret_cast<const char*> (sqlite3_column_table_name(statement, i)));
             [[CPPCONSTRUCTOR]]
         }
     }
 
-    std::string CreateTableSQL () {
+    static std::string CreateTableSQL () {
         return [[SQLCREATETABLE]];
     }
 
