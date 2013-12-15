@@ -71,8 +71,7 @@ using namespace std;
   //////////////////////////////////////////////////////////////////////////////
  //////////////////////// GENERATE PASSWORD FUNCTIONS ///////////////////////// 
 //////////////////////////////////////////////////////////////////////////////  
-//#define ITERATIONCOUNT 100000
-#define ITERATIONCOUNT  99999
+#define ITERATIONCOUNT 1000000
 /****************************** GENERATE PASSWORD *****************************\
 | The generate password function takes in the domain and the master password   |
 | then returns the 16 character long base64 password based off of the sha256   |
