@@ -27,7 +27,8 @@ class DomainSettings {
         }
 
         for (int i = 0; i < sqlite3_column_count(statement); i++) {
-            std::string columnName = std::string(reinterpret_cast<const char*> (sqlite3_column_table_name(statement, i)));
+            if (sqlite3_column_type(statement, i) == SQLITE_NULL) continue; // skip null values
+            std::string columnName = std::string(reinterpret_cast<const char*> (sqlite3_column_name(statement, i)));
             [[CPPCONSTRUCTOR]]
         }
     }
