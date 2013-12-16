@@ -4,7 +4,6 @@
 			"Type":"int",
 			"Size":11,
 			"Description":"The ID of the row in the table",
-			"Default":"",
 			"Nullable":false,
 			"Extra":"AUTO_INCREMENT",
 			"Depricated":false
@@ -13,7 +12,6 @@
 			"Type":"varchar",
 			"Size":100,
 			"Description":"The name of the domain that is being querried",
-			"Default":"",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -22,7 +20,6 @@
 			"Type":"int",
 			"Size":8,
 			"Description":"The version of the rule for the specified domain",
-			"Default":"",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -57,7 +54,7 @@
 			"Type":"varchar",
 			"Size":95,
 			"Description":"A list of characters that cannot be included in the password / a list of characters that can be used in the password",
-			"Default":"",
+			"Default":"``",
 			"Nullable":false,
 			"Extra":"",
 			"Depricated":false
@@ -75,7 +72,6 @@
 			"Type":"varchar",
 			"Size":100,
 			"Description":"The domain that has the same password as the one being looked up. EG: Youtube's parent is Google as they share a password while having different domains.",
-			"Default":"",
 			"Nullable":true,
 			"Extra":"",
 			"Depricated":false
