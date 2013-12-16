@@ -71,12 +71,13 @@ DomainSettings SettingsAPI::GetSettings(std::string domain, int version) {
     std::string rawSQL = "SELECT * FROM rules";
 
     if (version == 0) { 
-        rawSQL = "SELECT * FROM rules";
+        rawSQL = "SELECT * FROM rules WHERE (version) IN (SELECT MAX(version) FROM rules WHERE domain = ? GROUP BY domain)";
     }
     // prepare statement
     sqlite3_stmt *statement;
     const char *tailPointer;  // return value for the last
     int returnCode = sqlite3_prepare_v2(this->database, rawSQL.c_str(), rawSQL.length(),  &statement, &tailPointer);
+    sqlite3_bind_text (statement, 1, domain.c_str(), domain.length(), NULL);
     if (returnCode) {
         fprintf(stderr, "Error with qeurry:%i: %s\n", returnCode, sqlite3_errmsg(this->database));
         // If the error code is 1 (which i think is "no such table") then create the table
@@ -95,8 +96,10 @@ DomainSettings SettingsAPI::GetSettings(std::string domain, int version) {
     }
 
     // Step to the first element?
-    int stepresult = sqlite3_step(statement);
-
+    int stepResult = sqlite3_step(statement);
+    if (stepResult = SQLITE_DONE) {
+        return DomainSettings(domain);
+    }
     // Get the results
     DomainSettings settings = DomainSettings(statement);
 
