@@ -35,7 +35,7 @@ class SettingsAPI {
 \******************************************************************************/
 SettingsAPI::SettingsAPI() {
     // Open the database
-    int rc = sqlite3_open_v2("./passworddatabse", &(this->database), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
+    int rc = sqlite3_open_v2("./passcodesdb", &(this->database), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
     if (rc) {
         this->isOpened = false;
     }
