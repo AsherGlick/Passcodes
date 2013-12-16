@@ -99,7 +99,7 @@ DomainSettings SettingsAPI::GetSettings(std::string domain, int version) {
 
     // Step to the first element?
     int stepResult = sqlite3_step(statement);
-    if (stepResult = SQLITE_DONE) {
+    if (stepResult == SQLITE_DONE) {
         return DomainSettings(domain);
     }
     // Get the results
