@@ -85,18 +85,17 @@ pageMod.PageMod({
         // Add the newly created worker to the map of tabs to workers
         var tabid = worker.tab.id;
         
-        if (tabid in workers) {
-            // console.log("Worker not set, allready set");
-        }
-        else {
-            console.log("SET WORKER TO TAB ID " + worker.tab.id);
+        // Prevent a woker from binding to the tab unless there is no worker bound
+        if (!(tabid in workers)) {
+            // console.log("SET WORKER TO TAB ID " + worker.tab.id);
             workers[tabid] = worker;
         }
 
-
+        // When a worker detaches from a page due to a page change or reload
+        // Free up the slot for that tab so another worker can bind to it
         worker.on('detach', function () {
             if (worker == workers[tabid]) {
-                    console.log("Worker detatched from " + tabid);
+                // console.log("Worker detatched from " + tabid);
                 delete workers[tabid];
             }
             // detachWorker(this, workers);
