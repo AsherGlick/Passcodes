@@ -68,6 +68,7 @@ var calledTab;
 \******************************************************************************/
 pageMod.PageMod({
     include: ["*"],
+    contentScriptWhen: 'start', // make the content script run before anything else
     contentScriptFile: data.url("insert-text.js"),
     onAttach: function(worker) {
 
@@ -82,7 +83,24 @@ pageMod.PageMod({
         });
 
         // Add the newly created worker to the map of tabs to workers
-        workers[worker.tab.id] = worker;
+        var tabid = worker.tab.id;
+        
+        if (tabid in workers) {
+            // console.log("Worker not set, allready set");
+        }
+        else {
+            console.log("SET WORKER TO TAB ID " + worker.tab.id);
+            workers[tabid] = worker;
+        }
+
+
+        worker.on('detach', function () {
+            if (worker == workers[tabid]) {
+                    console.log("Worker detatched from " + tabid);
+                delete workers[tabid];
+            }
+            // detachWorker(this, workers);
+        });
     }
 });
 
