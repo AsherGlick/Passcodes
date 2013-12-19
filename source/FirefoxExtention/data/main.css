@@ -73,3 +73,16 @@ body {
 	background: #a8d1ff;
 }
 
+
+
+.message {
+	background: #ffa84c; /* Old browsers */
+	/* @alternate */ background: -moz-linear-gradient(top, #ffa84c 0%, #ff7b0d 100%); /* FF3.6+ */
+	/* @alternate */ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa84c), color-stop(100%,#ff7b0d)); /* Chrome,Safari4+ */
+	/* @alternate */ background: -webkit-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%); /* Chrome10+,Safari5.1+ */
+	/* @alternate */ background: -o-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%); /* Opera 11.10+ */
+	/* @alternate */ background: -ms-linear-gradient(top, #ffa84c 0%,#ff7b0d 100%); /* IE10+ */
+	/* @alternate */ background: linear-gradient(to bottom, #ffa84c 0%,#ff7b0d 100%); /* W3C */
+	/* @alternate */ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 10px;
+}
