@@ -206,6 +206,29 @@
 		})
 
 
+		// Symbol Checkboxes
+
+
+		function linkCheckBoxes(parentid, childclass) {
+			$("."+childclass).on("click", function () {
+				var symbol_checked = true;
+				$("."+childclass).each( function() {
+					symbol_checked &= $(this).prop("checked");
+				});
+				$("#"+parentid).prop("checked",symbol_checked);
+			});
+			$("#"+parentid).on("click", function() {
+				var symbol_checked = $("#"+parentid).prop("checked");;
+				$("."+childclass).each( function() {
+					$(this).prop("checked", symbol_checked);
+				});
+			});
+		}
+
+		linkCheckBoxes("symbols","lettercheck-sym");
+		linkCheckBoxes("numbers","lettercheck-num");
+		linkCheckBoxes("lowercase","lettercheck-lowercase");
+		linkCheckBoxes("uppercase","lettercheck-uppercase");
 	});
 	</script>
 
@@ -226,114 +249,114 @@
 					<tr><td class="formlabel"><lablel for='restrictedcharacters'><div style="text-align: center">Restricted Characters</div></label></td><td class="forminput">
 						<div style="text-align: center; color: #BBB; font-size: 13px; margin-bottom: 10px;"> Click the boxes of for each character or group that is not allowed</div>
 						<input type="checkbox" id="symbols"> <label for="symbols">No Symbols</label>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-!'    ><label for='restricted-!'    >!     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-"'    ><label for='restricted-"'    >"     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-#'    ><label for='restricted-#'    >#     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-$'    ><label for='restricted-$'    >$     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-%'    ><label for='restricted-%'    >%     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-amp'  ><label for='restricted-amp'  >&amp; </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-quote'><label for='restricted-quote'>'     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-('    ><label for='restricted-('    >(     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-)'    ><label for='restricted-)'    >)     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-*'    ><label for='restricted-*'    >*     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-+'    ><label for='restricted-+'    >+     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-,'    ><label for='restricted-,'    >,     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted--'    ><label for='restricted--'    >-     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-.'    ><label for='restricted-.'    >.     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-/'    ><label for='restricted-/'    >/     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-:'    ><label for='restricted-:'    >:     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-;'    ><label for='restricted-;'    >;     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-<'    ><label for='restricted-<'    >&lt;  </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-='    ><label for='restricted-='    >=     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted->'    ><label for='restricted->'    >&gt;  </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-?'    ><label for='restricted-?'    >?     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-@'    ><label for='restricted-@'    >@     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-['    ><label for='restricted-['    >[     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-\'    ><label for='restricted-\'    >\     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-]'    ><label for='restricted-]'    >]     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-^'    ><label for='restricted-^'    >^     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-_'    ><label for='restricted-_'    >_     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-`'    ><label for='restricted-`'    >`     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-{'    ><label for='restricted-{'    >{     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-|'    ><label for='restricted-|'    >|     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-}'    ><label for='restricted-}'    >}     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-~'    ><label for='restricted-~'    >~     </label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-space'><label for='restricted-space'>SPACE</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-!'    ><label for='restricted-!'    >!     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-"'    ><label for='restricted-"'    >"     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-#'    ><label for='restricted-#'    >#     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-$'    ><label for='restricted-$'    >$     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-%'    ><label for='restricted-%'    >%     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-amp'  ><label for='restricted-amp'  >&amp; </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-quote'><label for='restricted-quote'>'     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-('    ><label for='restricted-('    >(     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-)'    ><label for='restricted-)'    >)     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-*'    ><label for='restricted-*'    >*     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-+'    ><label for='restricted-+'    >+     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-,'    ><label for='restricted-,'    >,     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted--'    ><label for='restricted--'    >-     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-.'    ><label for='restricted-.'    >.     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-/'    ><label for='restricted-/'    >/     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-:'    ><label for='restricted-:'    >:     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-;'    ><label for='restricted-;'    >;     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-<'    ><label for='restricted-<'    >&lt;  </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-='    ><label for='restricted-='    >=     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted->'    ><label for='restricted->'    >&gt;  </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-?'    ><label for='restricted-?'    >?     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-@'    ><label for='restricted-@'    >@     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-['    ><label for='restricted-['    >[     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-\'    ><label for='restricted-\'    >\     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-]'    ><label for='restricted-]'    >]     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-^'    ><label for='restricted-^'    >^     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-_'    ><label for='restricted-_'    >_     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-`'    ><label for='restricted-`'    >`     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-{'    ><label for='restricted-{'    >{     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-|'    ><label for='restricted-|'    >|     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-}'    ><label for='restricted-}'    >}     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-~'    ><label for='restricted-~'    >~     </label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-space'><label for='restricted-space'>SPACE </label></div>
 							<div style='clear: both'></div>
 							<br>
 
 						<input type="checkbox" id="numbers"> <label for="numbers">No Numbers</label>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-0'><label for='restricted-0'>0</label></div>	
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-1'><label for='restricted-1'>1</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-2'><label for='restricted-2'>2</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-3'><label for='restricted-3'>3</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-4'><label for='restricted-4'>4</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-5'><label for='restricted-5'>5</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-6'><label for='restricted-6'>6</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-7'><label for='restricted-7'>7</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-8'><label for='restricted-8'>8</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='restricted-9'><label for='restricted-9'>9</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-0'><label for='restricted-0'>0</label></div>	
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-1'><label for='restricted-1'>1</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-2'><label for='restricted-2'>2</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-3'><label for='restricted-3'>3</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-4'><label for='restricted-4'>4</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-5'><label for='restricted-5'>5</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-6'><label for='restricted-6'>6</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-7'><label for='restricted-7'>7</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-8'><label for='restricted-8'>8</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-9'><label for='restricted-9'>9</label></div>
 							<div style='clear: both'></div>
 							<br>
 
 						<input type="checkbox" id="uppercase"> <label for="uppercase">No Uppercase Letters</label>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='A'><label for='A'>A</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='B'><label for='B'>B</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='C'><label for='C'>C</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='D'><label for='D'>D</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='E'><label for='E'>E</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='F'><label for='F'>F</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='G'><label for='G'>G</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='H'><label for='H'>H</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='I'><label for='I'>I</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='J'><label for='J'>J</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='K'><label for='K'>K</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='L'><label for='L'>L</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='M'><label for='M'>M</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='N'><label for='N'>N</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='O'><label for='O'>O</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='P'><label for='P'>P</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='Q'><label for='Q'>Q</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='R'><label for='R'>R</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='S'><label for='S'>S</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='T'><label for='T'>T</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='U'><label for='U'>U</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='V'><label for='V'>V</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='W'><label for='W'>W</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='X'><label for='X'>X</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='Y'><label for='Y'>Y</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='Z'><label for='Z'>Z</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='A'><label for='A'>A</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='B'><label for='B'>B</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='C'><label for='C'>C</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='D'><label for='D'>D</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='E'><label for='E'>E</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='F'><label for='F'>F</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='G'><label for='G'>G</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='H'><label for='H'>H</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='I'><label for='I'>I</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='J'><label for='J'>J</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='K'><label for='K'>K</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='L'><label for='L'>L</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='M'><label for='M'>M</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='N'><label for='N'>N</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='O'><label for='O'>O</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='P'><label for='P'>P</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='Q'><label for='Q'>Q</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='R'><label for='R'>R</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='S'><label for='S'>S</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='T'><label for='T'>T</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='U'><label for='U'>U</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='V'><label for='V'>V</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='W'><label for='W'>W</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='X'><label for='X'>X</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='Y'><label for='Y'>Y</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='Z'><label for='Z'>Z</label></div>
 							<div style='clear: both'></div>
 							<br>
 
 
 						<input type="checkbox" id="lowercase"> <label for="lowercase">No Lowercase Letters</label>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='a'><label for='a'>a</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='b'><label for='b'>b</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='c'><label for='c'>c</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='d'><label for='d'>d</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='e'><label for='e'>e</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='f'><label for='f'>f</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='g'><label for='g'>g</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='h'><label for='h'>h</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='i'><label for='i'>i</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='j'><label for='j'>j</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='k'><label for='k'>k</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='l'><label for='l'>l</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='m'><label for='m'>m</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='n'><label for='n'>n</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='o'><label for='o'>o</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='p'><label for='p'>p</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='q'><label for='q'>q</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='r'><label for='r'>r</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='s'><label for='s'>s</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='t'><label for='t'>t</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='u'><label for='u'>u</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='v'><label for='v'>v</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='w'><label for='w'>w</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='x'><label for='x'>x</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='y'><label for='y'>y</label></div>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck' id='z'><label for='z'>z</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='a'><label for='a'>a</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='b'><label for='b'>b</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='c'><label for='c'>c</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='d'><label for='d'>d</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='e'><label for='e'>e</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='f'><label for='f'>f</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='g'><label for='g'>g</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='h'><label for='h'>h</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='i'><label for='i'>i</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='j'><label for='j'>j</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='k'><label for='k'>k</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='l'><label for='l'>l</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='m'><label for='m'>m</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='n'><label for='n'>n</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='o'><label for='o'>o</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='p'><label for='p'>p</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='q'><label for='q'>q</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='r'><label for='r'>r</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='s'><label for='s'>s</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='t'><label for='t'>t</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='u'><label for='u'>u</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='v'><label for='v'>v</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='w'><label for='w'>w</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='x'><label for='x'>x</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='y'><label for='y'>y</label></div>
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='z'><label for='z'>z</label></div>
 							<div style='clear: both'></div>
 					</td></tr>
 					<tr><td class="formlabel"><lablel for='parent'>Parent Domain</label></td><td class="forminput"><input type="text" id="parent" class="inputbox"></td></tr>
