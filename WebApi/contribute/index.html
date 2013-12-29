@@ -5,6 +5,7 @@
 				font-family: Ariel, sans-serif;
 				background: #CCC;
 			}
+			/* Wrapper for the content of the html page */
 			.wrapper {
 				border-top: 2px solid #2EBF78;
 				border-left: 2px solid #2EBF78;
@@ -15,6 +16,8 @@
 				margin-right: auto;
 				background: #FFF;
 			}
+
+			/* generic styling for textboxes */
 			.inputbox {
 				border: 1px solid #CCC;
 				/*margin: 0px;*/
@@ -22,6 +25,18 @@
 				border-radius: 3px;
 				margin-bottom: 4px;
 				width: 400px;
+				font-size: 14px;
+				min-height: 17px;
+			}
+			.outputbox {
+				border: 1px solid #CCC;
+				padding: 3px;
+				border-radius: 3px;
+				margin-bottom: 4px;
+				color: #444;
+				background-color: #EEE;
+				font-size: 14px;
+				min-height: 17px;
 			}
 			td.formlabel {
 				width: 160px;
@@ -49,7 +64,7 @@
 			}
 			.dragbar {
 				width: 376;
-				margin: 3px 12px 3px 10px;
+				margin: 3px 12px 10px 10px;
 				/*margin-right: 12px;*/
 			}
 			.lettercheck {
@@ -59,6 +74,10 @@
 				width: 50px;
 				height: 50px;
 			}
+
+			/******************************************************************\
+			| Custom checkboxes with strikeouts on check                       |
+			\******************************************************************/
 			input[type=checkbox] {
 				display: none;
 			}
@@ -72,14 +91,21 @@
 				border: 1px solid #AAA;
 				border-radius: 3px;
 				cursor: pointer;
+
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 			}
-
-
 			input[type=checkbox]:checked + label {
 				position: relative;
 				overflow: hidden;
 				background: #DDDDDD;
 			}
+
+			/* Crossout line */
 			input[type=checkbox]:checked + label:before {
 				position: absolute;
 				content: "";
@@ -102,9 +128,26 @@
 			input[type=checkbox]:checked + label:hover {
 				background-color: #CCC;
 			}
-
+			/* Container for the checkbox and label */
 			.restrictedcheck {
 				float:left;
+			}
+
+			.submitbutton {
+				background-color: #FFF;
+				border: 1px solid #888;
+				/*border-bottom: 3px solid #888;*/
+				/*border-left: 3px solid #888;*/
+				width: 400px;
+				font-size: 20px;
+				padding: 10px;
+				font-weight: bold;
+				margin-top: 40px;
+				margin-bottom: 20px;
+			}
+			.submitbutton:hover {
+				background-color: #DDD;
+				cursor: pointer;
 			}
 		</style>
 	<meta charset="utf-8">
@@ -201,14 +244,11 @@
 
 			$("#characterlimit").slider( "values", 1, valueToSet );
 		});
-		$("#domain").on("input", function() {
-			$("#parent").attr("placeholder", $("#domain").val());
-		})
+
+
 
 
 		// Symbol Checkboxes
-
-
 		function linkCheckBoxes(parentid, childclass) {
 			$("."+childclass).on("click", function () {
 				var symbol_checked = true;
@@ -225,29 +265,191 @@
 			});
 		}
 
+		// Link all the checkboxes
 		linkCheckBoxes("symbols","lettercheck-sym");
 		linkCheckBoxes("numbers","lettercheck-num");
 		linkCheckBoxes("lowercase","lettercheck-lowercase");
 		linkCheckBoxes("uppercase","lettercheck-uppercase");
+
+
+		
+
+
+
+		function linkSliders(sliderID, inputBox) {
+			$( "#" + sliderID ).slider({ values:0, max:6, step: 1, animate: "fast", slide: function( event, ui ) {
+				if (ui.value > 5) {
+					$("#" + sliderID).slider( "value", 5 );
+					$("#" + inputBox).val(5);
+					return false;
+				}
+				$("#" + inputBox).val(ui.value);
+				createFullRegex();
+			}});
+			$("#" + inputBox).val(0);
+
+			$("#" + inputBox).on("input", function() {
+				var newValue = $("#" + inputBox).val()
+
+				var valueToSet = newValue;
+
+				var error = false;
+
+				// Test is 
+				error |= !(/^\d+$/.test(newValue));
+
+				if (parseInt(newValue) < 0) {
+					error = true;
+					valueToSet = 0;
+				}
+
+				// $( "#characterlimit" ).
+				if (error) {
+					$("#" + inputBox).css({
+						'boxShadow': "0px 0px 2px 0px #FF0000",
+						'color' : "#DD4040",
+						'border-color': "#F00"
+					});
+				}
+				else {
+					$("#" + inputBox).css({
+						"boxShadow" : "0 0 0 #000000", 
+						"color": "#000",
+						"border-color": "#CCC"
+					});
+				}
+
+				$("#" + sliderID).slider( "value", valueToSet );
+
+				createFullRegex();
+
+			});
+		}
+
+		linkSliders("requiredNumbersSlider", "requiredNumbersBox");
+		linkSliders("requiredLowerCaseLettersSlider", "requiredLowerCaseLettersBox");
+		linkSliders("requiredUpperCaseLettersSlider", "requiredUpperCaseLettersBox");
+		linkSliders("requiredSymbolsSlider", "requiredSymbolsBox");
+
+
+
+		
+
+		$("#domain").on("input", function() {
+			var newdomain = $("#domain").val();
+			// This next chunk of code should be 
+			var url = newdomain;
+			var splitSlashes = url.split('/');
+			if (splitSlashes.length > 1) url = splitSlashes[2];
+			var domainParts = url.split('.');
+			var domain = url;
+			if (domainParts.length > 1) {
+				domain = domainParts[domainParts.length-2];
+				//alert (domain);
+				if (domain == 'co') {
+					domain = domainParts[domainParts.length-3];
+				}
+			}
+			domain = domain.toLowerCase();
+			$("#finalDomain").text(domain);
+			$("#parent").attr("placeholder", domain);
+		})
+		$("#domain").val("");
+		$("#parent").val("");
+
+
+		function createFullRegex() {
+			var fullRegex = "^.*$";
+
+			// Required Numbers
+			var requiredNumbersCount = $("#requiredNumbersBox").val();
+			// If the box contains only numbers and is not 0
+			if (requiredNumbersCount != '0' && (/^\d+$/.test(requiredNumbersCount))) {
+				var iterations = "";
+				if (requiredNumbersCount != '1') { iterations = "{" + requiredNumbersCount + "}"; }
+				var numbersRegex = "(?=([^0-9]*[0-9])"+iterations+")";
+				fullRegex = numbersRegex + fullRegex;
+			}
+
+			// Required Lowercase
+			var requiredLowercaseCount = $("#requiredLowerCaseLettersBox").val();
+			// If the box contains only numbers and is not 0
+			if (requiredLowercaseCount != '0' && (/^\d+$/.test(requiredLowercaseCount))) {
+				var iterations = "";
+				if (requiredLowercaseCount != '1') { iterations = "{" + requiredLowercaseCount + "}"; }
+				var lowercaseRegex = "(?=([^a-z]*[a-z])"+iterations+")";
+				fullRegex = lowercaseRegex + fullRegex;
+			}
+
+			// Required Uppercase
+			var requiredUppercaseCount = $("#requiredUpperCaseLettersBox").val();
+			// If the box contains only numbers and is not 0
+			if (requiredUppercaseCount != '0' && (/^\d+$/.test(requiredUppercaseCount))) {
+				var iterations = "";
+				if (requiredUppercaseCount != '1') { iterations = "{" + requiredUppercaseCount + "}"; }
+				var uppercaseRegex = "(?=([^A-Z]*[A-Z])"+iterations+")";
+				fullRegex = uppercaseRegex + fullRegex;
+			}
+
+
+			// Required Symbols
+			var requiredSymbolsCount = $("#requiredSymbolsBox").val();
+			// If the box contains only numbers and is not 0
+			if (requiredSymbolsCount != '0' && (/^\d+$/.test(requiredSymbolsCount))) {
+				var iterations = "";
+				if (requiredSymbolsCount != '1') { iterations = "{" + requiredSymbolsCount + "}"; }
+				// Note that the symbols list does not inlcude a space
+				// This is an uninformed design decission that may merrit further research
+				var symbolsList = "!-/:-@\\[-`{-~"
+				var symbolsRegex = "(?=([^"+symbolsList+"]*["+symbolsList+"])"+iterations+")";
+				fullRegex = symbolsRegex + fullRegex;
+			}
+
+			// Additional Regex
+			var additionalRegex = $("#additionalRegexBox").val();
+			if (additionalRegex.length > 0) {
+				fullRegex = "(?=("+additionalRegex+"))" + fullRegex
+			}
+
+			$("#finalRegex").text(fullRegex);
+		}
+
+		$("#additionalRegexBox").on("input", createFullRegex);
+		$("#additionalRegexBox").val("");
+		createFullRegex();
+
 	});
 	</script>
 
 	</head>
 	<body>
-		<form>
-			<div class="wrapper">
+		<div class="wrapper">
+			<div style="text-align: center; font-size: 30; padding-top: 30px; padding-bottom: 10px;">Add New Rules</div>
+			<form>
 				<table cellspacing="15">
-					<tr><td class="formlabel"><lablel for='domain'>Domain / URL</label></td><td class="forminput"><input type="text" id="domain" pattern=".*\..*" class="inputbox" placeholder="EG: google.com"></td></tr>
+					<tr><td class="formlabel"><lablel for='domain'>Domain / URL</label></td><td class="forminput">
+						<input type="text" id="domain" class="inputbox" placeholder="EG: google.com" autocomplete='off'>
+						<div id="finalDomain" class="outputbox"></div>
+					</td></tr>
+
+					<tr><td class="formlabel"><lablel for='parent'>Parent Domain</label></td><td class="forminput"><input type="text" id="parent" class="inputbox" autocomplete="off"></td></tr>
 
 					<tr><td class="formlabel"><lablel for='characterlimit'>Character Limit</label></td><td class="forminput">
 						<div>
-							<input class="inputbox lowernumber" type="text" id="mincharacters" pattern="[0-9]*"/><input class="inputbox uppernumber" type="text" id="maxcharacters"/>
+							<input class="inputbox lowernumber" type="text" id="mincharacters" pattern="[0-9]*" autocomplete="off"/>
+							<input class="inputbox uppernumber" type="text" id="maxcharacters" pattern="[0-9]*" autocomplete="off"/>
 							<div style="clear: both"></div>
 						</div>
 						<div id="characterlimit" class="dragbar"></div>
 					</td></tr>
-					<tr><td class="formlabel"><lablel for='restrictedcharacters'><div style="text-align: center">Restricted Characters</div></label></td><td class="forminput">
+
+
+					<!-- Restricted Characters -->
+					<!-- The list of characters that you cannot use broken up into class of character -->
+					<tr><td class="formlabel">Restricted Characters</td><td class="forminput">
 						<div style="text-align: center; color: #BBB; font-size: 13px; margin-bottom: 10px;"> Click the boxes of for each character or group that is not allowed</div>
+						
+						<!-- Symbols -->
 						<input type="checkbox" id="symbols"> <label for="symbols">No Symbols</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-!'    ><label for='restricted-!'    >!     </label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-"'    ><label for='restricted-"'    >"     </label></div>
@@ -285,6 +487,7 @@
 							<div style='clear: both'></div>
 							<br>
 
+						<!-- Digits / Numbers -->
 						<input type="checkbox" id="numbers"> <label for="numbers">No Numbers</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-0'><label for='restricted-0'>0</label></div>	
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-1'><label for='restricted-1'>1</label></div>
@@ -299,6 +502,9 @@
 							<div style='clear: both'></div>
 							<br>
 
+						<!-- =============================================== -->
+						<!--                Uppercase Letters                -->
+						<!-- =============================================== -->
 						<input type="checkbox" id="uppercase"> <label for="uppercase">No Uppercase Letters</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='A'><label for='A'>A</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='B'><label for='B'>B</label></div>
@@ -329,7 +535,7 @@
 							<div style='clear: both'></div>
 							<br>
 
-
+						<!-- Lowercase Letters -->
 						<input type="checkbox" id="lowercase"> <label for="lowercase">No Lowercase Letters</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='a'><label for='a'>a</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='b'><label for='b'>b</label></div>
@@ -359,27 +565,50 @@
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='z'><label for='z'>z</label></div>
 							<div style='clear: both'></div>
 					</td></tr>
-					<tr><td class="formlabel"><lablel for='parent'>Parent Domain</label></td><td class="forminput"><input type="text" id="parent" class="inputbox"></td></tr>
+
+
+
 					<tr><td class="formlabel"><lablel for='regex'>Regex Match</label></td><td class="forminput">
-						Commonly: Required numbers <br>
-						Required Letters <br>
-						required lowercase / required uppercase<br>
-						Required symbols <br>
-						<input type="text" id="domain" class="inputbox">
+
+						<div style="padding: 4px; float: left;">Number of Numbers Required</div>
+						<input id="requiredNumbersBox" class="inputbox uppernumber" type="text" pattern="[0-9]*"/><div style="clear:both" autocomplete="off"></div>
+						<div   id="requiredNumbersSlider" class="dragbar"></div>
+
+						<div style="padding: 4px; float: left;">Number of Lowercase Letters Required</div>
+						<input id="requiredLowerCaseLettersBox" class="inputbox uppernumber" type="text"  pattern="[0-9]*" autocomplete="off"/><div style="clear:both"></div>
+						<div   id="requiredLowerCaseLettersSlider" class="dragbar"></div>
+
+
+						<div style="padding: 4px; float: left;">Number of Uppercase Letters Required</div>
+						<input id="requiredUpperCaseLettersBox" class="inputbox uppernumber" type="text"  pattern="[0-9]*" autocomplete="off"/><div style="clear:both"></div>
+						<div   id="requiredUpperCaseLettersSlider" class="dragbar"></div>
+
+						<div style="padding: 4px; float: left;">Number of Symbols Required</div>
+						<input id="requiredSymbolsBox" class="inputbox uppernumber" type="text"  pattern="[0-9]*" autocomplete="off"/><div style="clear:both"></div>
+						<div   id="requiredSymbolsSlider" class="dragbar"></div>
+
+
+						<div style="padding: 4px; float: left;">Extra Regex</div>
+						<input type="text" id="additionalRegexBox" class="inputbox">
+
+						<span style="color: #999">Final Regex</span>
+						<div id="finalRegex" class="outputbox">.*</div>
 					</td></tr>
+
+					<tr> <td colspan="2"><div style="text-align: center;"> <input class="submitbutton" type="submit" value="Submit"/></div> </td> </tr>
 					
 
 
 
+<!-- 					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
 					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
 					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
 					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
 					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
-					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
-					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr>
+					<tr><td><lablel for='domain'>TITLE</label></td><td class="forminput"><input type="text" id="domain"></td></tr> -->
 
 				</table>
-			</div>
-		</form>
+			</form>
+		</div>
 	</body>
 </html>	
