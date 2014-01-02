@@ -28,6 +28,19 @@
 				font-size: 14px;
 				min-height: 17px;
 			}
+			/* used to visibly mark an error in the form that needs to be corrected before submitting */
+			.textboxError {
+				box-shadow: 0px 0px 2px 0px #FF0000;
+				color: #DD4040;
+				border-color: #F00;
+			}
+			/* used for text above an input describing how to use it */
+			.helpText {
+				text-align: center;
+				color: #BBB;
+				font-size: 13px;
+				margin-bottom: 10px;
+			}
 			.outputbox {
 				border: 1px solid #CCC;
 				padding: 3px;
@@ -145,10 +158,32 @@
 				margin-top: 40px;
 				margin-bottom: 20px;
 			}
-			.submitbutton:hover {
+			.submitbutton:not([disabled]):hover {
 				background-color: #DDD;
 				cursor: pointer;
 			}
+
+			.submitbutton:disabled {
+				background-color: #FEE;
+				color: #CCC;
+			}
+			/* possible future attempt to make the submit button be crossed out */
+	/*		.submitbutton:disabled:before {
+				position: absolute;
+				content: "";
+				left: -50%;
+				top: 50%;
+				width: 200%;
+				right: 0;
+				border-top: 3px solid;
+				border-color: #666666;
+				-webkit-transform:rotate(-45deg);
+				-moz-transform:rotate(-45deg);
+				-ms-transform:rotate(-45deg);
+				-o-transform:rotate(-45deg);
+				transform:rotate(-45deg);
+			}*/
+
 		</style>
 	<meta charset="utf-8">
 	<title>Passcodes - DB Contribute</title>
@@ -157,16 +192,76 @@
 	<script src="jquery-ui-1.10.3.min.js"></script>
 	<script>
 	$(function() {
+  //////////////////////////////////////////////////////////////////////////////
+ ///////////////////////// DOMAIN INPUT SANTITIZATOIN /////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+		$("#domain").on("input blur", function() {
+			var newdomain = $("#domain").val();
+			// This next chunk of code should be
+			var url = newdomain;
+			var splitSlashes = url.split('/');
+			if (splitSlashes.length > 1) url = splitSlashes[2];
+			var domainParts = url.split('.');
+			var domain = url;
+			if (domainParts.length > 1) {
+				domain = domainParts[domainParts.length-2];
+				//alert (domain);
+				if (domain == 'co') {
+					domain = domainParts[domainParts.length-3];
+				}
+			}
+			domain = domain.toLowerCase();
+			$("#finalDomain").text(domain);
+			$("#parent").attr("placeholder", domain);
+
+			if (domain.length == 0) { $("#domain").addClass("textboxError"); }
+			else { $("#domain").removeClass("textboxError"); }
+
+			// Check for errors and activate or deactivate the submit button accordingly
+			refreshSubmitButton();
+		});
+
+		$("#domain").val("");
+		$("#parent").val("");
+
+		$("#domain").focus();
+
+
+		/// CHARACTRER LIMITS ////
 		var defaultMinCharacters = 0;
 		var defaultMaxCharacters = 16;
+
 		$("#mincharacters").val(defaultMinCharacters);
 		$("#maxcharacters").val(defaultMaxCharacters);
 
+		// Initiilze Length Range Slider
+		$( "#characterlimit" ).slider({range:true, values:[defaultMinCharacters, defaultMaxCharacters], max:80, step: 1, animate: "fast",
+			start: function( event, ui ) {
+				ui.handle.startvalues = ui.values;
+			},
+			slide: function( event, ui ) {
+				if (ui.values[0] != ui.handle.startvalues[0]) {
+					$("#mincharacters").val(ui.values[0]);
+					$("#mincharacters").removeClass("textboxError");
+				}
+				if (ui.values[1] != ui.handle.startvalues[1]) {
+					$("#maxcharacters").val(ui.values[1]);
+					$("#maxcharacters").removeClass("textboxError");
+				}
+				refreshSubmitButton();
+			}
+		});
 
-		$( "#characterlimit" ).slider({range:true, values:[defaultMinCharacters, defaultMaxCharacters], max:80, step: 1, animate: "fast", slide: function( event, ui ) {
-			$("#mincharacters").val(ui.values[0]);
-			$("#maxcharacters").val(ui.values[1]);
-		}});
+
+		// var LOWERSLIDER = 0;
+		// var UPPERSLIDER = 1;
+
+		// function linkPartialSlider(textboxID, sliderID, sliderIndex, bound) {
+		// 	var newValue
+		// }
+
+
+		// linkPartialSlider("mincharacters", "characterlimit", LOWERSLIDER, 0)
 
 		$("#mincharacters").on('input', function() {
 			var newValue = $("#mincharacters").val()
@@ -186,24 +281,12 @@
 			}
 
 			// $( "#characterlimit" ).
-			if (error) {
-				$("#mincharacters").css({
-					'boxShadow': "0px 0px 2px 0px #FF0000",
-					'color' : "#DD4040",
-					'border-color': "#F00"
-				});
-			}
-			else {
-				$("#mincharacters").css({
-					"boxShadow" : "0 0 0 #000000", 
-					"color": "#000",
-					"border-color": "#CCC"
-				});
-			}
+			if (error) { $("#mincharacters").addClass("textboxError"); }
+			else { $("#mincharacters").removeClass('textboxError'); }
 
 			$("#characterlimit").slider( "values", 0, valueToSet );
 
-
+			refreshSubmitButton();
 		});
 		$("#maxcharacters").on('input', function() {
 			var newValue = $("#maxcharacters").val()
@@ -227,28 +310,21 @@
 
 
 			// $( "#characterlimit" ).
-			if (error) {
-				$("#maxcharacters").css({
-					'boxShadow': "0px 0px 2px 0px #FF0000",
-					'color' : "#DD4040",
-					'border-color': "#F00"
-				});
-			}
-			else {
-				$("#maxcharacters").css({
-					"boxShadow" : "0 0 0 #000000", 
-					"color": "#000",
-					"border-color": "#CCC"
-				});
-			}
+			if (error) { $("#mincharacters").addClass("textboxError"); }
+			else { $("#mincharacters").removeClass('textboxError'); }
 
 			$("#characterlimit").slider( "values", 1, valueToSet );
+
+			refreshSubmitButton();
 		});
 
 
 
 
-		// Symbol Checkboxes
+
+  //////////////////////////////////////////////////////////////////////////////
+ ////////////////////// RESTRICTED CHARACTERS CHECKBOXES //////////////////////
+//////////////////////////////////////////////////////////////////////////////
 		function linkCheckBoxes(parentid, childclass) {
 			$("."+childclass).on("click", function () {
 				var symbol_checked = true;
@@ -271,58 +347,65 @@
 		linkCheckBoxes("lowercase","lettercheck-lowercase");
 		linkCheckBoxes("uppercase","lettercheck-uppercase");
 
-
-		
-
-
-
+  //////////////////////////////////////////////////////////////////////////////
+ ///////////////////////// REGEX REQUIREMENTS SLIDERS /////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 		function linkSliders(sliderID, inputBox) {
+
+			// When the slider is slid then change the textbox that it is linked with
 			$( "#" + sliderID ).slider({ values:0, max:6, step: 1, animate: "fast", slide: function( event, ui ) {
+				// Prevent the slider from going above 5 (levaing the last step unreachable by slider and only by textbox)
 				if (ui.value > 5) {
 					$("#" + sliderID).slider( "value", 5 );
 					$("#" + inputBox).val(5);
 					return false;
 				}
 				$("#" + inputBox).val(ui.value);
-				createFullRegex();
+
+				// Remove any error css from the textbox because it has been overridden
+				$("#" + inputBox).removeClass("textboxError");
+
+				// Regenerate the regex
+				setFullRegex();
+
+				// Recheck errors for the submit button to be clickable
+				refreshSubmitButton();
 			}});
+
+			// Initilize the slider
 			$("#" + inputBox).val(0);
 
+
+			// When the input box is modified move the slider to corrispond to it's value
 			$("#" + inputBox).on("input", function() {
+				//
 				var newValue = $("#" + inputBox).val()
-
-				var valueToSet = newValue;
-
 				var error = false;
 
-				// Test is 
-				error |= !(/^\d+$/.test(newValue));
+				// Set error to true if  the value of the textbox is not a number
+				if (!/^\d+$/.test(newValue)) {
+					error = true;
+					newValue = 0;
+				}
 
 				if (parseInt(newValue) < 0) {
 					error = true;
-					valueToSet = 0;
+					newValue = 0;
 				}
 
-				// $( "#characterlimit" ).
-				if (error) {
-					$("#" + inputBox).css({
-						'boxShadow': "0px 0px 2px 0px #FF0000",
-						'color' : "#DD4040",
-						'border-color': "#F00"
-					});
-				}
-				else {
-					$("#" + inputBox).css({
-						"boxShadow" : "0 0 0 #000000", 
-						"color": "#000",
-						"border-color": "#CCC"
-					});
-				}
+				// If there was an error apply the ERROR css and disable the submit button
+				if (error) { $("#" + inputBox).addClass("textboxError"); }
+				// If there was no error remove the ERROR css and (enable the submit button if there are no other errors? how do? error count? No state saved? save state? multiply by primes)
+				else { $("#" + inputBox).removeClass("textboxError"); }
 
-				$("#" + sliderID).slider( "value", valueToSet );
+				// Move the slider to the correct position to reflet the
+				$("#" + sliderID).slider( "value", newValue );
 
-				createFullRegex();
+				// Regenrate the regex
+				setFullRegex();
 
+				// Recheck errors for the submit button
+				refreshSubmitButton();
 			});
 		}
 
@@ -332,37 +415,10 @@
 		linkSliders("requiredSymbolsSlider", "requiredSymbolsBox");
 
 
-
-		
-
-		$("#domain").on("input", function() {
-			var newdomain = $("#domain").val();
-			// This next chunk of code should be 
-			var url = newdomain;
-			var splitSlashes = url.split('/');
-			if (splitSlashes.length > 1) url = splitSlashes[2];
-			var domainParts = url.split('.');
-			var domain = url;
-			if (domainParts.length > 1) {
-				domain = domainParts[domainParts.length-2];
-				//alert (domain);
-				if (domain == 'co') {
-					domain = domainParts[domainParts.length-3];
-				}
-			}
-			domain = domain.toLowerCase();
-			$("#finalDomain").text(domain);
-			$("#parent").attr("placeholder", domain);
-		})
-		$("#domain").val("");
-		$("#parent").val("");
-
-
-		function createFullRegex() {
+		function createFullRegex(requiredNumbersCount, requiredLowercaseCount, requiredUppercaseCount, requiredSymbolsCount, additionalRegex) {
 			var fullRegex = "^.*$";
 
 			// Required Numbers
-			var requiredNumbersCount = $("#requiredNumbersBox").val();
 			// If the box contains only numbers and is not 0
 			if (requiredNumbersCount != '0' && (/^\d+$/.test(requiredNumbersCount))) {
 				var iterations = "";
@@ -372,7 +428,6 @@
 			}
 
 			// Required Lowercase
-			var requiredLowercaseCount = $("#requiredLowerCaseLettersBox").val();
 			// If the box contains only numbers and is not 0
 			if (requiredLowercaseCount != '0' && (/^\d+$/.test(requiredLowercaseCount))) {
 				var iterations = "";
@@ -382,7 +437,6 @@
 			}
 
 			// Required Uppercase
-			var requiredUppercaseCount = $("#requiredUpperCaseLettersBox").val();
 			// If the box contains only numbers and is not 0
 			if (requiredUppercaseCount != '0' && (/^\d+$/.test(requiredUppercaseCount))) {
 				var iterations = "";
@@ -393,7 +447,6 @@
 
 
 			// Required Symbols
-			var requiredSymbolsCount = $("#requiredSymbolsBox").val();
 			// If the box contains only numbers and is not 0
 			if (requiredSymbolsCount != '0' && (/^\d+$/.test(requiredSymbolsCount))) {
 				var iterations = "";
@@ -406,17 +459,52 @@
 			}
 
 			// Additional Regex
-			var additionalRegex = $("#additionalRegexBox").val();
 			if (additionalRegex.length > 0) {
 				fullRegex = "(?=("+additionalRegex+"))" + fullRegex
 			}
 
+			return fullRegex;
+		}
+
+/******************************* SET FULL REGEX *******************************\
+| A wrapper for createNewRegex() containing the IDs of the elements that       |
+| should be read and the id that should be set once the full regex is          |
+| calculated                                                                   |
+\******************************************************************************/
+		function setFullRegex() {
+			var requiredNumbersCount = $("#requiredNumbersBox").val();
+			var requiredLowercaseCount = $("#requiredLowerCaseLettersBox").val();
+			var requiredUppercaseCount = $("#requiredUpperCaseLettersBox").val();
+			var requiredSymbolsCount = $("#requiredSymbolsBox").val();
+
+			var additionalRegex = $("#additionalRegexBox").val();
+
+			var fullRegex = createFullRegex(requiredNumbersCount, requiredLowercaseCount, requiredUppercaseCount, requiredSymbolsCount, additionalRegex);
 			$("#finalRegex").text(fullRegex);
 		}
 
-		$("#additionalRegexBox").on("input", createFullRegex);
+		$("#additionalRegexBox").on("input", setFullRegex);
 		$("#additionalRegexBox").val("");
-		createFullRegex();
+		setFullRegex();
+
+
+/////////////////// SUBMIT BUTTON STUFF ///////////////////////
+		function refreshSubmitButton() {
+			if ($(".textboxError").length > 0) {
+				$("input[type=submit]").attr("disabled", "disabled");
+			}
+			else {
+				$("input[type=submit]").removeAttr("disabled");
+			}
+		}
+
+		// Prevent enter from triggering the form submition
+		$(window).keydown(function(event){
+			if(event.keyCode == 13) {
+				event.preventDefault();
+				return false;
+			}
+		});
 
 	});
 	</script>
@@ -425,11 +513,13 @@
 	<body>
 		<div class="wrapper">
 			<div style="text-align: center; font-size: 30; padding-top: 30px; padding-bottom: 10px;">Add New Rules</div>
-			<form>
+			<form name="contributor" action="submit.php" method="post">
 				<table cellspacing="15">
 					<tr><td class="formlabel"><lablel for='domain'>Domain / URL</label></td><td class="forminput">
-						<input type="text" id="domain" class="inputbox" placeholder="EG: google.com" autocomplete='off'>
-						<div id="finalDomain" class="outputbox"></div>
+						<input name="rawDomain" name="domain" type="text" id="domain" class="inputbox" placeholder="EG: google.com" autocomplete='off'>
+						<div class="outputbox">
+							<output name="finalDomain" id="finalDomain"></output>
+						</div>
 					</td></tr>
 
 					<tr><td class="formlabel"><lablel for='parent'>Parent Domain</label></td><td class="forminput"><input type="text" id="parent" class="inputbox" autocomplete="off"></td></tr>
@@ -447,9 +537,12 @@
 					<!-- Restricted Characters -->
 					<!-- The list of characters that you cannot use broken up into class of character -->
 					<tr><td class="formlabel">Restricted Characters</td><td class="forminput">
-						<div style="text-align: center; color: #BBB; font-size: 13px; margin-bottom: 10px;"> Click the boxes of for each character or group that is not allowed</div>
-						
-						<!-- Symbols -->
+						<div class="helpText"> Click the boxes of for each character or group that is not allowed</div>
+
+
+						<!-- =============================================== -->
+						<!-- Symbols                                         -->
+						<!-- =============================================== -->
 						<input type="checkbox" id="symbols"> <label for="symbols">No Symbols</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-!'    ><label for='restricted-!'    >!     </label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-sym' id='restricted-"'    ><label for='restricted-"'    >"     </label></div>
@@ -487,9 +580,11 @@
 							<div style='clear: both'></div>
 							<br>
 
-						<!-- Digits / Numbers -->
+						<!-- =============================================== -->
+						<!-- Digits / Numbers                                -->
+						<!-- =============================================== -->
 						<input type="checkbox" id="numbers"> <label for="numbers">No Numbers</label>
-							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-0'><label for='restricted-0'>0</label></div>	
+							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-0'><label for='restricted-0'>0</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-1'><label for='restricted-1'>1</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-2'><label for='restricted-2'>2</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-num' id='restricted-3'><label for='restricted-3'>3</label></div>
@@ -534,8 +629,9 @@
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-uppercase' id='Z'><label for='Z'>Z</label></div>
 							<div style='clear: both'></div>
 							<br>
-
-						<!-- Lowercase Letters -->
+						<!-- =============================================== -->
+						<!-- Lowercase Letters                               -->
+						<!-- =============================================== -->
 						<input type="checkbox" id="lowercase"> <label for="lowercase">No Lowercase Letters</label>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='a'><label for='a'>a</label></div>
 							<div class="restrictedcheck"><input type="checkbox" class='lettercheck lettercheck-lowercase' id='b'><label for='b'>b</label></div>
@@ -595,8 +691,16 @@
 						<div id="finalRegex" class="outputbox">.*</div>
 					</td></tr>
 
-					<tr> <td colspan="2"><div style="text-align: center;"> <input class="submitbutton" type="submit" value="Submit"/></div> </td> </tr>
-					
+					<tr>
+						<td class="formlabel"><label for='emailaddress'>Submitter Identification</label></td>
+						<td class="forminput">
+							<div class="helpText">This can be anything that you want to use so that you can record the rules you have submitted</div>
+							<input type="text" id="email" class="inputbox" placeholder="EG: your.name@gmail.com, or yourhandle" name="emailaddress">
+						</td>
+					</tr>
+
+					<tr> <td colspan="2"><div style="text-align: center;"> <input class="submitbutton" type="submit" value="Submit" disabled></div> </td> </tr>
+
 
 
 
@@ -611,4 +715,4 @@
 			</form>
 		</div>
 	</body>
-</html>	
+</html>
