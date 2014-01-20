@@ -3,9 +3,11 @@
 	echo "<br>";
 	echo "<br>";
 	echo "<br>";
-	echo "Raw Domain: " . $_POST["rawDomain"];
+	$rawDomain = $_POST["rawDomain"];
+	echo "Raw Domain: " . $rawDomain;
 	echo "<br>";
-	echo "Domain: " . $_POST["finalDomain"];
+	$finalDomain = $_POST["finalDomain"];
+	echo "Domain: " . $finalDomain;
 	echo "<br>";
 	$parent = $_POST["finalDomain"];
 	if (strlen($_POST["domainparent"]) > 0) {
@@ -15,9 +17,11 @@
 	echo "Parent: " . $parent;
 	echo "<br>";
 
-	echo "Maximum Characters allowed:" . $_POST["maximumcharacters"];
+	$maxLength = $_POST["maximumcharacters"];
+	$minLength = $_POST["minimumcharacters"];
+	echo "Maximum Characters allowed:" . $maxLength;
 	echo "<br>";
-	echo "Minimum Characters allowed:" . $_POST["minimumcharacters"];
+	echo "Minimum Characters allowed:" . $minLength;
 	echo "<br>";
 
 
@@ -40,7 +44,7 @@ $characterList = $symbolList . $uppercaseList . $lowercaseList . $numberList;
 
 
 $restrictedCharactersArray = array();
-
+	
 # Add individual Buttons
 foreach (str_split($characterList) as $character) {
 	# special case SPACE
@@ -170,6 +174,98 @@ echo "Generated Regex: " . $fullRegex;
 
 echo "<br>";
 
-echo "Submitter: " . $_POST["emailaddress"];
+$submitter = $_POST["emailaddress"];
+echo "Submitter: " . $submitter;
+
+
+
+######
+## Submit the file to the database
+######
+$inifile = parse_ini_file("./.database.ini");
+// [Database Configuration]
+// url = <database.url.com>
+// username = <username>
+// password = <password>
+
+// [Database Lists]
+// database = <databasename>
+// rulesTable = <tablename>
+// userTable = <tablename>
+
+$mysqli = new mysqli($inifile['url'], $inifile['username'], $inifile['password'], $inifile['database']) ;
+
+/* check connection */
+if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
+}
+
+
+$sql="INSERT INTO betarules (
+  `rawdomain`,
+  `domain`,
+  `createdby`,
+  `minlength`,
+  `maxlength`,
+  `restrictedcharacters`,
+  `numbersrequired`,
+  `lowercaserequired`,
+  `uppercaserequired`,
+  `symbolsrequired`,
+  `additionalregex`,
+  `regex`,
+  `parent`
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+/* Prepared statement, stage 1: prepare */
+if (!($stmt = $mysqli->prepare($sql))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+
+// /* Prepared statement, stage 2: bind and execute */
+// $id = 1;
+// $stmt->bind_param($rawDomain, $id) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($finalDomain, 2) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($submitter, 3) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($minLength, 4) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($maxLength, 5) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($restrictedCharacters, 6) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($requiredNumbersCount, 7) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($requiredLowercaseCount, 8) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($requiredUppercaseCount, 9) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($requiredSymbolsCount, 10) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($additionalRegex, 11) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($fullRegex, 12) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+// $stmt->bind_param($parent, 13) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+
+
+$stmt->bind_param('sssiisiiiisss',
+	$rawDomain, 
+	$finalDomain, 
+	$submitter, 
+	$minLength, 
+	$maxLength, 
+	$restrictedCharacters, 
+	$requiredNumbersCount, 
+	$requiredLowercaseCount, 
+	$requiredUppercaseCount, 
+	$requiredSymbolsCount, 
+	$additionalRegex, 
+	$fullRegex, 
+	$parent
+) or die ("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+
+
+
+
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+echo " <br> <h1>DONE</h1> <br>";
+
+
+echo "<a href='/contribute'>Fill Out Another Domain</a>";
 
 ?>
