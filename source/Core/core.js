@@ -95,7 +95,7 @@ function hexToBase64(hexString) {
 	var decimalArray = hexToDecimalArray(hexString);
 	var base64string = "";
 
-	for (var i = 0; i < decimalArray.length; i+=3){ 
+	for (var i = 0; i < decimalArray.length; i+=3){
 		// If this is the only element in this group of three
 		if (decimalArray.length == i+1) {
 			base64string += decimalToBase64(decimalArray[i] * 4);
@@ -129,7 +129,7 @@ function hexToBase64(hexString) {
 \******************************************************************************/
 function hexToDecimalArray(hexString) {
 	var hex = '0123456789abcdef';
-	var decimalArray = []
+	var decimalArray = [];
 	for (var i = 0; i < hexString.length; i++) {
 		decimalArray.push(hex.indexOf(hexString[i]));
 	}
@@ -215,17 +215,17 @@ function calculateNewBaseLength(oldBase, oldBaseLength, newBase) {
 | removes all of the preceding zero value digits returning a vector of only    |
 | meaningful digits.                                                           |
 | Arguments:                                                                   |
-| 	Array of numbers with leading zeros                                        |
+|   Array of numbers with leading zeros                                        |
 | Returns:                                                                     |
-| 	Array of numbers with no leaning zeros                                     |
+|   Array of numbers with no leaning zeros                                     |
 | Examples:                                                                    |
-| 	trimNumber([0,0,0,5,6,1,0])                                      [5,6,1,0] |
-| 	trimNumber([9,1,6,0,0,0])                                    [9,1,6,0,0,0] |
-| 	trimNumber([0,0,0,0,0])                                                 [] |
+|   trimNumber([0,0,0,5,6,1,0])                                      [5,6,1,0] |
+|   trimNumber([9,1,6,0,0,0])                                    [9,1,6,0,0,0] |
+|   trimNumber([0,0,0,0,0])                                                 [] |
 \******************************************************************************/
 function trimNumber(numberArray) {
     for (var i = 0; i < numberArray.length; i++) {
-        if (numberArray[i] != 0) {
+        if (numberArray[i] !== 0) {
             break;
         }
     }
@@ -237,15 +237,15 @@ function trimNumber(numberArray) {
 | in the new base. This is used when calulating the effect each digit of the   |
 | old base has on each digit of the new base.                                  |
 | Arguments:                                                                   |
-| 	oldbase - the base of the previous number                                  |
-| 	newbase - the base of the new number                                       |
+|   oldbase - the base of the previous number                                  |
+|   newbase - the base of the new number                                       |
 | Retuns:                                                                      |
-| 	array of digits containingWhat 10 in the old base would be equivilent to   |
+|   array of digits containingWhat 10 in the old base would be equivilent to   |
 |     in the new base                                                          |
 | Examples:                                                                    |
-| 	tenInOldBase(2,10)                                                     [2] |
-| 	tenInOldBase(10,2)                                               [1,0,1,0] |
-| 	tenInOldbase(999,16)                                              [3,14,7] |
+|   tenInOldBase(2,10)                                                     [2] |
+|   tenInOldBase(10,2)                                               [1,0,1,0] |
+|   tenInOldbase(999,16)                                              [3,14,7] |
 \******************************************************************************/
 function tenInOldBase(oldBase, newBase) {
     var newBaseLength = calculateNewBaseLength(oldBase, 2, newBase);
@@ -268,15 +268,15 @@ function tenInOldBase(oldBase, newBase) {
 | multiplies them together returning a vector containing the product of the    |
 | two numbers in the same base that they were originally in                    |
 | Arguments:                                                                   |
-| 	base - the current base in which we are multiplying numbers in             |
-| 	firstNumber - an array containing the digits of the first number           |
-| 	secondNumber - an array containing the digits of the second number         |
+|   base - the current base in which we are multiplying numbers in             |
+|   firstNumber - an array containing the digits of the first number           |
+|   secondNumber - an array containing the digits of the second number         |
 | Returns:                                                                     |
-|	number of the specified base containing the product of the two numbers     |
+|   number of the specified base containing the product of the two numbers     |
 | Examples:                                                                    |
-| 	multiply(10, [5], [1,0])                                             [5,0] |
-| 	multiply(2, [1,1], [1,0])                                          [1,1,0] |
-| 	multiply(19,[18,1],[10,12])                              [ 10, 1, 17, 12 ] |
+|   multiply(10, [5], [1,0])                                             [5,0] |
+|   multiply(2, [1,1], [1,0])                                          [1,1,0] |
+|   multiply(19,[18,1],[10,12])                              [ 10, 1, 17, 12 ] |
 \******************************************************************************/
 function multiply(base, firstNumber, secondNumber) {
     var resultLength = firstNumber.length + secondNumber.length;
@@ -305,11 +305,11 @@ function multiply(base, firstNumber, secondNumber) {
 | each digit of the old number into its corisponding value in the new base     |
 | and summing all the numbers                                                  |
 | Arguments:                                                                   |
-| 	oldBase - the base of the number you want to convert from                  |
-| 	newBase - the base of the number you want to convert to                    |
-| 	oldNumber - an array of digits for the old number you want to convert      |
+|   oldBase - the base of the number you want to convert from                  |
+|   newBase - the base of the number you want to convert to                    |
+|   oldNumber - an array of digits for the old number you want to convert      |
 | Returns:                                                                     |
-| 	an array containing the digits of the new number in the new base           |
+|   an array containing the digits of the new number in the new base           |
 \******************************************************************************/
 function calculateNewBase(oldBase, newBase, oldNumber) {
     var newLength = calculateNewBaseLength(oldBase, oldNumber.length, newBase);
@@ -344,80 +344,85 @@ function calculateNewBase(oldBase, newBase, oldNumber) {
 
 
 
-// var ITERATIONCOUNT 1000000
-// /****************************** GENERATE PASSWORD *****************************\
-// | The generate password function takes in the domain and the master password   |
-// | then returns the 16 character long base64 password based off of the sha256   |
-// | hash                                                                         |
-// \******************************************************************************/
-// string generatePassword(string domain, string masterpass ) {
+var ITERATIONCOUNT = 1000000;
+/****************************** GENERATE PASSWORD *****************************\
+| The generate password function takes in the domain and the master password   |
+| then returns the 16 character long base64 password based off of the sha256   |
+| hash                                                                         |
+| Arguments 
+\******************************************************************************/
+// var prehash = website+password;
+// var hash = CryptoJS.SHA256(prehash) + "";
+// return hexToBase64(hash).substring(0,16);
+function generatePassword(domain, masterpass ) {
 
-//     SettingsAPI settingsDatabase;
+    var settingsDatabase = new SettingsAPI();
 
-//     if (!settingsDatabase.IsOpen()) {
-//         cout << "Error: Local settings database is not opened" << endl;
-//     }
-//     else {
-//         cout << "Local settings database opened" << endl;
-//     }
+    if (!settingsDatabase.IsOpen()) {
+        console.log("Error: Local settings database is not opened");
+    }
+    else {
+        console.log("Local settings database opened");
+    }
 
-//     DomainSettings settings = settingsDatabase.GetSettings(domain); // use versionless command for now
-//     // settingWrapper settings = getSettings(domain);
+    // DomainSettings
+    var settings = settingsDatabase.GetSettings(domain); // use versionless command for now
+    // settingWrapper settings = getSettings(domain);
 
-//     // cout << "MAX LENGTH: " << settings.maxCharacters << endl;
-//     // cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
-//     // cout << "DOMAIN: " << settings.domain << endl;
-//     // cout << "REGEX MATHC: " << settings.regex << endl;
+    // cout << "MAX LENGTH: " << settings.maxCharacters << endl;
+    // cout << "ALLOWED CHARACTERS: " << settings.allowedCharacters << endl;
+    // cout << "DOMAIN: " << settings.domain << endl;
+    // cout << "REGEX MATHC: " << settings.regex << endl;
 
-//     string prehash = settings.domain+masterpass;
-//     unsigned char hash[HASHSIZE];
+    var prehash = settings.domain+masterpass;
+    unsigned char hash[HASHSIZE];
 
-//     string output = "";
-//     int iterations = 0;
-//     while (true) {
-//         ++iterations;
-//         SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
+    string output = "";
+    int iterations = 0;
+    while (true) {
+        ++iterations;
+        SHA256((unsigned char*)prehash.c_str(), prehash.size(), hash);
 
-//         prehash = "";
-//         for (int j = 0; j < HASHSIZE; j++) {
-//             prehash += hash[j];
-//         }
-//         // make sure at least a certian number of iterations are done
-//         if (iterations < ITERATIONCOUNT) continue;
-//         // Turn the hashed value into a displayable password
-//         vector<int> hashedValues(32);
-//         string password = "";
-//         for (int j = 0; j < HASHSIZE; j++) {
-//             hashedValues[j] = static_cast<int>(hash[j]);
-//         }
+        prehash = "";
+        for (int j = 0; j < HASHSIZE; j++) {
+            prehash += hash[j];
+        }
+        // make sure at least a certian number of iterations are done
+        if (iterations < ITERATIONCOUNT) continue;
+        // Turn the hashed value into a displayable password
+        vector<int> hashedValues(32);
+        string password = "";
+        for (int j = 0; j < HASHSIZE; j++) {
+            hashedValues[j] = static_cast<int>(hash[j]);
+        }
 
-//         int newbase = settings.allowedCharacters().length();
-//         vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
+        int newbase = settings.allowedCharacters().length();
+        vector<int> newValues = calculateNewBase(256, newbase, hashedValues);
 
-//         for (int i = 0; i < 16 && i < settings.maxLength; i++) {
-//             int reverseIndex = newValues.size()-i-1;
-//             password += settings.allowedCharacters()[newValues[reverseIndex]];
-//         }
+        for (int i = 0; i < 16 && i < settings.maxLength; i++) {
+            int reverseIndex = newValues.size()-i-1;
+            password += settings.allowedCharacters()[newValues[reverseIndex]];
+        }
 
-//         // Make sure the generated password conforms to the password rules
-//         try {
-//             boost::regex rulesCheck(settings.regex);
+        // Make sure the generated password conforms to the password rules
+        try {
+            boost::regex rulesCheck(settings.regex);
 
-//             // If it does conform then exit the program
-//             if (regex_match(password, rulesCheck)) {
-//                 return password;
-//             }
-//             else {
-//                 // std::cout << "BAD WORD CHECK" << std::endl;
-//             }
-//         }
+            // If it does conform then exit the program
+            if (regex_match(password, rulesCheck)) {
+                return password;
+            }
+            else {
+                // std::cout << "BAD WORD CHECK" << std::endl;
+            }
+        }
 
-//         catch (const boost::regex_error& e) {
-//             std::cout << "regex_error caught: " << e.what() << '\n';
-//             if (e.code() == boost::regex_constants::error_brack) {
-//                 std::cout << "The code was error_brack\n";
-//             }
-//         }
-//     }
-//     return "";  // this will never be hit
-// }
+        catch (const boost::regex_error& e) {
+            std::cout << "regex_error caught: " << e.what() << '\n';
+            if (e.code() == boost::regex_constants::error_brack) {
+                std::cout << "The code was error_brack\n";
+            }
+        }
+    }
+    return "";  // this will never be hit
+}
