@@ -61,46 +61,37 @@ var currentTab = tabs[0].id; // make the current tab the starting tab
 // Just in case track the tab that was last called on
 var calledTab;
 
-/********************************** PAGE MOD **********************************\
-| The page mod object creates a content script on every page that can be       |
-| communicated with through a worker object. This allows for two way           |
-| communication between the background scripts and the web page                |
-\******************************************************************************/
-pageMod.PageMod({
-    include: ["*"],
-    contentScriptWhen: 'start', // make the content script run before anything else
-    contentScriptFile: data.url("insert-text.js"),
-    onAttach: function(worker) {
-
-        /***************************** GOT TARGET *****************************\
-        | When the content script returns the current domain the domain is     |
-        | set to a global variable for use after the panel is shown, and then  |
-        | shows the panel.                                                     |
-        \**********************************************************************/
-        worker.port.on("__passcod.es__target", function(_target) {
-            target = _target;
-            panel.show();
-        });
-
-        // Add the newly created worker to the map of tabs to workers
-        var tabid = worker.tab.id;
-        
-        // Prevent a woker from binding to the tab unless there is no worker bound
-        if (!(tabid in workers)) {
-            // console.log("SET WORKER TO TAB ID " + worker.tab.id);
-            workers[tabid] = worker;
+// Tab based content scripts
+tabs.on('ready', function(tab) {
+    var worker = tab.attach({
+        contentScriptFile: data.url("insert-text.js"),
+        // onAttach: function(worker) {
+        //     console.log("Tab worker tab id" + worker.tab.id);
+        // }
+        onMessage: function(message) {
+            console.log("GOT A MESSAGE" . message);
         }
+    });
 
-        // When a worker detaches from a page due to a page change or reload
-        // Free up the slot for that tab so another worker can bind to it
-        worker.on('detach', function () {
-            if (worker == workers[tabid]) {
-                // console.log("Worker detatched from " + tabid);
-                delete workers[tabid];
-            }
-            // detachWorker(this, workers);
-        });
-    }
+    worker.port.on("__passcod.es__target", function( _target ) {
+        console.log("GOT TARGET: " + _target);
+        target = _target;
+        panel.show();
+
+    });
+
+    // When a worker detaches from a page due to a page change or reload
+    // Free up the slot for that tab so another worker can bind to it
+    worker.on('detach', function () {
+        console.log("Worker detatched from " + tab.id);
+        delete workers[tab.id];
+        console.log("Worker detached");
+        // detachWorker(this, workers);
+    });
+
+    workers[tab.id] = worker;
+
+    console.log("Worker Tab ID / Tab ID: " + worker.tab.id + " / " + tab.id );
 });
 
 /************************************ PANEL ***********************************\
