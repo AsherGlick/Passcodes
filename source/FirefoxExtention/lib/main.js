@@ -46,12 +46,9 @@
 \******************************************************************************/
 
 // "import" all of the required APIs
-var widgets = require ("sdk/widget");
 var tabs = require ("sdk/tabs");
 var contextMenu = require("sdk/context-menu");
 var data = require("sdk/self").data;
-var pageMod = require("sdk/page-mod");
-
 var dbhelper = require("dbhelper/dbinterface");
 dbhelper.intilizeDatabase();
 
