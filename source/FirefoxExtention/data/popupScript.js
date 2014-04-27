@@ -52,13 +52,24 @@
 | the text boxes. Then sends the generated password to the tab that called     |
 | this popup to have it insert into the page                                   |
 \******************************************************************************/
+
 document.getElementById('form').onsubmit = function() {
     try {
-        self.port.emit("__passcod.es__result", generatePassword());
-        //console.log("Text sumbitted");
+        var password = generatePassword();
+
+        // This for loop is a huge hack for an unknown bug causing messages to be
+        // dropped on the floor when emitted from a pannel. So far it seems that
+        // these issues only arrise from this particular connection. After much
+        // testing it was found that a message will not allways get dropped if
+        // the one before it was so the quick and dirty solution was to send the
+        // message multiple times.
+        for (var i = 0; i < 100; i++) {
+            self.port.emit("passcodes_result", password);
+        }
+        rules = {};
     }
     catch (err) {
-        //console.log("ERROR: "+err);
+        console.error("Popup Script: ERROR: "+err);
     }
 };
 
