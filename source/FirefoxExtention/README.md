@@ -10,7 +10,7 @@ Screenshot
 Development
 -----------
 
-Before you begin testing or developing the Firefox extension you will need the Firefox Add-on SDK. Instructions for how to download and install the SDK for various operating systmes can be found on ![Mozilla's Website](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) 
+Before you begin testing or developing the Firefox extension you will need the Firefox Add-on SDK. Instructions for how to download and install the SDK for various operating systmes can be found on [Mozilla's Website](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) 
 
 To test and run the source of the Firefox extension, enter the directory Passcodes/source/FirefoxExtension
 
