@@ -45,6 +45,8 @@
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 \******************************************************************************/
 
+var rules = {};
+
 /****************************** PASSWORD COMPLETE *****************************\
 | This listens for when the user submits the password form, by hitting enter   |
 | or clicking the submit button. When they do it generates the password        |
@@ -55,7 +57,7 @@
 
 document.getElementById('form').onsubmit = function() {
     try {
-        var password = generatePassword();
+        var password = generatePassword(rules);
 
         // This for loop is a huge hack for an unknown bug causing messages to be
         // dropped on the floor when emitted from a pannel. So far it seems that
@@ -80,8 +82,18 @@ document.getElementById('form').onsubmit = function() {
 | domain is filled into the domain box and the password box is focused. If     |
 | there was not, both field are left blank and the domain box is focused       |
 \******************************************************************************/
-self.port.on("__passcod.es__showPanel", function (domain) {
-    if (domain == "") {
+self.port.on("__passcod.es__showPanel", function (bundle) {
+    rules = bundle;
+
+    var domain = rules['domain'];
+    if (rules['parent'] !== '') {
+        domain = rules['parent'];
+    }
+
+    console.log(self);
+    console.log("Popup-script: Showing Panel: initilizing domain");
+
+    if (domain === "") {
         document.getElementById("website").focus();
     }
     else {

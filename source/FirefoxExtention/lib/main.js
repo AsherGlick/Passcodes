@@ -52,6 +52,9 @@ var contextMenu = require("sdk/context-menu");
 var data = require("sdk/self").data;
 var pageMod = require("sdk/page-mod");
 
+var dbhelper = require("dbhelper/dbinterface");
+dbhelper.intilizeDatabase();
+
 // keep track of all the workers that are active
 var workers = [];
 // Allow the current target domain to be saved temporarily
@@ -109,10 +112,20 @@ var panel = require("sdk/panel").Panel({
 | When the panel is shown send a messsage to the panel giving it the current   |
 | target domain. This allows the panel to run scripts when it is shown that    |
 | effect it's DOM                                                              |
+
+|
+| Pannel show reactes to the popup panel being displayed, it gets the rules for the target website from the database and passes them to the panel which does the password generation
 \******************************************************************************/
+var panelShown = false;
 panel.on("show", function () {
-    panel.port.emit("__passcod.es__showPanel",target);
+    console.log("Getting rules for " + target);
+    var bundle = dbhelper.getRule(target);
+
+//function querySucess () {
+    panel.port.emit("__passcod.es__showPanel",bundle);
     target = "";
+    panelShown = true;
+    console.log("requesting Show Panel");
 });
 
 /******************************** PANEL RESULT ********************************\
@@ -120,9 +133,20 @@ panel.on("show", function () {
 | the background content script and the panel is hidden until the next time    |
 | it is called                                                                 |
 \******************************************************************************/
-panel.port.on("__passcod.es__result", function(result) {
-    workers[calledTab].port.emit("__passcod.es__setTarget", result);
-    panel.hide();
+panel.port.on("passcodes_result", function(result) {
+    if (panelShown === true) {
+        panelShown = false;
+        console.log("Result");
+        try {
+            console.log("Text Received");
+            workers[calledTab].port.emit("__passcod.es__setTarget", result);
+            console.log("Text Set");
+            panel.hide();
+        }
+        catch (err) {
+            console.log("ERROR (result->setTarget): "+err);
+        }
+    }
 });
 
 /****************************** CONTEXT MENU ITEM *****************************\
@@ -137,9 +161,14 @@ var menuItem = contextMenu.Item({
     image: "http://passcod.es/favicon.ico",
     contentScript: 'self.on("click", function() {self.postMessage();});',
     onMessage: function (selectionText) {
-        //console.log("Caught Click");
-        workers[currentTab].port.emit("__passcod.es__getTarget");
-        calledTab = currentTab;
+        console.log("Caught Click");
+        try {
+            workers[currentTab].port.emit("__passcod.es__getTarget");
+            calledTab = currentTab;
+        }
+        catch (err) {
+            console.log("ERROR: Activating " + err);
+        }
     }
 });
 
