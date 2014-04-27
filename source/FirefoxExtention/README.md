@@ -17,4 +17,8 @@ To test and run the source of the Firefox extension, enter the directory Passcod
 	cd Passcodes/source/FirefoxExtention
     cfx run
 
+A useful command when trying to get console output from just the passcodes plugin is
+
+    cfx run 2>&1 | grep passcodes
+
 
