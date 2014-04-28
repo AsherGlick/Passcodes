@@ -85,7 +85,7 @@ if (mysqli_connect_errno()) {
 
 
 // $sql="SELECT * FROM betarules LIMIT ?, 50;";
-$sql = "SELECT id, domain, minlength, maxlength, restrictedcharacters, regex, parent FROM betarules LIMIT ?, 50";
+$sql = "SELECT id as \"ID\", domain as \"Domain\", minlength as \"Min Length\", maxlength as \"Max Length\", restrictedcharacters as \"Restricted Characters\", regex as \"Regex\", parent as \"Parent\" FROM betarules LIMIT ?, 50";
 
 
 /* Prepared statement, stage 1: prepare */
