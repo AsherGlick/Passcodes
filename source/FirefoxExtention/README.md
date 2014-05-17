@@ -14,7 +14,7 @@ Before you begin testing or developing the Firefox extension you will need the F
 
 To test and run the source of the Firefox extension, enter the directory Passcodes/source/FirefoxExtension
 
-	cd Passcodes/source/FirefoxExtention
+    cd Passcodes/source/FirefoxExtention
     cfx run
 
 A useful command when trying to get console output from just the passcodes plugin is
