@@ -51,6 +51,7 @@ if (!$stmt->execute()) {
 	echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
+// Have the sql row fill in a relational mapping of the coluimn name to the value for each row
 $meta = $stmt->result_metadata(); 
 $resultsArray = array();
 $columns = array();
