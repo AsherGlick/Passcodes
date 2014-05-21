@@ -7,3 +7,4 @@ RewriteRule deploy/(.*) - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 </IfModule>
 
 RedirectMatch 404 /\..*$
+RedirectMatch 404 /scripts/.*
