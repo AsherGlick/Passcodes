@@ -39,7 +39,7 @@ function getRules ($domains, $inifile) {
 
 
 	# build and execute the sql query
-	$sql = "SELECT name, version, creationdate, minlength, maxlength, restrictedcharacters, regex, parent from " . $inifile['rulesTable'] . " WHERE (name, version) IN (SELECT name, MAX(version) FROM rules WHERE name in (" . $domainList . ") GROUP BY name)";
+	$sql = "SELECT domain, version, created, maxlength, restrictedcharacters, regex, parent from " . $inifile['rulesTable'] . " WHERE (domain, version) IN (SELECT domain, MAX(version) FROM rules WHERE domain in (" . $domainList . ") GROUP BY domain)";
 	$result = $mysqli->query($sql) or die("Unable to select: " . $mysqli->error );
 
 	# get the results of the sql query
@@ -50,7 +50,7 @@ function getRules ($domains, $inifile) {
 
 	# build list of missing data from query
 	foreach ($rows as &$row) {
-		$rowname = $row["name"];
+		$rowname = $row["domain"];
 		if(($key = array_search($rowname, $domains)) !== false) {
 		    unset($domains[$key]);
 		}
@@ -59,7 +59,7 @@ function getRules ($domains, $inifile) {
 	# fill in empty data from query
 	foreach ($domains as &$domain) {
 		$newrow = Array();
-		$newrow['name']=$domain;
+		$newrow['domain']=$domain;
 		$newrow['version']='0';
 		array_push($rows, $newrow);
 	}
