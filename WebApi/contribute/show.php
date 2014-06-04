@@ -1,3 +1,61 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Ariel, sans-serif;
+				background: #CCC;
+			}
+			.resultTable {
+				border-collapse: collapse;
+				width: 90%;
+				background: #FFF;
+				margin-left: auto;
+				margin-right: auto;
+				min-width: 800px;
+				border-top: 2px solid #2EBF78;
+				border-left: 2px solid #2EBF78;
+			}
+
+			.resultTable td, .resultTable th{
+				border-bottom: 1px solid #DDD;
+				border-right: 1px solid #DDD;
+			}
+
+			.button {
+				padding: 10px;
+				text-align: center;
+				width: 100px;
+				background: #FFF;
+				border: 1px solid #999;
+				border-radius: 3px;
+				margin: 10px;
+				text-decoration: none;
+				color: black;
+			}
+
+			.button:hover {
+				background: #EEE;
+			}
+
+			.buttonCenter {
+				width: 90%;
+				margin-left: auto;
+				margin-right: auto;
+				display: relative;
+				overflow: hidden;
+				text-align: center;
+			}
+			.title {
+				padding: 10px;
+				margin: 10px;
+				text-shadow: 0.07em 0.07em 0em #FFF;
+			}
+		</style>
+	</head>
+	<body>
+
+
+
 <?
 $lowerlimit = $_GET['LIMIT'] | 0;
 
@@ -26,7 +84,9 @@ if (mysqli_connect_errno()) {
 }
 
 
-$sql="SELECT * FROM betarules LIMIT ?, 50;";
+// $sql="SELECT * FROM betarules LIMIT ?, 50;";
+$sql = "SELECT id as \"ID\", domain as \"Domain\", minlength as \"Min Length\", maxlength as \"Max Length\", restrictedcharacters as \"Restricted Characters\", regex as \"Regex\", parent as \"Parent\" FROM betarules LIMIT ?, 50";
+
 
 /* Prepared statement, stage 1: prepare */
 if (!($stmt = $mysqli->prepare($sql))) {
@@ -35,10 +95,10 @@ if (!($stmt = $mysqli->prepare($sql))) {
 
 
 $upperlimit = $lowerlimit + 50;
-echo $lowerlimit;
-echo "<br>";
-echo $upperlimit;
-echo "<br>";
+// echo $lowerlimit;
+// echo "<br>";
+// echo $upperlimit;
+// echo "<br>";
 
 $stmt->bind_param('i',
 	$lowerlimit
@@ -63,9 +123,15 @@ while ($field = $meta->fetch_field()) {
 
 call_user_func_array(array($stmt, 'bind_result'), $parameters); 
 
+$belowlimit = $lowerlimit-50;
+$belowlimit = $belowlimit < 0 ? 0 : $belowlimit;
+echo "<div class='buttonCenter'>";
+echo "<a href='?LIMIT=" . $belowlimit . "'><div style='float: left' class='button'>Previous 50</div></a>";
+echo "<a href='?LIMIT=" . $upperlimit . "'><div style='float: right' class='button'>Next 50</div></a>";
+echo "<div class='title'> Currently Showing Results " . $lowerlimit . " - " . $upperlimit . "</div>";
+echo "</div>";
 
-
-print "<table>";
+print "<table cellpadding='10' cellspacing='0' border='0' class='resultTable'>";
 foreach ($columns as $column) {
 	print ("<th>" . $column . "</th>");
 }
@@ -97,10 +163,11 @@ print "</table>";
 # close the SQL query   
 $stmt->close();
 
-# 
-$belowlimit = $lowerlimit-50;
-$belowlimit = $belowlimit < 0 ? 0 : $belowlimit;
-
-echo "<a href='?LIMIT=" . $belowlimit . "'>Previous 50</a>";
-echo "<a href='?LIMIT=" . $upperlimit . "'>Next 50</a>";
+echo "<div class='buttonCenter'>";
+echo "<a href='?LIMIT=" . $belowlimit . "'><div style='float: left' class='button'>Previous 50</div></a>";
+echo "<a href='?LIMIT=" . $upperlimit . "'><div style='float: right' class='button'>Next 50</div></a>";
+echo "</div>";
 ?>
+
+</body>
+</html>
