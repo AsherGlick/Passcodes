@@ -1,3 +1,8 @@
+SSLOptions +StrictRequire
+SSLRequireSSL
+SSLRequire %{HTTP_HOST} eq "api.passcod.es"
+ErrorDocument 403 https://api.passcod.es
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
