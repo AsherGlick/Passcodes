@@ -12,10 +12,10 @@
 # ../source/FirefoxExtention/data/core.js #
 
 # Get the top level directory for this git repo
-GIT_ROOT=`git rev-parse --show-toplevel`
+GITROOT=`git rev-parse --show-toplevel`
 
 
 # Diff all of the files to see if any are off
-diff $GIT_ROOT/source/Core/core.js $GIT_ROOT/source/ChromeExtention/core.js
-diff $GIT_ROOT/source/Core/core.js $GIT_ROOT/source/Web/amassite/core.js
-diff $GIT_ROOT/source/Core/core.js $GIT_ROOT/source/FirefoxExtention/data/core.js
+diff $GIT_ROOT/source/Core/core.js $GITROOT/source/ChromeExtention/core.js
+diff $GIT_ROOT/source/Core/core.js $GITROOT/source/Web/amassite/core.js
+diff $GIT_ROOT/source/Core/core.js $GITROOT/source/FirefoxExtention/data/core.js
