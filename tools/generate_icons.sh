@@ -18,3 +18,5 @@ rsvg-convert --width 36 --height 36 icon.svg --output "$GITROOT/source/Android/r
 rsvg-convert --width 16 --height 16 icon.svg --output "$GITROOT/source/ChromeExtention/icon-16.png"
 rsvg-convert --width 48 --height 48 icon.svg --output "$GITROOT/source/ChromeExtention/icon-48.png"
 rsvg-convert --width 128 --height 128 icon.svg --output "$GITROOT/source/ChromeExtention/icon-128.png"
+
+# TODO: Generate favicons
